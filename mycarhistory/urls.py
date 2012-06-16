@@ -1,17 +1,17 @@
 from django.conf.urls import patterns, include, url
+from django.views.generic import TemplateView
+from django.contrib import admin
 
-# Uncomment the next two lines to enable the admin:
-# from django.contrib import admin
-# admin.autodiscover()
+from mycarhistory.settings import STATIC_ROOT, DEBUG
+admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'mycarhistory.views.home', name='home'),
-    # url(r'^mycarhistory/', include('mycarhistory.foo.urls')),
-
-    # Uncomment the admin/doc line below to enable admin documentation:
-    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
-    # Uncomment the next line to enable the admin:
-    # url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+    url(r'^admin/', include(admin.site.urls)),
+    url(r'^$', TemplateView.as_view(template_name='index.html')),
+    url(r'^cars/', include('mycarhistory.cars.urls')),
+    #url(r'^mechanic/', include('mycarhistory.mechanics.urls')),
 )
+
+if DEBUG:
+    urlpatterns += patterns(url(r'^static/(.*)$', 'django.views.static.serve', {'document_root': STATIC_ROOT}),)

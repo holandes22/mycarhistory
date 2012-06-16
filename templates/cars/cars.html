@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span2">
+            <!--Sidebar content-->
+            <div class="well" style="padding: 8px 0;">
+                <ul class="nav nav-list">
+                  <li class="nav-header">Car list</li>
+                  {% for car in cars %}
+                  {% if forloop.first %}         
+                  <li class="active">
+                  {% else %}
+                  <li>
+                  {% endif %}
+                    <a href="{{ car.absolute_url }}">{{ car.brand }} {{car.name}} {{car.year }}</a>   
+                  </li>
+
+                  {% endfor %}
+                  <li class="divider"></li>          
+                </ul>
+              </div> <!-- /well -->
+        </div>
+        <div class="span10">
+            <!--Body content-->
+            <div class="tabbable">
+                <!-- Only required for left/right tabs -->
+                <ul class="nav nav-pills">
+                    <li class="active">
+                        <a href="#tab1" data-toggle="tab">Car details</a>
+                    </li>
+                    <li>
+                        <a href="#tab2" data-toggle="tab">Treatment history</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab1">
+                        <p>
+                            details
+                        </p>
+                    </div>
+                    <div class="tab-pane" id="tab2">
+                        <p>
+                            treatments
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+</div>
+{% endblock body %}
