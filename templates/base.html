@@ -27,27 +27,33 @@
                     Car History
                     </a>
                     <ul class="nav">
-                        <li class="active">
-                            <a href="/">Home</a>
+                        <li>
+                            <a href="{% url mycarhistory-main %}">Home</a>
                         </li>
                         <li>
-                            <a href="{% url cars_main %}">Cars</a>
+                            <a href="{% url cars-main %}">Cars</a>
                         </li>
                         <li>
-                            <a href="#">Mechanics</a>
+                            <a href="{% url mechanics-main %}">Mechanics</a>
                         </li>     
                     </ul>
                     <ul class="nav">
                         <li class="divider-vertical" /li>
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Actions <b class="caret"></b> </a>
-                            <ul class="dropdown-menu">
+                            <div class="btn-group">
+                                <button class="btn btn-info btn-small">Actions</button>
+                                <button class="btn dropdown-toggle btn-info btn-small" data-toggle="dropdown">
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
                                 {% for action in actions %}
                                 <li>
                                     <a href="{{ action.url }}">{{ action.title }}</a>
                                 </li>
                                 {% endfor %}
-                            </ul>
+                                </ul>
+                            </div>
+
                         </li>
                     </ul>
                     <ul class="nav pull-right">

@@ -1,0 +1,12 @@
+{% load car_utils %}
+<h2>{{ header }} Details</h2>
+<table class="table table-striped">
+    <tbody>
+        {% for key, value in object.get_model_attrs %}
+        <tr>
+            <td>{{ key|replace_under_with:" "|capfirst }}</td>
+            <td>{{ value|capfirst }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

@@ -8,14 +8,16 @@
                 <ul class="nav nav-list">
                   <li class="nav-header">Car list</li>
                   {% for car in cars %}
-                  {% if forloop.first %}         
-                  <li class="active">
-                  {% else %}
                   <li>
-                  {% endif %}
-                    <a href="{{ car.absolute_url }}">{{ car.brand }} {{car.name}} {{car.year }}</a>   
+                    <a href="#" url="{{ car.get_absolute_url }}" data-target="#body-content" class="car-details">{{ car }}</a>   
                   </li>
-
+                  <li>
+                      <ul class="nav nav-list">
+                          <li>
+                              <a href="someurl">Treatment history</a>
+                          </li>
+                      </ul>
+                  </li>
                   {% endfor %}
                   <li class="divider"></li>          
                 </ul>
@@ -23,28 +25,7 @@
         </div>
         <div class="span10">
             <!--Body content-->
-            <div class="tabbable">
-                <!-- Only required for left/right tabs -->
-                <ul class="nav nav-pills">
-                    <li class="active">
-                        <a href="#tab1" data-toggle="tab">Car details</a>
-                    </li>
-                    <li>
-                        <a href="#tab2" data-toggle="tab">Treatment history</a>
-                    </li>
-                </ul>
-                <div class="tab-content">
-                    <div class="tab-pane active" id="tab1">
-                        <p>
-                            details
-                        </p>
-                    </div>
-                    <div class="tab-pane" id="tab2">
-                        <p>
-                            treatments
-                        </p>
-                    </div>
-                </div>
+            <div id="body-content">
             </div>
         </div>
         </div>

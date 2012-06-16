@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span2">
+            <!--Sidebar content-->
+            <div class="well" style="padding: 8px 0;">
+                <ul class="nav nav-list">
+                  <li class="nav-header">Mechanic contact list</li>
+                  {% for mechanic in mechanics %}
+                  <li>
+                    <a href="#" url="{{ mechanic.get_absolute_url }}" data-target="#body-content" class="mechanic-details">{{ mechanic }}</a>   
+                  </li>
+                  {% endfor %}
+                  <li class="divider"></li>          
+                </ul>
+              </div> <!-- /well -->
+        </div>
+        <div class="span10">
+            <!--Body content-->
+            <div id="body-content">
+            </div>
+        </div>
+        </div>
+</div>
+{% endblock body %}
