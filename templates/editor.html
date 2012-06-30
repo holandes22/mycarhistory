@@ -1,0 +1,14 @@
+<form id="editor_form" action={{ submit_url }} method="POST">
+	{% csrf_token %}
+	<table>
+	    {% for field in form %}
+	    		<tr>
+					<td>{{ field.label_tag }}</td>
+					<td>{{ field }}</td>
+					<td class='field_error'>{{ field.errors }}</td>
+	    		</tr>
+	    {% endfor %}
+    </table>
+    <input type="submit" value="Submit" />
+</form>		
+

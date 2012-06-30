@@ -1,19 +1,18 @@
-from django.views.generic import TemplateView, DetailView
-from mycarhistory.cars.models import Car
+from django.views.generic import TemplateView, DetailView, CreateView
+from mycarhistory.cars.models import Car, CarForm
+from mycarhistory.basemodel import Action, get_permalink
 
-class Action(object):
-
-    def __init__(self, url, title):
-        self.url = url
-        self.title = title
 
 class CarMainView(TemplateView):
     template_name = 'cars/cars.html'
 
+    def get_queryset(self):
+        return Car.objects.filter(user=self.request.user)
+
     def get_context_data(self, **kwargs):
         context = super(CarMainView, self).get_context_data(**kwargs)
         context['cars'] = Car.objects.all()
-        context['actions'] = [Action('del', 'Delete'), Action('add', 'Add car')]
+        context['actions'] = [Action(get_permalink('car-create'), 'Create a car')]
         return context
 
 class CarDetailView(DetailView):
@@ -29,4 +28,20 @@ class CarDetailView(DetailView):
         context = super(CarDetailView, self).get_context_data(**kwargs)
         # Add in a QuerySet of all the books
         context['header'] = 'Car'
+        return context
+
+class CarCreateView(CreateView):
+    form_class = CarForm
+    template_name = 'editor.html'
+
+    def get_success_url(self):
+        return get_permalink('cars-main')
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super(CarCreateView, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super(CarCreateView, self).get_context_data(**kwargs)
+        context['submit_url'] = get_permalink('car-create')
         return context

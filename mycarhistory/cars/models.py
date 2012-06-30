@@ -2,11 +2,26 @@ import datetime
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.forms import ModelForm
 from django.db.models import permalink
 
 from mycarhistory.basemodel import BaseModel
 from mycarhistory.mechanics.models import Mechanic
 
+DATE_FORMAT = '%m/%d/%Y'
+
+def make_custom_field_callback(field):
+    """
+    Callback to make field customization. This is useful to midifiy the elements of a form, for example
+    a custom class to a date field so it can be identified by Jquery UI datepicker in the template
+    """
+    formfield = field.formfield()
+    if formfield:
+        formfield.widget.attrs.update({'title': field.help_text})
+    if isinstance(field, models.DateField):
+        formfield.widget.format = DATE_FORMAT
+        formfield.widget.attrs.update({'class':'datePicker', 'readonly':'true'})
+    return formfield
 
 class Car(BaseModel):
 
@@ -47,6 +62,13 @@ class Car(BaseModel):
     @permalink
     def get_absolute_url(self):
         return ('car-detail', (), {'pk': self.pk})
+
+class CarForm(ModelForm):
+    formfield_callback = make_custom_field_callback
+    class Meta:
+        model = Car
+        readonly_fields = ['user']
+        exclude = ['user']
 
 
 class TreatmentEntry(BaseModel):

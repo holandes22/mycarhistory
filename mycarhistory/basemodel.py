@@ -1,10 +1,18 @@
 from django.db import models
+from django.db.models import permalink
+
+
+@permalink
+def get_permalink(name):
+    return ('{name}'.format(**locals()), [])
 
 class Action(object):
 
     def __init__(self, url, title):
         self.url = url
         self.title = title
+
+
 
 class BaseModel(models.Model):
 
