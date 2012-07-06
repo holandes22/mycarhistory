@@ -1,14 +1,26 @@
 <form id="editor_form" action={{ submit_url }} method="POST">
-	{% csrf_token %}
-	<table>
-	    {% for field in form %}
-	    		<tr>
-					<td>{{ field.label_tag }}</td>
-					<td>{{ field }}</td>
-					<td class='field_error'>{{ field.errors }}</td>
-	    		</tr>
-	    {% endfor %}
-    </table>
-    <input type="submit" value="Submit" />
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal">×</button>
+		<h3>Modal header</h3>
+	</div>
+	<div class="modal-body" id="editor-dialog-body">
+		{% if not form.is_valid %}
+			<div class='hide'>invalid_form</div>
+		{% endif %}
+		{% csrf_token %}
+		<table>
+		    {% for field in form %}
+		    		<tr>
+						<td>{{ field.label_tag }}</td>
+						<td>{{ field }}</td>
+						<td class='field_error'>{{ field.errors }}</td>
+		    		</tr>
+		    {% endfor %}
+	    </table>		
+	</div>
+	<div class="modal-footer">
+       <a href="#editor-dialog" class="btn" data-dismiss="modal">Cancel</a>
+       <a href="#editor-dialog" data-toggle="modal" class="btn btn-primary" onclick="$(this).trigger('click-save-button');">Save changes</a>
+	</div>
 </form>		
 

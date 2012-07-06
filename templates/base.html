@@ -19,7 +19,7 @@
 		{% endblock extra_js %}
     </head>
     <body>
-        
+        <div class="modal hide" id="editor-dialog"></div>
         <div class="navbar navbar-fixed-top">
             <div class="navbar-inner">
                 <div class="container">
@@ -48,7 +48,7 @@
                                 <ul class="dropdown-menu">
                                 {% for action in actions %}
                                 <li>
-                                    <a data-toggle="modal" href="#editor-dialog" onclick="$('#editor-dialog-body').load('{{ action.url }}')">{{ action.title }}</a>
+                                    <a data-toggle="modal" href="#editor-dialog" onclick="$('#editor-dialog').load('{{ action.url }}');">{{ action.title }}</a>
                                     {% comment %} <a href="{{ action.url }}">{{ action.title }}</a> {% endcomment %}
                                 </li>
                                 {% endfor %}
@@ -83,18 +83,6 @@
                 </div>
             </div>
         </div>
-<div class="modal hide" id="editor-dialog">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal">×</button>
-    <h3>Modal header</h3>
-  </div>
-  <div class="modal-body" id="editor-dialog-body">
-  </div>
-  <div class="modal-footer">
-    <a href="#" class="btn" data-dismiss="modal">Close</a>
-    <a class="btn btn-primary" href={%url car-create %} onclick="$('#editor-dialog-body').load('{% url car-create %};$('#editor-dialog').modal();">Save changes</a>
-  </div>
-</div>
     	{% block body %}
     	{% endblock body %}
     </body>
