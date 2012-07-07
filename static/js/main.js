@@ -3,6 +3,28 @@ function addActiveClass(element){
     $(element).parent().toggleClass('active')
 }
 
+function genericLoadDialog(form_selector, dialog_selector, onSuccessHandler, matchString){
+	$.ajax({
+		url: $(form_selector).attr('action'),
+		type: 'POST',
+		data:  $(form_selector).serialize(),
+		success: function(data, textStatus, jqXHR){
+			if(data.match(matchString)){
+				// We got errors in form
+				$(dialog_selector).html(data).modal('show');
+				// options = {delay: { show: 500, hide: 100 }}
+				// $('.field_error').popover(options).show();
+				return false;
+			}
+			if(onSuccessHandler && typeof onSuccessHandler == 'function'){
+				onSuccessHandler();
+			}
+			$(dialog_selector).modal('hide');
+		},
+	})
+}
+
+
 $(document).ready(function () {
     $('.dropdown-toggle').dropdown();
     $(".collapse").collapse();
@@ -16,17 +38,5 @@ $(document).ready(function () {
         $(target).load(url);
     })
     
-	$('#editor-dialog').bind('click-save-button', function () {
-		$.ajax({
-			url: $('#editor_form').attr('action'),
-			type: 'POST',
-			data:  $('#editor_form').serialize(),
-			success: function(data, textStatus, jqXHR){
-				if(data.match('invalid_form')){
-					$('#editor-dialog').html(data).modal('show');
-					$('.field_error').effect("highlight", { times: 3 }, 1200);
-				}
-			},
-		})
-	})
+
 });

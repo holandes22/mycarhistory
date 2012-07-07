@@ -1,17 +1,21 @@
 from django.db import models
 from django.db.models import permalink
 
+EDITOR_FORM_ID = 'editor-form'
+EDITOR_DIALOG_ID = 'editor-dialog'
+EDITOR_FORM_SAVE_EVENT = 'editor-form-save'
+
 
 @permalink
 def get_permalink(name):
     return ('{name}'.format(**locals()), [])
+
 
 class Action(object):
 
     def __init__(self, url, title):
         self.url = url
         self.title = title
-
 
 
 class BaseModel(models.Model):

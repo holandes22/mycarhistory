@@ -1,9 +1,9 @@
-<form id="editor_form" action={{ submit_url }} method="POST">
+<form id="{{ editor_form_id }}" action={{ submit_url }} method="POST">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal">×</button>
-		<h3>Modal header</h3>
+		<h3>Editor</h3>
 	</div>
-	<div class="modal-body" id="editor-dialog-body">
+	<div class="modal-body">
 		{% if not form.is_valid %}
 			<div class='hide'>invalid_form</div>
 		{% endif %}
@@ -16,11 +16,11 @@
 						<td class='field_error'>{{ field.errors }}</td>
 		    		</tr>
 		    {% endfor %}
-	    </table>		
+	    </table>
 	</div>
 	<div class="modal-footer">
-       <a href="#editor-dialog" class="btn" data-dismiss="modal">Cancel</a>
-       <a href="#editor-dialog" data-toggle="modal" class="btn btn-primary" onclick="$(this).trigger('click-save-button');">Save changes</a>
+    	<a href="#" class="btn" data-dismiss="modal">Cancel</a>
+  		<a href="#" data-toggle="modal" class="btn btn-primary" onclick="genericLoadDialog('#{{ editor_form_id }}', '#{{ editor_dialog_id }}', null, 'invalid_form');">Save</a>   
 	</div>
 </form>		
 

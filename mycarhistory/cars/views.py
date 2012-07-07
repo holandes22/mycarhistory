@@ -1,6 +1,7 @@
 from django.views.generic import TemplateView, DetailView, CreateView
 from mycarhistory.cars.models import Car, CarForm
 from mycarhistory.basemodel import Action, get_permalink
+from mycarhistory.basemodel import EDITOR_FORM_ID, EDITOR_DIALOG_ID
 
 
 class CarMainView(TemplateView):
@@ -13,6 +14,7 @@ class CarMainView(TemplateView):
         context = super(CarMainView, self).get_context_data(**kwargs)
         context['cars'] = Car.objects.all()
         context['actions'] = [Action(get_permalink('car-create'), 'Create a car')]
+        context['editor_dialog_id'] = EDITOR_DIALOG_ID
         return context
 
 class CarDetailView(DetailView):
@@ -35,7 +37,8 @@ class CarCreateView(CreateView):
     template_name = 'editor.html'
 
     def get_success_url(self):
-        return get_permalink('cars-main')
+        return self.request.META.get('HTTP_REFERER', None)
+        # return get_permalink('cars-main')
 
     def form_valid(self, form):
         form.instance.user = self.request.user
@@ -44,4 +47,6 @@ class CarCreateView(CreateView):
     def get_context_data(self, **kwargs):
         context = super(CarCreateView, self).get_context_data(**kwargs)
         context['submit_url'] = get_permalink('car-create')
+        context['editor_form_id'] = EDITOR_FORM_ID
+        context['editor_dialog_id'] = EDITOR_DIALOG_ID
         return context
