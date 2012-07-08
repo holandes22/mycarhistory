@@ -12,15 +12,14 @@
 		    {% for field in form %}
 		    		<tr>
 						<td>{{ field.label_tag }}</td>
-						<td>{{ field }}</td>
-						<td class='field_error'>{{ field.errors }}</td>
+						<td class="form_field" title="{{ field.errors.as_text }}">{{ field }}</td>
 		    		</tr>
 		    {% endfor %}
 	    </table>
 	</div>
 	<div class="modal-footer">
     	<a href="#" class="btn" data-dismiss="modal">Cancel</a>
-  		<a href="#" data-toggle="modal" class="btn btn-primary" onclick="genericLoadDialog('#{{ editor_form_id }}', '#{{ editor_dialog_id }}', null, 'invalid_form');">Save</a>   
+  		<a href="#" data-toggle="modal" class="btn btn-primary" onclick="genericLoadDialog('#{{ editor_form_id }}', '#{{ editor_dialog_id }}', null, 'invalid_form', '{{ redirect_to }}');">Save</a>   
 	</div>
 </form>		
 

@@ -49,4 +49,5 @@ class CarCreateView(CreateView):
         context['submit_url'] = get_permalink('car-create')
         context['editor_form_id'] = EDITOR_FORM_ID
         context['editor_dialog_id'] = EDITOR_DIALOG_ID
+        context['redirect_to'] = self.get_success_url()
         return context

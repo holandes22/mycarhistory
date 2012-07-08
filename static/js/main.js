@@ -3,7 +3,7 @@ function addActiveClass(element){
     $(element).parent().toggleClass('active')
 }
 
-function genericLoadDialog(form_selector, dialog_selector, onSuccessHandler, matchString){
+function genericLoadDialog(form_selector, dialog_selector, onSuccessHandler, matchString, redirect_to){
 	$.ajax({
 		url: $(form_selector).attr('action'),
 		type: 'POST',
@@ -12,14 +12,15 @@ function genericLoadDialog(form_selector, dialog_selector, onSuccessHandler, mat
 			if(data.match(matchString)){
 				// We got errors in form
 				$(dialog_selector).html(data).modal('show');
-				// options = {delay: { show: 500, hide: 100 }}
-				// $('.field_error').popover(options).show();
+				options = {trigger: 'manual', placement: 'right'}
+				$('.form_field').tooltip(options).tooltip('show');
 				return false;
 			}
 			if(onSuccessHandler && typeof onSuccessHandler == 'function'){
 				onSuccessHandler();
 			}
 			$(dialog_selector).modal('hide');
+			window.location.replace(redirect_to);
 		},
 	})
 }
@@ -36,7 +37,6 @@ $(document).ready(function () {
         target = $(this).attr('data-target')
         url = $(this).attr('url')
         $(target).load(url);
-    })
-    
+    })    
 
 });
