@@ -59,27 +59,30 @@
                         </li>
                     </ul>
                     <ul class="nav pull-right">
-                        <div class="btn-group pull-right">
-                            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#"> <i class="icon-user"></i> {{ user }} <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                {% if user.is_authenticated %}
-                                    <li>
-                                        <a href="#">Profile</a>
-                                        {% comment %}<a href="{% url user_profile %}">Profile</a>{% endcomment %}
-                                    </li>
-                                    <li class="divider"></li>
-                                    <li>
-                                        <a href="#">Sign Out</a>
-                                        {% comment %}<a href="{% url sign_out %}">Sign Out</a>{% endcomment %}
-                                    </li>
-                                {% else %}
-                                    <li>
-                                        <a href="#">Sign In</a>
-                                        {% comment %}<a href="{% url sign_in %}">Sign In</a>{% endcomment %}
-                                    </li>                            
-                                {% endif %}
-                            </ul>
-                        </div>
+                    	<li class="divider-vertical" /li>
+                    	<li>
+	                        <div class="btn-group pull-right">
+	                            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#"> <i class="icon-user"></i> {{ user }} <span class="caret"></span></a>
+	                            <ul class="dropdown-menu">
+	                                {% if user.is_authenticated %}
+	                                    <li>
+	                                        <a href="#">Profile</a>
+	                                        {% comment %}<a href="{% url user_profile %}">Profile</a>{% endcomment %}
+	                                    </li>
+	                                    <li class="divider"></li>
+	                                    <li>
+	                                        <a href="#">Sign Out</a>
+	                                        {% comment %}<a href="{% url sign_out %}">Sign Out</a>{% endcomment %}
+	                                    </li>
+	                                {% else %}
+	                                    <li>
+	                                        <a href="#">Sign In</a>
+	                                        {% comment %}<a href="{% url sign_in %}">Sign In</a>{% endcomment %}
+	                                    </li>                            
+	                                {% endif %}
+	                            </ul>
+	                        </div>                    		
+                    	</li>
                     </ul>
                 </div>
             </div>
