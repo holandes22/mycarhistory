@@ -3,6 +3,11 @@ function addActiveClass(element){
     $(element).parent().toggleClass('active')
 }
 
+function hideFormFieldTooltips(){
+	// Need to be separated and not boud to hide event of modal dialog, since 
+	// datepicker hide event would also trigger it and we don't want that.
+	$('.form_field').tooltip('hide');
+}
 function genericLoadDialog(form_selector, dialog_selector, onSuccessHandler, matchString, redirect_to){
 	$.ajax({
 		url: $(form_selector).attr('action'),
@@ -19,6 +24,7 @@ function genericLoadDialog(form_selector, dialog_selector, onSuccessHandler, mat
 			if(onSuccessHandler && typeof onSuccessHandler == 'function'){
 				onSuccessHandler();
 			}
+			hideFormFieldTooltips();
 			$(dialog_selector).modal('hide');
 			window.location.replace(redirect_to);
 		},
@@ -37,6 +43,6 @@ $(document).ready(function () {
         target = $(this).attr('data-target')
         url = $(this).attr('url')
         $(target).load(url);
-    })    
+    })
 
 });
