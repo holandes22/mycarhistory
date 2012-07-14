@@ -43,10 +43,17 @@ class EditorMixin(object):
         context['submit_url'] = self.get_submit_url()
         context['editor_form_id'] = EDITOR_FORM_ID
         context['editor_dialog_id'] = EDITOR_DIALOG_ID
-        context['redirect_to'] = self.get_success_url()
+        context['loader'] = self.get_loader()
+        context['loader_args'] = ",".join(self.get_loader_args())
         return context
 
     def get_submit_url(self):
+        raise NotImplementedError()
+
+    def get_loader(self):
+        raise NotImplementedError()
+
+    def get_loader_args(self):
         raise NotImplementedError()
 
 
@@ -62,6 +69,12 @@ class BaseUpdateView(EditorMixin, UpdateView):
         context = super(UpdateView, self).get_context_data(**kwargs)
         return self._update_context(context)
 
+    def get_loader(self):
+        return 'loadUpdateDialog'
+
+    def get_loader_args(self):
+        return ['#{0}-details-id-{1}'.format(self.model.__name__.lower(), self.get_object().pk)]
+
 
 class BaseCreateView(EditorMixin, CreateView):
 
@@ -75,3 +88,9 @@ class BaseCreateView(EditorMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super(CreateView, self).get_context_data(**kwargs)
         return self._update_context(context)
+
+    def get_loader(self):
+        return 'loadCreateDialog'
+
+    def get_loader_args(self):
+        return [self.get_success_url()]

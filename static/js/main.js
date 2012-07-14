@@ -8,12 +8,14 @@ function hideFormFieldTooltips(){
 	// datepicker hide event would also trigger it and we don't want that.
 	$('.form_field').tooltip('hide');
 }
-function genericLoadDialog(form_selector, dialog_selector, onSuccessHandler, matchString, redirect_to){
+
+function loadCreateDialog(form_selector, dialog_selector, matchString, redirect_to){
 	$.ajax({
 		url: $(form_selector).attr('action'),
 		type: 'POST',
 		data:  $(form_selector).serialize(),
 		success: function(data, textStatus, jqXHR){
+			hideFormFieldTooltips();
 			if(data.match(matchString)){
 				// We got errors in form
 				$(dialog_selector).html(data).modal('show');
@@ -21,16 +23,31 @@ function genericLoadDialog(form_selector, dialog_selector, onSuccessHandler, mat
 				$('.form_field').tooltip(options).tooltip('show');
 				return false;
 			}
-			if(onSuccessHandler && typeof onSuccessHandler == 'function'){
-				onSuccessHandler();
-			}
-			hideFormFieldTooltips();
 			$(dialog_selector).modal('hide');
 			window.location.replace(redirect_to);
 		},
 	})
 }
 
+function loadUpdateDialog(form_selector, dialog_selector, matchString, car_selector){
+	$.ajax({
+		url: $(form_selector).attr('action'),
+		type: 'POST',
+		data:  $(form_selector).serialize(),
+		success: function(data, textStatus, jqXHR){
+			hideFormFieldTooltips();
+			if(data.match(matchString)){
+				// We got errors in form
+				$(dialog_selector).html(data).modal('show');
+				options = {trigger: 'manual', placement: 'right'}
+				$('.form_field').tooltip(options).tooltip('show');
+				return false;
+			}
+			$(dialog_selector).modal('hide');
+			$(car_selector).trigger('click');
+		},
+	})	
+}
 
 $(document).ready(function () {
     $('.dropdown-toggle').dropdown();
