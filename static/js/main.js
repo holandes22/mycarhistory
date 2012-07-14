@@ -41,8 +41,17 @@ $(document).ready(function () {
 
         // Load left panel
         target = $(this).attr('data-target')
-        url = $(this).attr('url')
-        $(target).load(url);
+        
+        $.ajax({
+        	url: $(this).attr('url'),
+        	success: function(data, textStatus, jqXHR){
+        		$(target).html(data);
+        	},
+        	error: function(jqXHR, textStatus, errorThrown){
+        		$(target).html(jqXHR.responseText);
+        	}
+        })
     })
+    
 
 });

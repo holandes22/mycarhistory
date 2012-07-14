@@ -10,3 +10,6 @@
         {% endfor %}
     </tbody>
 </table>
+{% for action in actions %}
+    <a data-toggle="modal" href="#{{ editor_dialog_id }}" onclick="$('#{{ editor_dialog_id }}').load('{{ action.url }}');">{{ action.title }}</a>
+{% endfor %}

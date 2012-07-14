@@ -61,7 +61,7 @@ class Car(BaseModel):
 
     @permalink
     def get_absolute_url(self):
-        return ('car-detail', (), {'pk': self.pk})
+        return ('car-details', (), {'pk': self.pk})
 
 class CarForm(ModelForm):
     formfield_callback = make_custom_field_callback
