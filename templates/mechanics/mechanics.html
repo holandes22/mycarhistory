@@ -9,7 +9,7 @@
                   <li class="nav-header">Mechanic contact list</li>
                   {% for mechanic in mechanics %}
                   <li>
-                    <a href="#" url="{{ mechanic.get_absolute_url }}" data-target="#body-content" class="mechanic-details">{{ mechanic }}</a>   
+                    <a href="#" url="{{ mechanic.get_absolute_url }}" data-target="#body-content" class="mechanic-details" id="mechanic-details-id-{{ mechanic.pk }}">{{ mechanic }}</a>  
                   </li>
                   {% endfor %}
                   <li class="divider"></li>          

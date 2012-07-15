@@ -1,8 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
 from mycarhistory.countries import CountryField
-from mycarhistory.basemodel import BaseModel
+from mycarhistory.basemodel import BaseModel, make_custom_field_callback
 from django.db.models import permalink
+from django.forms import ModelForm
+
 
 class Mechanic(BaseModel):
 
@@ -24,3 +26,10 @@ class Mechanic(BaseModel):
         return ('mechanic-detail', (), {'pk': self.pk})
 
 
+class MechanicForm(ModelForm):
+    formfield_callback = make_custom_field_callback
+
+    class Meta:
+        model = Mechanic
+        readonly_fields = ['user']
+        exclude = ['user']

@@ -14,7 +14,7 @@ class CarMainView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(CarMainView, self).get_context_data(**kwargs)
         context['cars'] = Car.objects.all()
-        context['actions'] = [Action(get_permalink('car-create'), 'Create a car')]
+        context['actions'] = [Action(get_permalink('car-create'), 'Add a car')]
         context['editor_dialog_id'] = EDITOR_DIALOG_ID
         return context
 

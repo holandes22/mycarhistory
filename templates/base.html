@@ -39,6 +39,7 @@
                             <a href="{% url mechanics-main %}">Mechanics</a>
                         </li>     
                     </ul>
+                    {% if actions %}
                     <ul class="nav">
                         <li class="divider-vertical" /li>
                         <li class="dropdown">
@@ -48,16 +49,16 @@
                                     <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu">
-                                {% for action in actions %}
-                                <li>
-                                    <a data-toggle="modal" href="#{{ editor_dialog_id }}" onclick="$('#{{ editor_dialog_id }}').load('{{ action.url }}');">{{ action.title }}</a>
-                                </li>
-                                {% endfor %}
+	                                {% for action in actions %}
+	                                <li>
+	                                    <a data-toggle="modal" href="#{{ editor_dialog_id }}" onclick="$('#{{ editor_dialog_id }}').load('{{ action.url }}');">{{ action.title }}</a>
+	                                </li>
+	                                {% endfor %}
                                 </ul>
                             </div>
-
                         </li>
                     </ul>
+                    {% endif %}
                     <ul class="nav pull-right">
                     	<li class="divider-vertical" /li>
                     	<li>

@@ -1,6 +1,6 @@
 function addActiveClass(element){
     $(element).parent().siblings().removeClass('active')
-    $(element).parent().toggleClass('active')
+    $(element).parent().addClass('active')
 }
 
 function hideFormFieldTooltips(){
@@ -29,7 +29,7 @@ function loadCreateDialog(form_selector, dialog_selector, matchString, redirect_
 	})
 }
 
-function loadUpdateDialog(form_selector, dialog_selector, matchString, car_selector){
+function loadUpdateDialog(form_selector, dialog_selector, matchString, entry_selector){
 	$.ajax({
 		url: $(form_selector).attr('action'),
 		type: 'POST',
@@ -44,7 +44,7 @@ function loadUpdateDialog(form_selector, dialog_selector, matchString, car_selec
 				return false;
 			}
 			$(dialog_selector).modal('hide');
-			$(car_selector).trigger('click');
+			$(entry_selector).trigger('click');
 		},
 	})	
 }
@@ -53,7 +53,7 @@ $(document).ready(function () {
     $('.dropdown-toggle').dropdown();
     $(".collapse").collapse();
     
-    $('.mechanic-details, .car-details').click(function (e) {
+    $('.mechanic-details, .car-details').live('click', function (e) {
         addActiveClass(this);
 
         // Load left panel

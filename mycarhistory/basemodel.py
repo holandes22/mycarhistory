@@ -5,6 +5,21 @@ from django.views.generic import CreateView, UpdateView
 EDITOR_FORM_ID = 'editor-form'
 EDITOR_DIALOG_ID = 'editor-dialog'
 EDITOR_FORM_SAVE_EVENT = 'editor-form-save'
+DATE_FORMAT = '%m/%d/%Y'
+
+
+def make_custom_field_callback(field):
+    """
+    Callback to make field customization. This is useful to midifiy the elements of a form, for example
+    a custom class to a date field so it can be identified by Jquery UI datepicker in the template
+    """
+    formfield = field.formfield()
+    if formfield:
+        formfield.widget.attrs.update({'title': field.help_text})
+    if isinstance(field, models.DateField):
+        formfield.widget.format = DATE_FORMAT
+        formfield.widget.attrs.update({'class': 'datePicker', 'readonly': 'true'})
+    return formfield
 
 
 @permalink
@@ -24,7 +39,7 @@ class BaseModel(models.Model):
     class Meta:
         abstract = True
 
-    def get_model_attrs(self, filter_fields=['id', 'pk']):
+    def get_model_attrs(self, filter_fields=['id', 'pk', 'user']):
         for field in self._meta.fields:
             if field.name not in filter_fields:
                 if field.choices:
