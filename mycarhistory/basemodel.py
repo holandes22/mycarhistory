@@ -1,6 +1,6 @@
 from django.db import models
 from django.db.models import permalink
-from django.views.generic import CreateView, UpdateView
+from django.views.generic import CreateView, UpdateView, DeleteView
 
 EDITOR_FORM_ID = 'editor-form'
 EDITOR_DIALOG_ID = 'editor-dialog'
@@ -56,8 +56,8 @@ class EditorMixin(object):
 
     def _update_context(self, context):
         context['submit_url'] = self.get_submit_url()
-        context['editor_form_id'] = EDITOR_FORM_ID
-        context['editor_dialog_id'] = EDITOR_DIALOG_ID
+        context['form_id'] = self.get_form_id()
+        context['dialog_id'] = self.get_dialog_id()
         context['loader'] = self.get_loader()
         context['loader_args'] = ",".join(self.get_loader_args())
         return context
@@ -69,7 +69,13 @@ class EditorMixin(object):
         raise NotImplementedError()
 
     def get_loader_args(self):
-        raise NotImplementedError()
+        return []
+
+    def get_dialog_id(self):
+        return EDITOR_DIALOG_ID
+
+    def get_form_id(self):
+        return EDITOR_FORM_ID
 
 
 class BaseUpdateView(EditorMixin, UpdateView):
@@ -106,6 +112,26 @@ class BaseCreateView(EditorMixin, CreateView):
 
     def get_loader(self):
         return 'loadCreateDialog'
+
+    def get_loader_args(self):
+        return [self.get_success_url()]
+
+
+class BaseDeleteView(EditorMixin, DeleteView):
+    template_name = 'warning_dialog.html'
+
+    def get_submit_url(self):
+        return get_permalink('{0}-delete'.format(self.model.__name__.lower()), self.get_object().pk)
+
+    def get_context_data(self, **kwargs):
+        context = super(DeleteView, self).get_context_data(**kwargs)
+        return self._update_context(context)
+
+    def get_loader(self):
+        return 'loadDeleteConfirmDialog'
+
+    def get_form_id(self):
+        return 'warning-form'
 
     def get_loader_args(self):
         return [self.get_success_url()]

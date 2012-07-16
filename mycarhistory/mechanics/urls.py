@@ -1,6 +1,6 @@
 from django.conf.urls.defaults import patterns, url
 from mycarhistory.mechanics.views import MechanicMainView, MechanicDetailView
-from mycarhistory.mechanics.views import MechanicUpdateView, MechanicCreateView
+from mycarhistory.mechanics.views import MechanicUpdateView, MechanicCreateView, MechanicDeleteView
 
 
 urlpatterns = patterns('mycarhistory.mechanics.views',
@@ -8,4 +8,5 @@ urlpatterns = patterns('mycarhistory.mechanics.views',
                 url(r'mechanic/(?P<pk>\d+)/details/$', MechanicDetailView.as_view(), name='mechanic-detail'),
                 url(r'mechanic/create/$', MechanicCreateView.as_view(), name='mechanic-create'),
                 url(r'mechanic/(?P<pk>\d+)/update/$', MechanicUpdateView.as_view(), name='mechanic-update'),
+                url(r'mechanic/(?P<pk>\d+)/delete/$', MechanicDeleteView.as_view(), name='mechanic-delete'),
                 )

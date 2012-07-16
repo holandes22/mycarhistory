@@ -49,6 +49,22 @@ function loadUpdateDialog(form_selector, dialog_selector, matchString, entry_sel
 	})	
 }
 
+function loadDeleteConfirmDialog(form_selector, dialog_selector, redirect_to){
+	$.ajax({
+		url: $(form_selector).attr('action'),
+		type: 'POST',
+		data:  $(form_selector).serialize(),
+		success: function(data, textStatus, jqXHR){
+			$(dialog_selector).modal('hide');
+			window.location.replace(redirect_to);
+		},
+	    error: function(jqXHR, textStatus, errorThrown){
+	    	$(dialog_selector).modal('hide');
+    		$('#body-content').html(jqXHR.responseText);
+    	}
+	})	
+}
+
 $(document).ready(function () {
     $('.dropdown-toggle').dropdown();
     $(".collapse").collapse();

@@ -21,7 +21,8 @@
 		{% endblock extra_js %}
     </head>
     <body>
-        <div class="modal hide" id="{{ editor_dialog_id }}"></div>
+        <div class="modal hide" id="{{ dialog_id }}"></div>
+        <div class="modal hide" id="warning-dialog"></div>
         <div class="navbar navbar-fixed-top">
             <div class="navbar-inner">
                 <div class="container-fluid">
@@ -51,7 +52,7 @@
                                 <ul class="dropdown-menu">
 	                                {% for action in actions %}
 	                                <li>
-	                                    <a data-toggle="modal" href="#{{ editor_dialog_id }}" onclick="$('#{{ editor_dialog_id }}').load('{{ action.url }}');">{{ action.title }}</a>
+	                                    <a data-toggle="modal" href="#{{ dialog_id }}" onclick="$('#{{ dialog_id }}').load('{{ action.url }}');">{{ action.title }}</a>
 	                                </li>
 	                                {% endfor %}
                                 </ul>

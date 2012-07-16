@@ -3,6 +3,8 @@ from mycarhistory.cars.models import Car, CarForm
 from mycarhistory.basemodel import Action, get_permalink
 from mycarhistory.basemodel import EDITOR_DIALOG_ID
 from mycarhistory.basemodel import BaseUpdateView, BaseCreateView
+from django.views.generic.edit import DeleteView
+from django.core.urlresolvers import reverse_lazy
 
 
 class CarMainView(TemplateView):
@@ -14,8 +16,9 @@ class CarMainView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(CarMainView, self).get_context_data(**kwargs)
         context['cars'] = Car.objects.all()
+        #For the toolbar action dropdown
         context['actions'] = [Action(get_permalink('car-create'), 'Add a car')]
-        context['editor_dialog_id'] = EDITOR_DIALOG_ID
+        context['dialog_id'] = EDITOR_DIALOG_ID
         return context
 
 
@@ -32,8 +35,12 @@ class CarDetailView(DetailView):
         context = super(CarDetailView, self).get_context_data(**kwargs)
         # Add in a QuerySet of all the books
         context['header'] = 'Car'
-        context['editor_dialog_id'] = EDITOR_DIALOG_ID
-        context['actions'] = [Action(get_permalink('car-update', self.get_queryset()[0].pk), 'Update details')]
+        context['dialog_id'] = EDITOR_DIALOG_ID
+        # Action buttons within the details table
+        context['actions'] = [
+                Action(get_permalink('car-update', self.get_queryset()[0].pk), 'Update Details'),
+                Action(get_permalink('car-delete', self.get_queryset()[0].pk), 'Remove Car')
+                ]
         return context
 
 
@@ -45,3 +52,8 @@ class CarCreateView(BaseCreateView):
 class CarUpdateView(BaseUpdateView):
     form_class = CarForm
     model = Car
+
+
+class CarDeleteView(DeleteView):
+    model = Car
+    success_url = reverse_lazy('car-main')
