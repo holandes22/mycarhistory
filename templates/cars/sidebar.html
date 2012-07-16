@@ -1,0 +1,18 @@
+<div class="well" style="padding: 8px 0;">
+    <ul class="nav nav-list">
+      <li class="nav-header">Car list</li>
+      {% for car in cars %}
+      <li>
+        <a href="#" url="{{ car.get_absolute_url }}" data-target="#body-content" class="car-details" id="car-details-id-{{ car.pk }}">{{ car }}</a>   
+      </li>
+      <li>
+          <ul class="nav nav-list">
+              <li>
+                  <a href="someurl">Treatment history</a>
+              </li>
+          </ul>
+      </li>
+      {% endfor %}
+      <li class="divider"></li>          
+    </ul>
+</div> <!-- /well -->

@@ -1,20 +1,17 @@
 {% extends "base.html" %}
+{% block extra_js %}
+<script type="text/javascript">
+	$(document).ready(function () {
+		$('#sidebar').load("{{ sidebar_url }}");
+	})
+</script>	
+{% endblock extra_js %}
 {% block body %}
 <div class="container-fluid">
     <div class="row-fluid">
         <div class="span2">
             <!--Sidebar content-->
-            <div class="well" style="padding: 8px 0;">
-                <ul class="nav nav-list">
-                  <li class="nav-header">Mechanic contact list</li>
-                  {% for mechanic in mechanics %}
-                  <li>
-                    <a href="#" url="{{ mechanic.get_absolute_url }}" data-target="#body-content" class="mechanic-details" id="mechanic-details-id-{{ mechanic.pk }}">{{ mechanic }}</a>  
-                  </li>
-                  {% endfor %}
-                  <li class="divider"></li>          
-                </ul>
-              </div> <!-- /well -->
+            <div id="sidebar"></div>
         </div>
         <div class="span10">
             <!--Body content-->

@@ -3,6 +3,7 @@ from mycarhistory.mechanics.models import Mechanic, MechanicForm
 from mycarhistory.basemodel import EDITOR_DIALOG_ID
 from mycarhistory.basemodel import Action, get_permalink
 from mycarhistory.basemodel import BaseUpdateView, BaseCreateView, BaseDeleteView
+from django.views.generic import ListView
 
 
 class MechanicMainView(TemplateView):
@@ -10,9 +11,21 @@ class MechanicMainView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(MechanicMainView, self).get_context_data(**kwargs)
-        context['mechanics'] = Mechanic.objects.all()
         context['actions'] = [Action(get_permalink('mechanic-create'), 'Add a mechanic')]
         context['dialog_id'] = EDITOR_DIALOG_ID
+        context['sidebar_url'] = get_permalink('mechanic-list')
+        return context
+
+
+class MechanicListView(ListView):
+    template_name = 'mechanics/sidebar.html'
+
+    def get_queryset(self):
+        return Mechanic.objects.filter(user=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super(MechanicListView, self).get_context_data(**kwargs)
+        context['mechanics'] = self.get_queryset()
         return context
 
 

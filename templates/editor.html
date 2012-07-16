@@ -22,7 +22,7 @@
 	</div>
 	<div class="modal-footer">
     	<a href="#" class="btn" data-dismiss="modal" onclick="hideFormFieldTooltips()">Cancel</a>
-  		<a href="#" data-toggle="modal" class="btn btn-primary" onclick="{{ loader }}('#{{ form_id }}', '#{{ dialog_id }}', 'invalid_form', '{{ loader_args }}');">Save</a>   
+  		<a href="#" data-toggle="modal" class="btn btn-primary" onclick="{{ loader }}('#{{ form_id }}', '#{{ dialog_id }}', 'invalid_form', {{ loader_args }});">Save</a>   
 	</div>
 </form>		
 

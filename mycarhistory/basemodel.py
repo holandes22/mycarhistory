@@ -8,6 +8,11 @@ EDITOR_FORM_SAVE_EVENT = 'editor-form-save'
 DATE_FORMAT = '%m/%d/%Y'
 
 
+def wrap_string(string, wrapper):
+    string = string.strip(wrapper)
+    return '{wrapper}{string}{wrapper}'.format(**locals())
+
+
 def make_custom_field_callback(field):
     """
     Callback to make field customization. This is useful to midifiy the elements of a form, for example
@@ -59,7 +64,7 @@ class EditorMixin(object):
         context['form_id'] = self.get_form_id()
         context['dialog_id'] = self.get_dialog_id()
         context['loader'] = self.get_loader()
-        context['loader_args'] = ",".join(self.get_loader_args())
+        context['loader_args'] = ", ".join(wrap_string(arg, "\'") for arg in self.get_loader_args())
         return context
 
     def get_submit_url(self):
@@ -103,6 +108,7 @@ class BaseCreateView(EditorMixin, CreateView):
         return get_permalink('{0}-create'.format(self.model.__name__.lower()))
 
     def form_valid(self, form):
+        self.instance = form.instance
         form.instance.user = self.request.user
         return super(CreateView, self).form_valid(form)
 
@@ -114,7 +120,8 @@ class BaseCreateView(EditorMixin, CreateView):
         return 'loadCreateDialog'
 
     def get_loader_args(self):
-        return [self.get_success_url()]
+        name = self.model.__name__.lower()
+        return ['.{0}-details'.format(name), get_permalink('{0}-list'.format(name))]
 
 
 class BaseDeleteView(EditorMixin, DeleteView):

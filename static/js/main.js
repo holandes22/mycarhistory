@@ -9,7 +9,7 @@ function hideFormFieldTooltips(){
 	$('.form_field').tooltip('hide');
 }
 
-function loadCreateDialog(form_selector, dialog_selector, matchString, redirect_to){
+function loadCreateDialog(form_selector, dialog_selector, matchString, class_selector, sidebar_url){
 	$.ajax({
 		url: $(form_selector).attr('action'),
 		type: 'POST',
@@ -24,7 +24,10 @@ function loadCreateDialog(form_selector, dialog_selector, matchString, redirect_
 				return false;
 			}
 			$(dialog_selector).modal('hide');
-			window.location.replace(redirect_to);
+			$('#sidebar').load(sidebar_url, function(){
+				// Show the last adition
+				$(class_selector + ":last").trigger('click');
+			});
 		},
 	})
 }
@@ -85,6 +88,5 @@ $(document).ready(function () {
         	}
         })
     })
-    
 
 });
