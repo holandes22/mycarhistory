@@ -16,12 +16,14 @@ class Car(BaseModel):
     COUPE_TYPE = 3
     WAGON_TYPE = 4
     SPORT_TYPE = 5
+    OTHER_TYPE = 6
     TYPE_CHOICES = (
                   (SEDAN_TYPE, 'Sedan'),
                   (HATCHBACK_TYPE, 'Hatchback'),
                   (COUPE_TYPE, 'Coupe'),
                   (WAGON_TYPE, 'Station wagon'),
                   (SPORT_TYPE, 'Sport'),
+                  (OTHER_TYPE, 'Other'),
                   )
 
     YEARS = [year for year in xrange(1920, datetime.datetime.now().year + 1)]
@@ -49,6 +51,9 @@ class Car(BaseModel):
     def get_absolute_url(self):
         return ('car-details', (), {'pk': self.pk})
 
+    @permalink
+    def get_treatments_absolute_url(self):
+        return ('car-treatment-list', (), {'car_pk': self.pk})
 
 class CarForm(ModelForm):
     formfield_callback = make_custom_field_callback
@@ -120,8 +125,24 @@ class PlannedCarTreatmentEntry(TreatmentEntry):
     date = models.DateField(default=datetime.datetime.now,
                             help_text='The planned date to take the car for treatment')
     notify = models.BooleanField(default=False, help_text='Would you like to receive a reminder')
-    notify_date = models.DateField()
-    notify_method = models.TextField()
+    notify_date = models.DateField(blank=True)
+    notify_method = models.TextField(blank=True)
 
     class Meta:
-        verbose_name_plural = 'Planned cat treatment entries'
+        verbose_name_plural = 'Planned car treatment entries'
+
+
+class CarTreatmentForm(ModelForm):
+    formfield_callback = make_custom_field_callback
+
+    class Meta:
+        model = CarTreatmentEntry
+
+
+class PlannedCarTreatmentForm(ModelForm):
+    formfield_callback = make_custom_field_callback
+
+    class Meta:
+        model = CarTreatmentEntry
+
+

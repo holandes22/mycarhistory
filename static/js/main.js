@@ -72,7 +72,7 @@ $(document).ready(function () {
     $('.dropdown-toggle').dropdown();
     $(".collapse").collapse();
     
-    $('.mechanic-details, .car-details').live('click', function (e) {
+    $('.mechanic-details, .car-details, .car-treatments').live('click', function (e) {
         addActiveClass(this);
 
         // Load left panel
