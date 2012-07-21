@@ -93,7 +93,7 @@ class CarTreatmentCreateView(BaseCreateView):
     def get_loader_args(self):
         # TODO: for now only. Change the loader to trigger treatment list of
         # car
-        return ['.car-details', get_permalink('car-list')]
+        return ['.treatment-list', get_permalink('car-list')]
 
     def get_form(self, form_class):
         # Filter the cars and mechanics that belong to the logged user

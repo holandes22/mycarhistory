@@ -1,5 +1,5 @@
 function addActiveClass(element){
-    $(element).parent().siblings().removeClass('active')
+    $(".loadable-link").parent().removeClass('active')
     $(element).parent().addClass('active')
 }
 
@@ -72,7 +72,7 @@ $(document).ready(function () {
     $('.dropdown-toggle').dropdown();
     $(".collapse").collapse();
     
-    $('.mechanic-details, .car-details, .car-treatments').live('click', function (e) {
+    $('.loadable-link').live('click', function (e) {
         addActiveClass(this);
 
         // Load left panel
