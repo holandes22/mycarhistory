@@ -43,6 +43,16 @@ package { [$needed_packages, $enhancer_packages] :
 
 ### DB settings ###
 
+include postgresql::server
+
+#postgresql::database_user{'vagrant':
+#  password_hash => 'vagrant',
+#}
+
+postgresql::db { 'mycarhistory_db':
+  user     => 'vagrant',
+  password => 'vagrant',
+}
 
 ### Python ###
 
