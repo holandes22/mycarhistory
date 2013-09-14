@@ -1,0 +1,26 @@
+FORGE
+  remote: http://forge.puppetlabs.com
+  specs:
+    puppetlabs/apt (1.2.0)
+      puppetlabs/stdlib (>= 2.2.1)
+    puppetlabs/firewall (0.4.2)
+    puppetlabs/postgresql (2.5.0)
+      puppetlabs/apt (< 2.0.0, >= 1.1.0)
+      puppetlabs/firewall (>= 0.0.4)
+      puppetlabs/stdlib (< 5.0.0, >= 3.2.0)
+      ripienaar/concat (>= 0.2.0)
+    puppetlabs/stdlib (4.1.0)
+    ripienaar/concat (0.2.0)
+
+GIT
+  remote: git://github.com/stankevich/puppet-python.git
+  ref: master
+  sha: a017bd325e677159e37d22d5b2ef65377846b23e
+  specs:
+    python (1.1.4)
+
+DEPENDENCIES
+  puppetlabs/apt (>= 0)
+  puppetlabs/postgresql (>= 0)
+  python (>= 0)
+
