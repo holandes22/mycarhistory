@@ -1,4 +1,5 @@
 -r requirements.txt
 fabric
+PyYaml
 mock==1.0.1
 nose

@@ -1,9 +1,9 @@
 import dj_database_url
-from carlogger.settings.base  import *
+from mycarhistory.settings.base  import *
 
 # Allow local dev locally with these settings
 # http://stackoverflow.com/questions/14795824/improperlyconfiguredsettings-databases-is-improperly-configured-error-when
-DATABASES['default'] =  dj_database_url.config(default='postgres://vagrant:vagrant@localhost/carlogger_db')
+DATABASES['default'] =  dj_database_url.config(default='postgres://vagrant:vagrant@localhost/mycarhistory_db')
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.herokuapp.com']
 

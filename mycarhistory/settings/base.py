@@ -32,7 +32,7 @@ LOGIN_REDIRECT_URL = reverse_lazy('home')
 
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = 'carlogger'
+AWS_STORAGE_BUCKET_NAME = 'mycarhistory'
 
 STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
@@ -118,10 +118,10 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'carlogger.urls'
+ROOT_URLCONF = 'mycarhistory.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'carlogger.wsgi.application'
+WSGI_APPLICATION = 'mycarhistory.wsgi.application'
 
 TEMPLATE_DIRS = (
     root('templates')
@@ -147,9 +147,9 @@ THIRD_PARTY_APPS = (
 )
 
 LOCAL_APPS = (
-    'carlogger.core',
-    'carlogger.cars',
-    'carlogger.treatments',
+    'mycarhistory.cars',
+    'mycarhistory.treatments',
+    'mycarhistory.mechanics',
 )
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -175,7 +175,7 @@ LOGGING = {
         },
         'logfile': {
             'class': 'logging.handlers.WatchedFileHandler',
-            'filename': root('..', 'logs', 'carlogger.log')
+            'filename': root('..', 'logs', 'mycarhistory.log')
         },
         'console': {
             'level': 'DEBUG',
@@ -194,7 +194,7 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': False,
         },
-        'carlogger': {
+        'mycarhistory': {
             'handlers': ['logfile'],
             'level': 'ERROR',
             'propagate': False,
