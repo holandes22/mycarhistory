@@ -32,7 +32,7 @@ apt::source { 'pgdg':
 
 ### Packages ###
 
-$needed_packages = [ "build-essential", "postgresql-9.3", "pgadmin3", "libevent-dev"]
+$needed_packages = [ "build-essential", "postgresql-9.3", "postgresql-server-dev-9.3", "pgadmin3", "libpq-dev", "libevent-dev"]
 $enhancer_packages = [ "git", "vim"]
 
 package { [$needed_packages, $enhancer_packages] : 
@@ -44,10 +44,6 @@ package { [$needed_packages, $enhancer_packages] :
 ### DB settings ###
 
 include postgresql::server
-
-#postgresql::database_user{'vagrant':
-#  password_hash => 'vagrant',
-#}
 
 postgresql::db { 'mycarhistory_db':
   user     => 'vagrant',
