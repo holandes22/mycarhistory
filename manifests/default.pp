@@ -1,48 +1,40 @@
 ### Common ###
-
 Exec { path => '/usr/bin:/bin:/usr/sbin:/sbin' }
 
-exec { "apt-get update": }
+exec { "apt-get-update": 
+    command => "apt-get update",
+}
 
-
-### APT settings ###
-
-class { 'apt':
-  always_apt_update    => true,
-  disable_keys         => undef,
-  proxy_host           => false,
-  proxy_port           => '8888',
-  purge_sources_list   => false,
-  purge_sources_list_d => false,
-  purge_preferences_d  => false
+exec { "pg-apt-key": 
+    command => "wget --quiet -O - http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc | sudo apt-key add -"
 }
 
 
+### APT settings ###
+class { 'apt': }
+
 # APT pg 9.3
-exec { "wget --quiet -O - http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc | sudo apt-key add -": }
-
 apt::source { 'pgdg':
-  location          => 'http://apt.postgresql.org/pub/repos/apt/',
-  release           => 'squeeze-pgdg',
-  repos             => 'main',
-  include_src       => false
-
+  location    => 'http://apt.postgresql.org/pub/repos/apt/',
+  release     => 'squeeze-pgdg',  # Using debian squeeze seems to work fine in Ubuntu 13.04
+  repos       => 'main',
+  include_src => false,
+  require     => Exec["pg-apt-key"],      
 }
 
 
 ### Packages ###
-
 $needed_packages = [ "build-essential", "postgresql-9.3", "postgresql-server-dev-9.3", "pgadmin3", "libpq-dev", "libevent-dev"]
 $enhancer_packages = [ "git", "vim"]
 
-package { [$needed_packages, $enhancer_packages] : 
-    ensure => present,
-    require => Exec["apt-get update"],
+package { "all-packages" : 
+    name    => [$needed_packages, $enhancer_packages],
+    ensure  => present,
+    require => [Exec["apt-get-update"], Class["apt"]]
 }
 
 
 ### DB settings ###
-
 include postgresql::server
 
 postgresql::db { 'mycarhistory_db':
@@ -50,8 +42,8 @@ postgresql::db { 'mycarhistory_db':
   password => 'vagrant',
 }
 
-### Python ###
 
+### Python ###
 class { 'python':
     version    => 'system',
     dev        => true,
@@ -59,10 +51,10 @@ class { 'python':
     gunicorn   => false,
 }
 
-
 python::virtualenv { '/home/vagrant/virtualenvs/mycarhistory':
   ensure       => present,
   version      => 'system',
   requirements => '/vagrant/requirements.txt',
+  require      => Package["all-packages"],
 }
 
