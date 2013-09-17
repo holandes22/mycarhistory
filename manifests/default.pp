@@ -1,7 +1,7 @@
 ### Common ###
 $project_name = "mycarhistory"
 
-Exec { path => '/usr/bin:/bin:/usr/sbin:/sbin' }
+Exec { path => "/usr/bin:/bin:/usr/sbin:/sbin" }
 
 exec { "apt-get-update": 
     command => "apt-get update",
@@ -13,13 +13,13 @@ exec { "pg-apt-key":
 
 
 ### APT settings ###
-class { 'apt': }
+class { "apt": }
 
 # APT pg 9.3
-apt::source { 'pgdg':
-  location    => 'http://apt.postgresql.org/pub/repos/apt/',
-  release     => 'squeeze-pgdg',  # Using debian squeeze seems to work fine in Ubuntu 13.04
-  repos       => 'main',
+apt::source { "pgdg":
+  location    => "http://apt.postgresql.org/pub/repos/apt/",
+  release     => "squeeze-pgdg",  # Using debian squeeze seems to work fine in Ubuntu 13.04
+  repos       => "main",
   include_src => false,
   require     => Exec["pg-apt-key"],      
 }
@@ -40,14 +40,14 @@ package { "all-packages" :
 include postgresql::server
 
 postgresql::db { "${project_name}_db":
-  user     => 'vagrant',
-  password => 'vagrant',
+  user     => "vagrant",
+  password => "vagrant",
 }
 
 
 ### Python ###
-class { 'python':
-    version    => 'system',
+class { "python":
+    version    => "system",
     dev        => true,
     virtualenv => true,
     gunicorn   => false,
@@ -55,8 +55,7 @@ class { 'python':
 
 python::virtualenv { "/home/vagrant/virtualenvs/${project_name}":
   ensure       => present,
-  version      => 'system',
-  requirements => '/vagrant/requirements.txt',
+  version      => "system",
+  requirements => "/vagrant/requirements.txt",
   require      => Package["all-packages"],
 }
-
