@@ -1,4 +1,6 @@
 ### Common ###
+$project_name = "mycarhistory"
+
 Exec { path => '/usr/bin:/bin:/usr/sbin:/sbin' }
 
 exec { "apt-get-update": 
@@ -37,7 +39,7 @@ package { "all-packages" :
 ### DB settings ###
 include postgresql::server
 
-postgresql::db { 'mycarhistory_db':
+postgresql::db { "${project_name}_db":
   user     => 'vagrant',
   password => 'vagrant',
 }
@@ -51,7 +53,7 @@ class { 'python':
     gunicorn   => false,
 }
 
-python::virtualenv { '/home/vagrant/virtualenvs/mycarhistory':
+python::virtualenv { "/home/vagrant/virtualenvs/${project_name}":
   ensure       => present,
   version      => 'system',
   requirements => '/vagrant/requirements.txt',
