@@ -56,6 +56,8 @@ class { "python":
 python::virtualenv { "/home/vagrant/virtualenvs/${project_name}":
   ensure       => present,
   version      => "system",
+  owner        => "vagrant",
+  group        => "vagrant",
   requirements => "/vagrant/requirements.txt",
   require      => Package["all-packages"],
 }
