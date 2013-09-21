@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 
 YEAR_CHOICES = [(year, str(year)) for year in
-                xrange(1920, datetime.datetime.now().year + 1)]
+                xrange(1920, datetime.datetime.now().year)]
 
 
 class Car(models.Model):
@@ -29,13 +29,13 @@ class Car(models.Model):
     )
     amount_of_owners = models.IntegerField(
         default=0,
-        help_text='Amount of owners (incluing current)'
+        help_text='Amount of owners (incluing current)',
     )
 
     def is_automatic(self):
         return self.gearbox_type == self.GEARBOX_AUTOMATIC
 
-    def get_name(self):
+    def get_full_name(self):
         return '{} {} {}'.format(self.brand, self.model, self.year)
 
     def __unicode__(self):

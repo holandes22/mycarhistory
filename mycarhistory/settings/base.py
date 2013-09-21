@@ -144,6 +144,7 @@ THIRD_PARTY_APPS = (
     'south',
     'storages',
     'gunicorn',
+    'rest_framework',
 )
 
 LOCAL_APPS = (
@@ -153,6 +154,11 @@ LOCAL_APPS = (
 )
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
+    'PAGINATE_BY': 10
+}
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
