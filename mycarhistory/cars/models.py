@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 
 YEAR_CHOICES = [(year, str(year)) for year in
-                xrange(1920, datetime.datetime.now().year)]
+                xrange(1920, datetime.datetime.now().year + 1)]
 
 
 class Car(models.Model):
