@@ -32,7 +32,7 @@ class Treatment(models.Model):
     )
 
     car = models.ForeignKey(Car, related_name='treatments')
-    mechanic = models.ForeignKey(Mechanic)
+    done_by = models.TextField(default='')
     description = models.TextField(default='')
     date = models.DateField(default=datetime.datetime.now())
     kilometrage = models.IntegerField(help_text='Kilometrage at the time')
