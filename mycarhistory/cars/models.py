@@ -39,4 +39,4 @@ class Car(models.Model):
         return '{} {} {}'.format(self.brand, self.model, self.year)
 
     def __unicode__(self):
-        return self.get_name()
+        return self.get_full_name()

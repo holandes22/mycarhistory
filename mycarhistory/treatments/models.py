@@ -31,7 +31,7 @@ class Treatment(models.Model):
         (NO_REASON, 'No reason'),
     )
 
-    car = models.ForeignKey(Car)
+    car = models.ForeignKey(Car, related_name='treatments')
     mechanic = models.ForeignKey(Mechanic)
     description = models.TextField(default='')
     date = models.DateField(default=datetime.datetime.now())
