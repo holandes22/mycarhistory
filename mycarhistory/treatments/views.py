@@ -1,4 +1,5 @@
 from rest_framework import viewsets
+from rest_framework.generics import ListAPIView
 
 from mycarhistory.cars.models import Car
 from mycarhistory.treatments.models import Treatment
@@ -11,7 +12,7 @@ class TreatmentViewSet(viewsets.ModelViewSet):
     serializer_class = TreatmentSerializer
 
 
-class TreatmentByCarViewSet(viewsets.ModelViewSet):
+class TreatmentByCarListView(ListAPIView):
 
     model = Treatment
     serializer_class = TreatmentSerializer
@@ -21,6 +22,3 @@ class TreatmentByCarViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return Treatment.objects.filter(car=self.get_car())
-
-    def pre_save(self, obj):
-        obj.car = self.get_car()
