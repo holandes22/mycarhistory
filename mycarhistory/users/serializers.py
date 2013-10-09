@@ -1,5 +1,6 @@
-from django.contrib.auth.models import User
 from rest_framework.serializers import HyperlinkedModelSerializer
+
+from mycarhistory.users.models import User
 
 
 class UserSerializer(HyperlinkedModelSerializer):

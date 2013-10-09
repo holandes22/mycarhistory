@@ -1,7 +1,7 @@
 import datetime
 from django.db import models
-from django.contrib.auth.models import User
 
+from mycarhistory.users.models import User
 
 YEAR_CHOICES = [(year, str(year)) for year in
                 xrange(1920, datetime.datetime.now().year + 1)]

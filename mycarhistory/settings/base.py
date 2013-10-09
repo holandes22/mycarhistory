@@ -29,6 +29,7 @@ TEMPLATE_CONTEXT_PROCESSORS = DEFAULT_SETTINGS.TEMPLATE_CONTEXT_PROCESSORS + (
 
 LOGIN_URL = reverse_lazy('django.contrib.auth.views.login')
 LOGIN_REDIRECT_URL = reverse_lazy('home')
+AUTH_USER_MODEL = 'mycarhistory.users.models.User'
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
