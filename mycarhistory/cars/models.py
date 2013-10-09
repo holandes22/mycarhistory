@@ -16,7 +16,7 @@ class Car(models.Model):
         (GEARBOX_AUTOMATIC, 'Automatic'),
     )
 
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, related_name='cars')
     brand = models.CharField(max_length=150)
     model = models.CharField(max_length=150)
     year = models.IntegerField(

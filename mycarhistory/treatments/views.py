@@ -1,22 +1,26 @@
 from rest_framework import viewsets
 
+from mycarhistory.cars.models import Car
 from mycarhistory.treatments.models import Treatment
-from mycarhistory.treatments.serializers import TreatmentSerializer, TreatmentByCarSerializer
+from mycarhistory.treatments.serializers import TreatmentSerializer
+
 
 class TreatmentViewSet(viewsets.ModelViewSet):
 
-    queryset = Treatment.objects.all()
+    model = Treatment
     serializer_class = TreatmentSerializer
 
 
 class TreatmentByCarViewSet(viewsets.ModelViewSet):
 
     model = Treatment
-    serializer_class = TreatmentByCarSerializer
+    serializer_class = TreatmentSerializer
+
+    def get_car(self):
+        return Car.objects.get(pk=self.kwargs['car_pk'])
 
     def get_queryset(self):
-        car = Treatment.objects.get(car=self.kwargs['car_pk'])
-        return Treatment.objects.filter(car=car)
+        return Treatment.objects.filter(car=self.get_car())
 
     def pre_save(self, obj):
-        obj.car = Treatment.objects.get(car=self.kwargs['car_pk'])
+        obj.car = self.get_car()
