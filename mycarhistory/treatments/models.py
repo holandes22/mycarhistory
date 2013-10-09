@@ -2,7 +2,6 @@ import datetime
 from django.db import models
 
 from mycarhistory.cars.models import Car
-from mycarhistory.mechanics.models import Mechanic 
 
 
 class Treatment(models.Model):

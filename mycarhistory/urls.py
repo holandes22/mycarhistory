@@ -5,7 +5,6 @@ from django.conf import settings
 from rest_framework import routers
 
 from mycarhistory.users.views import UserViewSet
-#from mycarhistory.mechanics.views import MechanicViewSet
 from mycarhistory.cars.views import CarViewSet, CarByUserViewSet
 from mycarhistory.treatments.views import TreatmentViewSet, TreatmentByCarViewSet
 
