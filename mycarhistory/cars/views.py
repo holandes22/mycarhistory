@@ -1,8 +1,7 @@
-from django.contrib.auth.models import User
-
 from rest_framework import viewsets
 
 from mycarhistory.cars.models import Car
+from mycarhistory.users.models import User
 from mycarhistory.cars.serializers import CarSerializer, CarByUserSerializer
 
 
