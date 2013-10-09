@@ -1,18 +1,11 @@
 from rest_framework import viewsets
-from rest_framework.generics import ListAPIView
 
 from mycarhistory.cars.models import Car
 from mycarhistory.users.models import User
 from mycarhistory.cars.serializers import CarSerializer
 
 
-class CarViewSet(viewsets.ModelViewSet):
-
-    model = Car
-    serializer_class = CarSerializer
-
-
-class CarByUserListView(ListAPIView):
+class CarByUserViewSet(viewsets.ModelViewSet):
 
     model = Car
     serializer_class = CarSerializer
@@ -22,3 +15,6 @@ class CarByUserListView(ListAPIView):
 
     def get_queryset(self):
         return Car.objects.filter(user=self.get_user())
+
+    def pre_save(self, obj):
+        obj.user = self.get_user()

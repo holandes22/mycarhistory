@@ -10,3 +10,4 @@ class CarSerializer(ModelSerializer):
 
     class Meta:
         model = Car
+        read_only_fields = ('user',)
