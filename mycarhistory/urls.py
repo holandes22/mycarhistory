@@ -6,6 +6,7 @@ from rest_framework import routers
 
 from mycarhistory.cars.views import CarByUserViewSet
 from mycarhistory.treatments.views import TreatmentByCarViewSet
+from mycarhistory.views import HomePageView
 
 admin.autodiscover()
 
@@ -14,9 +15,18 @@ router.register(r'users/(?P<user_pk>\d+)/cars', CarByUserViewSet)
 router.register(r'cars/(?P<car_pk>\d+)/treatments', TreatmentByCarViewSet)
 
 urlpatterns = patterns('',
+    # API
     url(r'^api/v1/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+
+    # Admin
     url(r'^admin/', include(admin.site.urls)),
+
+    # Index
+    url(r'^$', HomePageView.as_view(), name='home'),
+
+    # BrowserID
+    (r'^browserid/', include('django_browserid.urls')),
 )
 
 if settings.DEBUG:

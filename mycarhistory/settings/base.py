@@ -25,11 +25,20 @@ ALLOWED_HOSTS = []
 
 TEMPLATE_CONTEXT_PROCESSORS = DEFAULT_SETTINGS.TEMPLATE_CONTEXT_PROCESSORS + (
         'django.core.context_processors.request',
+        'django_browserid.context_processors.browserid',
 )
 
-LOGIN_URL = reverse_lazy('django.contrib.auth.views.login')
+#LOGIN_URL = reverse_lazy('django.contrib.auth.views.login')
 LOGIN_REDIRECT_URL = reverse_lazy('home')
+LOGIN_REDIRECT_URL_FAILURE = reverse_lazy('home')
+LOGOUT_REDIRECT_URL = reverse_lazy('home')
+
 AUTH_USER_MODEL = 'users.User'
+
+AUTHENTICATION_BACKENDS = (
+   'django.contrib.auth.backends.ModelBackend',
+   'django_browserid.auth.BrowserIDBackend',
+)
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -137,6 +146,7 @@ THIRD_PARTY_APPS = (
     'south',
     'storages',
     'gunicorn',
+    'django_browserid',
     'rest_framework',
     'rest_framework.authtoken',
 )
@@ -149,6 +159,9 @@ LOCAL_APPS = (
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
+
+# DRF
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.BasicAuthentication',
@@ -158,6 +171,10 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
     'PAGINATE_BY': 10
 }
+
+# BrowserID
+
+BROWSERID_CREATE_USER = True
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
@@ -204,5 +221,9 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': False,
         },
+        'django_browserid': {
+            'handlers': ['logfile', 'console'],
+            'level': 'DEBUG',
+        }
     }
 }

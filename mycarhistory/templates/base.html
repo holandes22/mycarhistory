@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+{% load browserid %}
+<html>
+  <head>
+    <meta charset=utf-8>
+    <title>{% block page_title %}My Car History{% endblock %}</title>
+    {% comment %}
+    <link rel="stylesheet" href="{{ STATIC_URL}}libs/css/bootstrap.min.css"/>
+    {% endcomment %}
+    {% browserid_css %}
+    {% block extra_css %}{% endblock extra_css %}
+  </head>
+  <body>
+  
+    {% browserid_info %}
+    <div class="authentication">
+      {% if user.is_authenticated %}
+        <p>Hello {{ user.email }}</p>
+        {% browserid_logout text='Logout' %}
+      {% else %}
+        {% browserid_login text='Login' color='dark' %}
+      {% endif %}
+    </div>
+    {% block page_content %}{% endblock page_content%}
+
+    {% comment %}
+    <!-- ================================================== -->
+    <!--JavaScript Libs-->
+    <script src="{{ STATIC_URL }}libs/js/jquery-2.0.0.min.js" type="text/javascript"></script>
+    <script src="https://login.persona.org/include.js" type="text/javascript"></script>
+    {% endcomment %}
+    <script src="{{ STATIC_URL }}libs/js/jquery-2.0.3.min.js" type="text/javascript"></script>
+    {% browserid_js %}
+    {% block extra_js %}{% endblock extra_js %}
+  </body>
+</html>
