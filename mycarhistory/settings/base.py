@@ -170,8 +170,6 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
-        'mycarhistory.users.permissions.CarOwnerPermission',
-        'mycarhistory.users.permissions.TreatmentOwnerPermission',
     ),
     'PAGINATE_BY': 10
 }
