@@ -12,7 +12,7 @@ from mycarhistory.treatments.views import TreatmentByCarViewSet
 admin.autodiscover()
 
 router = routers.DefaultRouter()
-router.register(r'users/(?P<user_pk>\d+)/cars', CarByUserViewSet)
+router.register(r'cars', CarByUserViewSet)
 router.register(r'cars/(?P<car_pk>\d+)/treatments', TreatmentByCarViewSet)
 
 urlpatterns = patterns('',
