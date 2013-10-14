@@ -1,5 +1,9 @@
 -r requirements.txt
+ipython
 fabric
 PyYaml
 mock==1.0.1
 nose
+django-discover-runner
+coverage
+factory_boy
