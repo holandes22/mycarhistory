@@ -11,6 +11,10 @@ exec { "pg-apt-key":
     command => "wget --quiet -O - http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc | sudo apt-key add -"
 }
 
+### LOCALE ###
+class { locales:
+    default_value => "en_US.UTF-8",
+}
 
 ### APT settings ###
 class { "apt": }
@@ -37,13 +41,17 @@ package { "all-packages" :
 
 
 ### DB settings ###
-include postgresql::server
 
-postgresql::db { "${project_name}_db":
-  user     => "vagrant",
-  password => "vagrant",
+$db_name = "${project_name}_db"
+$db_user = "vagrant"
+$db_password = postgresql_password($db_user, $db_user)
+
+class { "postgresql::server": }
+
+postgresql::server::db { $db_name: 
+    user => $db_user,
+    password => $db_password,
 }
-
 
 ### Python ###
 class { "python":

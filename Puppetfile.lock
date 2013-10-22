@@ -1,16 +1,18 @@
 FORGE
   remote: http://forge.puppetlabs.com
   specs:
+    attachmentgenie/locales (1.0.2)
+      puppetlabs/stdlib (>= 2.2.1)
     puppetlabs/apt (1.2.0)
       puppetlabs/stdlib (>= 2.2.1)
+    puppetlabs/concat (1.0.0-rc1)
     puppetlabs/firewall (0.4.2)
-    puppetlabs/postgresql (2.5.0)
+    puppetlabs/postgresql (3.0.0-rc2)
       puppetlabs/apt (< 2.0.0, >= 1.1.0)
+      puppetlabs/concat (< 2.0.0, >= 1.0.0)
       puppetlabs/firewall (>= 0.0.4)
       puppetlabs/stdlib (< 5.0.0, >= 3.2.0)
-      ripienaar/concat (>= 0.2.0)
     puppetlabs/stdlib (4.1.0)
-    ripienaar/concat (0.2.0)
 
 GIT
   remote: git://github.com/stankevich/puppet-python.git
@@ -20,7 +22,8 @@ GIT
     python (1.1.4)
 
 DEPENDENCIES
+  attachmentgenie/locales (= 1.0.2)
   puppetlabs/apt (>= 0)
-  puppetlabs/postgresql (>= 0)
+  puppetlabs/postgresql (= 3.0.0)
   python (>= 0)
 
