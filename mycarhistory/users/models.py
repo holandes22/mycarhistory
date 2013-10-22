@@ -15,6 +15,10 @@ class User(AbstractUser):
     def get_full_name(self):
         return self.full_name
 
+    def get_auth_token(self):
+        token, created = Token.objects.get_or_create(user=self)
+        return token.key
+
 
 @receiver(post_save, sender=User)
 def create_auth_token(sender, instance=None, created=False, **kwargs):
