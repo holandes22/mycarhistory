@@ -1,0 +1,7 @@
+language: python
+python:
+    - "2.7.5"
+env:
+    - DJANGO=1.5.4
+install: pip install -r requirements-dev.txt
+script: coverage run manage.py test --settings=mycarhistory.settings.test mycarhistory/
