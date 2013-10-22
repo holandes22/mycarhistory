@@ -2,7 +2,7 @@ import factory
 from factory.django import DjangoModelFactory
 
 from mycarhistory.cars.models import Car
-from mycarhistory.users.tests.factories import UserFactory
+from mycarhistory.users.factories import UserFactory
 
 
 class CarFactory(DjangoModelFactory):
