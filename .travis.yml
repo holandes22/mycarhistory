@@ -6,4 +6,4 @@ env:
 before_install: 
     - git submodule update --init
 install: pip install -r requirements-dev.txt
-script: coverage run manage.py test --settings=mycarhistory.settings.test mycarhistory/
+script: coverage run manage.py test --settings=mycarhistory.settings.test
