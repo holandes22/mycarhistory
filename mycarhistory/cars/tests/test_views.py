@@ -177,7 +177,14 @@ class CarTests(APITestCase):
 
     def test_partial_update(self):
         # PATCH
-        pass
+        car = CarFactory(user=self.user)
+        payload = {'brand': 'fake_brand'}
+        response = self.client.patch(
+            reverse('car-detail', kwargs={'pk': car.pk}),
+            payload,
+        )
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
+        self.assertEqual('fake_brand', response.data['brand'])
 
     def test_partial_update_returns_403_if_not_owner(self):
         pass
