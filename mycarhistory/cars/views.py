@@ -1,9 +1,8 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.exceptions import PermissionDenied
+from rest_framework.exceptions import MethodNotAllowed
 
 from mycarhistory.cars.models import Car
-from mycarhistory.users.models import User
 from mycarhistory.cars.serializers import CarSerializer
 
 from mycarhistory.users.permissions import CarOwnerPermission
@@ -20,3 +19,10 @@ class CarByUserViewSet(viewsets.ModelViewSet):
 
     def pre_save(self, obj):
         obj.user = self.request.user
+
+    def get_object_or_none(self):
+        # Override DRF implementation to avoid PUT as create on object
+        method = self.request.method
+        if method == 'PUT':
+            raise MethodNotAllowed(method)
+        return self.get_object()  # PATCH for non existing will raise 404
