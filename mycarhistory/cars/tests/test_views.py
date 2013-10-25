@@ -195,24 +195,22 @@ class CarTests(APITestCase):
     def test_options(self):
         pass
 
-    def test_methods_return_404_for_non_existing_car(self):
-        methods = ['delete', 'get', 'patch']
+    def test_car_detail_methods_return_404_for_non_existing_car(self):
+        methods = ['delete', 'get', 'put', 'patch']
         for method in methods:
             response = getattr(self.client, method)(
                 reverse('car-detail', kwargs={'pk': 777})
             )
             self.assertEqual(status.HTTP_404_NOT_FOUND, response.status_code)
 
-    def test_car_detail_post_or_put_not_allowed(self):
-        methods = ['post', 'put']
-        for method in methods:
-            response = getattr(self.client, method)(
-                reverse('car-detail', kwargs={'pk': 777})
-            )
-            self.assertEqual(
-                status.HTTP_405_METHOD_NOT_ALLOWED,
-                response.status_code
-            )
+    def test_car_detail_post_not_allowed(self):
+        response = self.client.post(
+            reverse('car-detail', kwargs={'pk': 777})
+        )
+        self.assertEqual(
+            status.HTTP_405_METHOD_NOT_ALLOWED,
+            response.status_code
+        )
 
     def test_put_not_allowed_for_car_list(self):
         response = self.client.put(reverse('car-list'))

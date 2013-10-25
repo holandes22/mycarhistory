@@ -1,3 +1,4 @@
+from django.http import Http404
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import MethodNotAllowed
@@ -22,7 +23,4 @@ class CarByUserViewSet(viewsets.ModelViewSet):
 
     def get_object_or_none(self):
         # Override DRF implementation to avoid PUT as create on object
-        method = self.request.method
-        if method == 'PUT':
-            raise MethodNotAllowed(method)
-        return self.get_object()  # PATCH for non existing will raise 404
+        return self.get_object()
