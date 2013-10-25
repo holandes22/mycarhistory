@@ -186,8 +186,18 @@ class CarTests(APITestCase):
         self.assertEqual(status.HTTP_200_OK, response.status_code)
         self.assertEqual('fake_brand', response.data['brand'])
 
-    def test_partial_update_returns_403_if_not_owner(self):
-        pass
+    def test_partial_update_returns_404_if_not_owner(self):
+        car = CarFactory(user=self.user)
+        new_user = UserFactory(username='fake')
+        self.client.credentials(
+            HTTP_AUTHORIZATION='Token {}'.format(new_user.get_auth_token())
+        )
+        payload = {'brand': 'fake_brand'}
+        response = self.client.patch(
+            reverse('car-detail', kwargs={'pk': car.pk}),
+            payload,
+        )
+        self.assertEqual(status.HTTP_404_NOT_FOUND, response.status_code)
 
     def test_head(self):
         pass
@@ -200,6 +210,19 @@ class CarTests(APITestCase):
         for method in methods:
             response = getattr(self.client, method)(
                 reverse('car-detail', kwargs={'pk': 777})
+            )
+            self.assertEqual(status.HTTP_404_NOT_FOUND, response.status_code)
+
+    def test_car_detail_methods_return_404_if_not_owner(self):
+        methods = ['delete', 'get', 'put', 'patch']
+        car = CarFactory(user=self.user)
+        new_user = UserFactory(username='fake')
+        self.client.credentials(
+            HTTP_AUTHORIZATION='Token {}'.format(new_user.get_auth_token())
+        )
+        for method in methods:
+            response = getattr(self.client, method)(
+                reverse('car-detail', kwargs={'pk': car.pk})
             )
             self.assertEqual(status.HTTP_404_NOT_FOUND, response.status_code)
 
