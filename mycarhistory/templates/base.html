@@ -13,7 +13,7 @@
   <body>
     <script type="text/javascript">
         {% if user.is_authenticated %}
-          var CURRENT_USER_ID = {{ user.pk }}
+          var CURRENT_USER_AUTH_TOKEN = "{{ user.get_auth_token }}";
         {% endif %}
     </script>
   
