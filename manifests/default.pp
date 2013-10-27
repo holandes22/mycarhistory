@@ -66,6 +66,6 @@ python::virtualenv { "/home/vagrant/virtualenvs/${project_name}":
   version      => "system",
   owner        => "vagrant",
   group        => "vagrant",
-  requirements => "/vagrant/requirements-dev.txt",
+  requirements => "/vagrant/requirements.txt",
   require      => Package["all-packages"],
 }

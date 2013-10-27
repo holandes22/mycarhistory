@@ -1,5 +1,19 @@
 {% extends 'base.html' %}
-
 {% block page_content %}
 <h2>Hi</h2>
+<div id="ember"></div>
+{% verbatim %}
+<script type="text/x-handlebars">
+{{outlet}}
+</script>
+
+<script type="text/x-handlebars" id="cars">
+{{#each model}}
+  <div>{{brand}}</div>
+  <div>{{model}}</div>
+{{/each}}
+{{outlet}}
+
+</script>
+{% endverbatim %}
 {% endblock page_content %}
