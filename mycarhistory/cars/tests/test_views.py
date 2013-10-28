@@ -22,14 +22,14 @@ class CarTests(APITestCase):
         CarFactory(user=self.user)
         CarFactory(user=self.user)
         response = self.client.get(reverse('car-list'))
-        self.assertTrue(response.data['count'] == 2)
+        self.assertEqual(2, len(response.data))
 
     def test_list_only_authenticated_user(self):
         CarFactory(user=self.user)
         new_user = UserFactory(username='fake')
         CarFactory(user=new_user)
         response = self.client.get(reverse('car-list'))
-        self.assertTrue(response.data['count'] == 1)
+        self.assertEqual(1, len(response.data))
 
     def test_list_user_returns_401_if_not_authenticated(self):
         # NotAuthenticated
@@ -134,8 +134,8 @@ class CarTests(APITestCase):
         response = self.client.post(reverse('car-list'), payload)
         self.assertEqual(expected, response.data)
         response = self.client.get(reverse('car-list'))
-        self.assertEqual(1, len(response.data['results']))
-        self.assertEqual(expected, response.data['results'][0])
+        self.assertEqual(1, len(response.data))
+        self.assertEqual(expected, response.data[0])
 
     def test_create_indicates_missing_fields(self):
         payload = {'brand': 'fake_brand'}  # model is missing
