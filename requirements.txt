@@ -4,6 +4,8 @@ argparse==1.2.1
 djangorestframework==2.3.8
 psycopg2==2.5.1
 gunicorn==18.0
+gevent==0.13.8
+greenlet==0.4.1
 wsgiref==0.1.2
 boto==2.13.0
 django-storages==1.1.8
@@ -12,3 +14,4 @@ requests==2.0.0
 six==1.4.1
 fancy-tag==0.2.0
 django-secure==1.0
+dj-database-url==0.2.2
