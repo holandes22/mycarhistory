@@ -24,8 +24,8 @@ DATABASES = {}
 ALLOWED_HOSTS = []
 
 TEMPLATE_CONTEXT_PROCESSORS = DEFAULT_SETTINGS.TEMPLATE_CONTEXT_PROCESSORS + (
-        'django.core.context_processors.request',
-        'django_browserid.context_processors.browserid',
+    'django.core.context_processors.request',
+    'django_browserid.context_processors.browserid',
 )
 
 #LOGIN_URL = reverse_lazy('django.contrib.auth.views.login')
@@ -112,6 +112,7 @@ TEMPLATE_LOADERS = (
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
+    'djangosecure.middleware.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -150,6 +151,7 @@ THIRD_PARTY_APPS = (
     'rest_framework',
     'rest_framework.authtoken',
     'discover_runner',
+    'djangosecure',
 )
 
 LOCAL_APPS = (

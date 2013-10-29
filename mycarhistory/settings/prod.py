@@ -1,6 +1,12 @@
 import dj_database_url
 from mycarhistory.settings.base  import *
 
+# Security
+
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_HTTPONLY = True
+
 # Allow local dev locally with these settings
 # http://stackoverflow.com/questions/14795824/improperlyconfiguredsettings-databases-is-improperly-configured-error-when
 DATABASES['default'] =  dj_database_url.config(default='postgres://vagrant:vagrant@localhost/mycarhistory_db')
