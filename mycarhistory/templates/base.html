@@ -25,6 +25,25 @@
         {% browserid_login text='Login' color='dark' %}
       {% endif %}
     </div>
+
+    {% verbatim %}
+    <script type="text/x-handlebars">
+        <nav class="navbar navbar-default" role="navigation">
+          <div class="navbar-header">
+            <a class="navbar-brand" href="#">My Car History</a>
+          </div>
+          <div>
+            <ul class="nav navbar-nav">
+              <li>{{#link-to 'cars'}}Cars{{/link-to}}</li>
+              <li><a>About</a></li>
+            </ul>
+          </div>
+        </nav>
+
+        {{outlet}}
+    </script>
+    {% endverbatim %}
+
     {% block page_content %}{% endblock page_content%}
     {% comment %}
     ===============
