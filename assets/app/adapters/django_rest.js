@@ -1,3 +1,3 @@
 MyCarHistory.ApplicationAdapter = DS.DjangoRESTAdapter.extend({
-  namespace: 'api/v1'
+    namespace: 'api/v1'
 });

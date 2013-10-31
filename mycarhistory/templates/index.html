@@ -20,9 +20,55 @@
 </script>
 
 <script type="text/x-handlebars" id="car">
-  {{#with model as car}}
-    {{car.brand}}-{{car.model}}
-  {{/with}}
+  <div class="container">
+    {{#with model as car}}
+    <div class="row">
+      <legend>Car Details</legend>
+        {{car.brand}}-{{car.model}}
+        {{#each treatment in car.treatments}}
+          {{treatment}}
+          {{treatment.done_by}}
+          {{treatment.date}}
+          {{treatment.description}}
+        {{else}}
+          <div>No treatments</div>
+        {{/each}}
+    </div>
+    <div class="row">
+      {{#if car.treatments}}
+      <li>{{#link-to 'treatments'}}Treatments{{/link-to}}</li>
+      <li>{{#link-to 'treatment' 1}}Treatment 1{{/link-to}}</li>
+      {{/if}}
+      {{outlet}}
+    </div>
+    {{/with}}
+  </div>
 </script>
+
+
+<script type="text/x-handlebars" id="treatments">
+  <legend>Treatments</legend>
+  {{log controller}}
+  <ul>
+  {{#each model}}
+    <li>{{#link-to 'treatment' this}}{{date}}{{/link-to}}</li>
+  {{/each}}
+  {{outlet}}
+  </ul>
+</script>
+
+<script type="text/x-handlebars" id="treatment">
+  <table>
+    <tr>
+      <th>Done By</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>{{done_by}}</td>
+      <td>{{description}}</td>
+    </tr>
+  </table>
+</script>
+
 {% endverbatim %}
 {% endblock page_content %}
