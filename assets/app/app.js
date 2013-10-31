@@ -11,6 +11,6 @@ jQuery( document ).ready(function( $ ) {
 });
 
 MyCarHistory = Ember.Application.create({
-  rootElement: '#ember'
+  rootElement: '#emberRoot'
 });
 

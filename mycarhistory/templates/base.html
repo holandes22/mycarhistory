@@ -10,6 +10,7 @@
     {% block extra_css %}{% endblock extra_css %}
   </head>
   <body>
+    <div id="emberRoot"></div>
     <script type="text/javascript">
         {% if user.is_authenticated %}
           var CURRENT_USER_AUTH_TOKEN = "{{ user.get_auth_token }}";
@@ -17,34 +18,47 @@
     </script>
   
     {% browserid_info %}
-    <div class="authentication">
-      {% if user.is_authenticated %}
-        <p>Hello {{ user.email }}</p>
-        {% browserid_logout text='Logout' %}
-      {% else %}
-        {% browserid_login text='Login' color='dark' %}
-      {% endif %}
-    </div>
-
-    {% verbatim %}
-    <script type="text/x-handlebars">
-        <nav class="navbar navbar-default" role="navigation">
-          <div class="navbar-header">
-            <a class="navbar-brand" href="#">My Car History</a>
-          </div>
-          <div>
-            <ul class="nav navbar-nav">
-              <li>{{#link-to 'cars'}}Cars{{/link-to}}</li>
-              <li><a>About</a></li>
+    <script type="text/x-handlebars" id="application">
+    <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">My Car History</a>
+      </div>
+      <div>
+        <ul class="nav navbar-nav">
+          {% verbatim %}
+          <li>{{#link-to 'cars'}}Cars{{/link-to}}</li>
+          <li><a>About</a></li>
+          {% endverbatim %}
+          <li class="divider-vertical"></li>
+        </ul>
+      </div>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+          {% if user.is_authenticated %}
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user">
+            {{ user.email }} <b class="caret"></b></a>
+            <ul class="dropdown-menu pull-right">
+              <li><a href="#">Profile</a></li>
+              <li class="divider"></li>
+              <li>{% browserid_logout text="Log Out" %}</li>
             </ul>
-          </div>
-        </nav>
-
-        {{outlet}}
-    </script>
+          {% else %}
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Log In <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li>{% browserid_login text="Log in with Persona" color="orange" %}</li>
+            </ul>
+          {% endif %}
+        </li>
+      </ul>
+    </nav>
+    {% verbatim %}
+    {{outlet}}
     {% endverbatim %}
 
+    </script>
+    
     {% block page_content %}{% endblock page_content%}
+
     {% comment %}
     ===============
     JavaScript Libs

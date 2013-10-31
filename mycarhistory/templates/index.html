@@ -1,24 +1,18 @@
 {% extends 'base.html' %}
 {% block page_content %}
-<div id="ember"></div>
 {% verbatim %}
 
 <script type="text/x-handlebars" id="cars">
-<div class="container-fluid">
-  <div class="row-fluid">
-    <div class="span3">
-      <table class='table'>
-        <thead>
-          <tr><th>Cars</th></tr>
-        </thead>
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <ul class="nav nav-pills">
         {{#each model}}
-        <tr><td>
-            {{#link-to 'car' this}}{{fullName}}{{/link-to}}
-        </td></tr>
+          <li>{{#link-to 'car' this}}{{fullName}}{{/link-to}}</li>
         {{/each}}
-      </table>
+      </ul>
     </div>
-    <div class="span9">
+    <div class="col-md-9">
       {{outlet}}
     </div>
   </div>
@@ -27,7 +21,7 @@
 
 <script type="text/x-handlebars" id="car">
   {{#with model as car}}
-      {{car.brand}}-{{car.model}}
+    {{car.brand}}-{{car.model}}
   {{/with}}
 </script>
 {% endverbatim %}
