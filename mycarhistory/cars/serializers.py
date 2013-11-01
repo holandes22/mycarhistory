@@ -1,3 +1,4 @@
+from rest_framework.serializers import ModelSerializer
 from rest_framework.serializers import PrimaryKeyRelatedField
 
 from mycarhistory.cars.models import Car

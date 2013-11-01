@@ -12,5 +12,5 @@ MyCarHistory.Treatment = DS.Model.extend({
     car: DS.belongsTo('Car'),
     done_by: DS.attr('string'),
     description: DS.attr('string'),
-    date: DS.attr('date')
+    date: DS.attr('date'),
 });

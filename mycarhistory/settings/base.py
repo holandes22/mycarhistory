@@ -180,6 +180,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
+    'FILTER_BACKEND': 'rest_framework.filters.DjangoFilterBackend',
     # 'PAGINATE_BY': 10  # Disabled for now as it is not working with DRF Adapter
 }
 
