@@ -8,3 +8,9 @@ class TreatmentSerializer(ModelSerializer):
     class Meta:
         model = Treatment
         read_only_fields = ('car',)
+
+
+class TreatmentShallowSerializer(ModelSerializer):
+
+    class Meta:
+        model = Treatment

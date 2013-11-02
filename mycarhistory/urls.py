@@ -6,7 +6,9 @@ from rest_framework import routers
 
 from mycarhistory.views import HomePageView
 from mycarhistory.cars.views import CarByUserViewSet
-from mycarhistory.treatments.views import TreatmentByCarViewSet, TreatmentListCreateAPIView
+from mycarhistory.treatments.views import TreatmentByCarViewSet
+from mycarhistory.treatments.views import TreatmentListCreateAPIView
+from mycarhistory.treatments.views import TreatmentRetrieveUpdateDestroyAPIView
 
 
 admin.autodiscover()
@@ -21,11 +23,15 @@ urlpatterns = patterns('',
     # We need the following shallow endpoints to comply with what ember-data
     # expects
     url(
-        r'^api/v1/treatments/',
+        r'^api/v1/treatments/$',
         TreatmentListCreateAPIView.as_view(),
         name='treatment-list-shallow',
     ),
-    #url(r'^api/v1/treatments/(?P<treatment_pk>\d+)/', TreatmentDetailAPIView.as_view()),
+    url(
+        r'^api/v1/treatments/(?P<pk>\d+)/$',
+        TreatmentRetrieveUpdateDestroyAPIView.as_view(),
+        name='treatment-detail-shallow',
+    ),
 
     url(
         r'^api-auth/',

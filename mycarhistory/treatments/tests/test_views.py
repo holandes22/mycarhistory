@@ -169,6 +169,30 @@ class TreatmentViewTests(APITestCase):
         self.assertEqual(status.HTTP_200_OK, response.status_code)
         self.assertDictEqual(expected, response.data)
 
+    def test_detail_shallow(self):
+        car = CarFactory(user=self.user)
+        fake_date = datetime.date(2000, 1, 1)
+        treatment = TreatmentFactory(
+            car=car,
+            done_by='fake_done_by',
+            date=fake_date,
+        )
+        url = reverse('treatment-detail-shallow', kwargs={'pk': treatment.pk})
+        response = self.client.get(url)
+        expected = {
+            'id': treatment.pk,
+            'car': car.pk,
+            'done_by': 'fake_done_by',
+            'description': '',
+            'date': fake_date,
+            'kilometrage': 1,
+            'reason': 1,
+            'category': 1,
+            'parts_replaced': 'None',
+        }
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
+        self.assertDictEqual(expected, response.data)
+
     def _test_detail_car_treatments_is_a_string_of_ids(self):
         car = CarFactory(user=self.user)
         fake_date = datetime.date(2000, 1, 1)
