@@ -10,7 +10,7 @@ from mycarhistory.cars.factories import CarFactory
 from mycarhistory.treatments.factories import TreatmentFactory
 
 
-class CarTests(APITestCase):
+class CarViewTests(APITestCase):
 
     def setUp(self):
         self.user = UserFactory()
@@ -22,6 +22,7 @@ class CarTests(APITestCase):
         CarFactory(user=self.user)
         CarFactory(user=self.user)
         response = self.client.get(reverse('car-list'))
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
         self.assertEqual(2, len(response.data))
 
     def test_list_only_authenticated_user(self):
@@ -65,36 +66,12 @@ class CarTests(APITestCase):
         }
         self.assertDictEqual(expected, response.data)
 
-    def test_detail_car_treatments(self):
+    def test_detail_car_treatments_is_a_string_of_ids(self):
         car = CarFactory(user=self.user)
-        fake_date = datetime.date(2000, 1, 1)
-        treatment1 = TreatmentFactory(car=car, date=fake_date)
-        treatment2 = TreatmentFactory(car=car, date=fake_date)
+        treatment1 = TreatmentFactory(car=car)
+        treatment2 = TreatmentFactory(car=car)
 
-        expected = [
-            {
-                'id': treatment1.pk,
-                'car': car.pk,
-                'done_by': '',
-                'description': '',
-                'date': fake_date,
-                'kilometrage': 1,
-                'reason': 1,
-                'category': 1,
-                'parts_replaced': u'None',
-            },
-            {
-                'id': treatment2.pk,
-                'car': car.pk,
-                'done_by': '',
-                'description': '',
-                'date': fake_date,
-                'kilometrage': 1,
-                'reason': 1,
-                'category': 1,
-                'parts_replaced': u'None',
-            },
-        ]
+        expected = [treatment1.pk, treatment2.pk]
 
         response = self.client.get(
             reverse('car-detail', kwargs={'pk': car.pk})
