@@ -47,4 +47,11 @@ class TreatmentListCreateAPIView(TreatmentOwnerMixin, ListCreateAPIView):
         car_pk = self.request.QUERY_PARAMS.get('car', None)
         if car_pk:
             return Car.objects.get(pk=car_pk)
-        raise Http404()
+        return None
+
+    def get_queryset(self):
+        car = self.get_car()
+        if car:
+            self.check_ownership(car)
+            return Treatment.objects.filter(car=car)
+        return Treatment.objects.filter(car__user=self.request.user)
