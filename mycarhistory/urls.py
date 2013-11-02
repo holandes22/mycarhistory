@@ -20,10 +20,17 @@ urlpatterns = patterns('',
     url(r'^api/v1/', include(router.urls)),
     # We need the following shallow endpoints to comply with what ember-data
     # expects
-    url(r'^api/v1/treatments/', TreatmentListCreateAPIView.as_view()),
+    url(
+        r'^api/v1/treatments/',
+        TreatmentListCreateAPIView.as_view(),
+        name='treatment-list-shallow',
+    ),
     #url(r'^api/v1/treatments/(?P<treatment_pk>\d+)/', TreatmentDetailAPIView.as_view()),
 
-    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(
+        r'^api-auth/',
+        include('rest_framework.urls', namespace='rest_framework')
+    ),
 
     # Admin
     url(r'^admin/', include(admin.site.urls)),
@@ -36,7 +43,12 @@ urlpatterns = patterns('',
 )
 
 if settings.DEBUG:
-    urlpatterns += patterns('',
-        (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT}),
+    urlpatterns += patterns(
+        '',
+        (
+            r'^static/(?P<path>.*)$',
+            'django.views.static.serve',
+            {'document_root': settings.STATIC_ROOT}
+        ),
         (r'^rest_framework/(?P<path>.*)$', 'django.views.static.serve', {}),
     )
