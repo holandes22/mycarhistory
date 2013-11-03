@@ -193,54 +193,83 @@ class TreatmentViewTests(APITestCase):
         self.assertEqual(status.HTTP_200_OK, response.status_code)
         self.assertDictEqual(expected, response.data)
 
-    def _test_detail_car_treatments_is_a_string_of_ids(self):
+    def test_detail_returns_403_if_user_not_owner(self):
         car = CarFactory(user=self.user)
-        fake_date = datetime.date(2000, 1, 1)
-        treatment1 = TreatmentFactory(car=car, date=fake_date)
-        treatment2 = TreatmentFactory(car=car, date=fake_date)
-
-        expected = [treatment1.pk, treatment2.pk]
-
-        response = self.client.get(
-            reverse('car-detail', kwargs={'pk': car.pk})
+        treatment = TreatmentFactory(car=car)
+        url = reverse(
+            'treatment-detail',
+            kwargs={'car_pk': car.pk, 'pk': treatment.pk}
         )
-        self.assertListEqual(expected, response.data['treatments'])
-
-    def _test_detail_returns_404_if_user_not_owner(self):
-        car = CarFactory(user=self.user)
-        response = self.client.get(
-            reverse('car-detail', kwargs={'pk': car.pk})
-        )
+        response = self.client.get(url)
         self.assertEqual(status.HTTP_200_OK, response.status_code)
 
-        new_user = UserFactory(username='fake')
+        new_user = UserFactory(username='fakeo')
         self.client.credentials(
             HTTP_AUTHORIZATION='Token {}'.format(new_user.get_auth_token())
         )
-        response = self.client.get(
-            reverse('car-detail', kwargs={'pk': car.pk})
-        )
-        # We'll get 404 since that car id lookup is bad for that user
-        self.assertEqual(status.HTTP_404_NOT_FOUND, response.status_code)
+        response = self.client.get(url)
+        self.assertEqual(status.HTTP_403_FORBIDDEN, response.status_code)
 
-    def _test_create(self):
-        # POST
-        payload = {
-            'brand': 'fake_brand',
-            'model': 'fake_model',
-            'year': 2000,
-            'gearbox_type': 2,
-            'amount_of_owners': 3,
-        }
-        expected = dict(
-            {'user': self.user.pk, 'id': 1, 'treatments': []},
-            **payload
+    def test_detail_shallow_returns_403_if_user_not_owner(self):
+        car = CarFactory(user=self.user)
+        treatment = TreatmentFactory(car=car)
+        url = reverse(
+            'treatment-detail-shallow',
+            kwargs={'pk': treatment.pk}
         )
-        response = self.client.post(reverse('car-list'), payload)
+        response = self.client.get(url)
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
+
+        new_user = UserFactory(username='fake_shallow')
+        self.client.credentials(
+            HTTP_AUTHORIZATION='Token {}'.format(new_user.get_auth_token())
+        )
+        response = self.client.get(url)
+        self.assertEqual(status.HTTP_403_FORBIDDEN, response.status_code)
+
+    def test_create(self):
+        # POST
+        car = CarFactory(user=self.user)
+        fake_date = datetime.date(2000, 1, 1)
+        payload = {
+            'car': car.pk,
+            'done_by': 'fake_done_by',
+            'description': 'fake_description',
+            'date': fake_date,
+            'kilometrage': 10,
+            'reason': 1,
+            'category': 1,
+            'parts_replaced': 'part1,part2',
+        }
+        expected = dict({'id': 1}, **payload)
+        url = reverse('treatment-list', kwargs={'car_pk': car.pk})
+        response = self.client.post(url, payload)
         self.assertEqual(expected, response.data)
-        response = self.client.get(reverse('car-list'))
+        response = self.client.get(url)
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
         self.assertEqual(1, len(response.data))
         self.assertEqual(expected, response.data[0])
+
+    def test_create_returns_403_if_user_not_owner_of_car(self):
+        car = CarFactory(user=self.user)
+        fake_date = datetime.date(2000, 1, 1)
+        payload = {
+            'car': car.pk,
+            'done_by': 'fake_done_by',
+            'description': 'fake_description',
+            'date': fake_date,
+            'kilometrage': 10,
+            'reason': 1,
+            'category': 1,
+            'parts_replaced': 'part1,part2',
+        }
+        new_user = UserFactory(username='fake_username')
+        self.client.credentials(
+            HTTP_AUTHORIZATION='Token {}'.format(new_user.get_auth_token())
+        )
+        url = reverse('treatment-list', kwargs={'car_pk': car.pk})
+        response = self.client.post(url, payload)
+        self.assertEqual(status.HTTP_403_FORBIDDEN, response.status_code)
 
     def _test_create_indicates_missing_fields(self):
         payload = {'brand': 'fake_brand'}  # model is missing

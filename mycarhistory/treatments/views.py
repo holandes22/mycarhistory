@@ -25,17 +25,17 @@ class TreatmentOwnerMixin(object):
 
 class TreatmentByCarViewSet(TreatmentOwnerMixin, ModelViewSet):
 
-    def get_car(self):
-        return Car.objects.get(pk=self.kwargs['car_pk'])
-
-    def get_queryset(self):
-        car = self.get_car()
-        self.check_ownership(car)
-        return Treatment.objects.filter(car=car)
-
     model = Treatment
     serializer_class = TreatmentSerializer
     permission_classes = (IsAuthenticated, TreatmentOwnerPermission)
+
+    def get_car(self):
+        car = Car.objects.get(pk=self.kwargs['car_pk'])
+        self.check_ownership(car)
+        return car
+
+    def get_queryset(self):
+        return Treatment.objects.filter(car=self.get_car())
 
 
 class TreatmentListCreateAPIView(TreatmentOwnerMixin, ListCreateAPIView):
@@ -63,4 +63,3 @@ class TreatmentRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     model = Treatment
     serializer_class = TreatmentSerializer
     permission_classes = (IsAuthenticated, TreatmentOwnerPermission)
-

@@ -1,7 +1,5 @@
-from django.http import Http404
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.exceptions import MethodNotAllowed
 
 from mycarhistory.cars.models import Car
 from mycarhistory.cars.serializers import CarSerializer
