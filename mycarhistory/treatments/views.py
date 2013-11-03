@@ -1,14 +1,14 @@
 from django.http import Http404
 
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import ListCreateAPIView
+from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import PermissionDenied
 
 from mycarhistory.cars.models import Car
 from mycarhistory.treatments.models import Treatment
 from mycarhistory.treatments.serializers import TreatmentSerializer
-from mycarhistory.treatments.serializers import TreatmentShallowSerializer
 
 from mycarhistory.users.permissions import TreatmentOwnerPermission
 
@@ -19,19 +19,19 @@ class TreatmentOwnerMixin(object):
         if car.user != self.request.user:
             raise PermissionDenied()
 
-    def get_car(self):
-        return Car.objects.get(pk=self.kwargs['car_pk'])
-
     def pre_save(self, obj):
         obj.car = self.get_car()
+
+
+class TreatmentByCarViewSet(TreatmentOwnerMixin, ModelViewSet):
+
+    def get_car(self):
+        return Car.objects.get(pk=self.kwargs['car_pk'])
 
     def get_queryset(self):
         car = self.get_car()
         self.check_ownership(car)
         return Treatment.objects.filter(car=car)
-
-
-class TreatmentByCarViewSet(TreatmentOwnerMixin, ModelViewSet):
 
     model = Treatment
     serializer_class = TreatmentSerializer
@@ -41,7 +41,7 @@ class TreatmentByCarViewSet(TreatmentOwnerMixin, ModelViewSet):
 class TreatmentListCreateAPIView(TreatmentOwnerMixin, ListCreateAPIView):
 
     model = Treatment
-    serializer_class = TreatmentShallowSerializer
+    serializer_class = TreatmentSerializer
     filter_fields = ['car']
 
     def get_car(self):
@@ -63,3 +63,4 @@ class TreatmentRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     model = Treatment
     serializer_class = TreatmentSerializer
     permission_classes = (IsAuthenticated, TreatmentOwnerPermission)
+
