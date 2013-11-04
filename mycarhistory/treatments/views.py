@@ -1,65 +1,99 @@
-from django.http import Http404
+from django.shortcuts import get_object_or_404
 
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.exceptions import MethodNotAllowed, PermissionDenied
 from rest_framework.generics import ListCreateAPIView
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.exceptions import PermissionDenied
 
 from mycarhistory.cars.models import Car
 from mycarhistory.treatments.models import Treatment
 from mycarhistory.treatments.serializers import TreatmentSerializer
+from mycarhistory.treatments.serializers import TreatmentByCarSerializer
 
 from mycarhistory.users.permissions import TreatmentOwnerPermission
+from mycarhistory.users.permissions import CarOwnerPermission
 
 
-class TreatmentOwnerMixin(object):
-
-    def check_ownership(self, car):
-        if car.user != self.request.user:
-            raise PermissionDenied()
+class TreatmentAPIViewMixin(object):
 
     def pre_save(self, obj):
         obj.car = self.get_car()
 
 
-class TreatmentByCarViewSet(TreatmentOwnerMixin, ModelViewSet):
+class TreatmentDetailAPIViewMixin(object):
+
+    def put(self, *args, **kwargs):
+        raise MethodNotAllowed(method='PUT')
+
+
+class TreatmentListByCarAPIView(TreatmentAPIViewMixin, ListCreateAPIView):
 
     model = Treatment
-    serializer_class = TreatmentSerializer
-    permission_classes = (IsAuthenticated, TreatmentOwnerPermission)
+    serializer_class = TreatmentByCarSerializer
+    permission_classes = (IsAuthenticated, CarOwnerPermission)
+    car = None
 
     def get_car(self):
-        car = Car.objects.get(pk=self.kwargs['car_pk'])
-        self.check_ownership(car)
-        return car
+        if not self.car:
+            self.car = get_object_or_404(Car, pk=self.kwargs['car_pk'])
+        self.check_object_permissions(self.request, self.car)
+        return self.car
 
     def get_queryset(self):
         return Treatment.objects.filter(car=self.get_car())
 
 
-class TreatmentListCreateAPIView(TreatmentOwnerMixin, ListCreateAPIView):
+class TreatmentDetailByCarAPIView(TreatmentAPIViewMixin,
+                                  TreatmentDetailAPIViewMixin,
+                                  RetrieveUpdateDestroyAPIView):
+
+    model = Treatment
+    permission_classes = (IsAuthenticated, TreatmentOwnerPermission)
+    serializer_class = TreatmentByCarSerializer
+    car = None
+
+    def get_car(self):
+        if not self.car:
+            self.car = get_object_or_404(Car, pk=self.kwargs['car_pk'])
+        if self.car.user != self.request.user:
+            raise PermissionDenied()
+        return self.car
+
+    def get_object(self):
+        car = self.get_car()
+        pk = self.kwargs['pk']
+        treatment = get_object_or_404(self.model, pk=pk, car=car)
+        self.check_object_permissions(self.request, treatment)
+        return treatment
+
+
+class TreatmentListAPIView(TreatmentAPIViewMixin, ListCreateAPIView):
 
     model = Treatment
     serializer_class = TreatmentSerializer
+    permission_classes = (IsAuthenticated, CarOwnerPermission)
     filter_fields = ['car']
+    car = None
 
     def get_car(self):
-        car_pk = self.request.QUERY_PARAMS.get('car', None)
+        car_pk = self.request.POST.get('car', None)
+        if not car_pk:
+            car_pk = self.request.QUERY_PARAMS.get('car', None)
         if car_pk:
-            return Car.objects.get(pk=car_pk)
-        return None
+            self.car = get_object_or_404(Car, pk=car_pk)
+            self.check_object_permissions(self.request, self.car)
+        return self.car
 
     def get_queryset(self):
         car = self.get_car()
         if car:
-            self.check_ownership(car)
             return Treatment.objects.filter(car=car)
         return Treatment.objects.filter(car__user=self.request.user)
 
 
-class TreatmentRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
+class TreatmentDetailAPIView(TreatmentDetailAPIViewMixin,
+                             RetrieveUpdateDestroyAPIView):
 
     model = Treatment
-    serializer_class = TreatmentSerializer
     permission_classes = (IsAuthenticated, TreatmentOwnerPermission)
+    serializer_class = TreatmentSerializer

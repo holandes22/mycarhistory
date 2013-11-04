@@ -2,34 +2,49 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls import patterns, include, url
 
-from rest_framework import routers
-
 from mycarhistory.views import HomePageView
-from mycarhistory.cars.views import CarByUserViewSet
-from mycarhistory.treatments.views import TreatmentByCarViewSet
-from mycarhistory.treatments.views import TreatmentListCreateAPIView
-from mycarhistory.treatments.views import TreatmentRetrieveUpdateDestroyAPIView
+from mycarhistory.cars.views import CarListAPIView, CarDetailAPIView
+from mycarhistory.treatments.views import TreatmentListByCarAPIView
+from mycarhistory.treatments.views import TreatmentDetailByCarAPIView
+from mycarhistory.treatments.views import TreatmentListAPIView
+from mycarhistory.treatments.views import TreatmentDetailAPIView
 
 
 admin.autodiscover()
 
-router = routers.DefaultRouter()
-router.register(r'cars', CarByUserViewSet)
-router.register(r'cars/(?P<car_pk>\d+)/treatments', TreatmentByCarViewSet)
-
-urlpatterns = patterns('',
+urlpatterns = patterns(
+    'mycarhistory',
     # API
-    url(r'^api/v1/', include(router.urls)),
+    url(
+        r'^api/v1/cars/$',
+        CarListAPIView.as_view(),
+        name='car-list',
+    ),
+    url(
+        r'^api/v1/cars/(?P<pk>\d+)/$',
+        CarDetailAPIView.as_view(),
+        name='car-detail',
+    ),
+    url(
+        r'^api/v1/cars/(?P<car_pk>\d+)/treatments/$',
+        TreatmentListByCarAPIView.as_view(),
+        name='treatment-list',
+    ),
+    url(
+        r'^api/v1/cars/(?P<car_pk>\d+)/treatments/(?P<pk>\d+)/$',
+        TreatmentDetailByCarAPIView.as_view(),
+        name='treatment-detail',
+    ),
     # We need the following shallow endpoints to comply with what ember-data
     # expects
     url(
         r'^api/v1/treatments/$',
-        TreatmentListCreateAPIView.as_view(),
+        TreatmentListAPIView.as_view(),
         name='treatment-list-shallow',
     ),
     url(
         r'^api/v1/treatments/(?P<pk>\d+)/$',
-        TreatmentRetrieveUpdateDestroyAPIView.as_view(),
+        TreatmentDetailAPIView.as_view(),
         name='treatment-detail-shallow',
     ),
 
