@@ -10,4 +10,6 @@ class TreatmentFactory(DjangoModelFactory):
 
     car = factory.SubFactory(CarFactory)
     kilometrage = 1
+    done_by = 'Zoltan Chivay'
+    description = 'Move along, nothing to see here'
 

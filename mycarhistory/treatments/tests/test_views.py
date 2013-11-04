@@ -147,6 +147,7 @@ class TreatmentViewTests(APITestCase):
         treatment = TreatmentFactory(
             car=car,
             done_by='fake_done_by',
+            description='fake_description',
             date=fake_date,
         )
         response = self.client.get(
@@ -159,7 +160,7 @@ class TreatmentViewTests(APITestCase):
             'id': treatment.pk,
             'car': car.pk,
             'done_by': 'fake_done_by',
-            'description': '',
+            'description': 'fake_description',
             'date': fake_date,
             'kilometrage': 1,
             'reason': 1,
@@ -175,6 +176,7 @@ class TreatmentViewTests(APITestCase):
         treatment = TreatmentFactory(
             car=car,
             done_by='fake_done_by',
+            description='fake_description',
             date=fake_date,
         )
         url = reverse('treatment-detail-shallow', kwargs={'pk': treatment.pk})
@@ -183,7 +185,7 @@ class TreatmentViewTests(APITestCase):
             'id': treatment.pk,
             'car': car.pk,
             'done_by': 'fake_done_by',
-            'description': '',
+            'description': 'fake_description',
             'date': fake_date,
             'kilometrage': 1,
             'reason': 1,
@@ -232,6 +234,33 @@ class TreatmentViewTests(APITestCase):
         car = CarFactory(user=self.user)
         fake_date = datetime.date(2000, 1, 1)
         payload = {
+            'done_by': 'fake_done_by',
+            'description': 'fake_description',
+            'date': fake_date,
+            'kilometrage': 10,
+            'reason': 1,
+            'category': 1,
+            'parts_replaced': 'part1,part2',
+        }
+        expected = dict({'id': 1, 'car': car.pk}, **payload)
+        url = reverse('treatment-list', kwargs={'car_pk': car.pk})
+        response = self.client.post(url, payload)
+        self.assertEqual(expected, response.data)
+        response = self.client.get(url)
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
+        self.assertEqual(1, len(response.data))
+        self.assertEqual(expected, response.data[0])
+
+        # Again
+        expected = dict({'id': 2, 'car': car.pk}, **payload)
+        response = self.client.post(url, payload)
+        self.assertEqual(expected, response.data)
+
+    def test_create_shallow(self):
+        # POST
+        car = CarFactory(user=self.user)
+        fake_date = datetime.date(2000, 1, 1)
+        payload = {
             'car': car.pk,
             'done_by': 'fake_done_by',
             'description': 'fake_description',
@@ -242,7 +271,7 @@ class TreatmentViewTests(APITestCase):
             'parts_replaced': 'part1,part2',
         }
         expected = dict({'id': 1}, **payload)
-        url = reverse('treatment-list', kwargs={'car_pk': car.pk})
+        url = reverse('treatment-list-shallow')
         response = self.client.post(url, payload)
         self.assertEqual(expected, response.data)
         response = self.client.get(url)
@@ -250,11 +279,39 @@ class TreatmentViewTests(APITestCase):
         self.assertEqual(1, len(response.data))
         self.assertEqual(expected, response.data[0])
 
-    def test_create_returns_403_if_user_not_owner_of_car(self):
+        # Again
+        expected = dict({'id': 2}, **payload)
+        response = self.client.post(url, payload)
+        self.assertEqual(expected, response.data)
+
+    def test_create_shallow_disregards_query_param(self):
+        # POST
         car = CarFactory(user=self.user)
         fake_date = datetime.date(2000, 1, 1)
         payload = {
             'car': car.pk,
+            'done_by': 'fake_done_by',
+            'description': 'fake_description',
+            'date': fake_date,
+            'kilometrage': 10,
+            'reason': 1,
+            'category': 1,
+            'parts_replaced': 'part1,part2',
+        }
+        expected = dict({'id': 1}, **payload)
+        url = '{}?car={}'.format(reverse('treatment-list-shallow'), car.pk)
+        response = self.client.post(url, payload)
+        self.assertEqual(expected, response.data)
+
+        expected = dict({'id': 2}, **payload)
+        url = '{}?car={}'.format(reverse('treatment-list-shallow'), '777')
+        response = self.client.post(url, payload)
+        self.assertEqual(expected, response.data)
+
+    def test_create_returns_403_if_user_not_owner_of_car(self):
+        car = CarFactory(user=self.user)
+        fake_date = datetime.date(2000, 1, 1)
+        payload = {
             'done_by': 'fake_done_by',
             'description': 'fake_description',
             'date': fake_date,
@@ -271,67 +328,196 @@ class TreatmentViewTests(APITestCase):
         response = self.client.post(url, payload)
         self.assertEqual(status.HTTP_403_FORBIDDEN, response.status_code)
 
-    def _test_create_indicates_missing_fields(self):
-        payload = {'brand': 'fake_brand'}  # model is missing
-        response = self.client.post(reverse('car-list'), payload)
-        self.assertEqual(status.HTTP_400_BAD_REQUEST, response.status_code)
-        self.assertIn('model', response.data)
-
-    def _test_create_raises_error_with_bad_payload(self):
+    def test_create_shallow_returns_403_if_user_not_owner_of_car(self):
+        car = CarFactory(user=self.user)
+        fake_date = datetime.date(2000, 1, 1)
         payload = {
-            'brand': 'fake_brand',
-            'model': 'fake_model',
-            'year': 'bad_formatted_date',
-            'gearbox_type': 'bad_selection',
-            'amount_of_owners': 'bad_type',
+            'car': car.pk,
+            'done_by': 'fake_done_by',
+            'description': 'fake_description',
+            'date': fake_date,
+            'kilometrage': 10,
+            'reason': 1,
+            'category': 1,
+            'parts_replaced': 'part1,part2',
         }
-        response = self.client.post(reverse('car-list'), payload)
+        new_user = UserFactory(username='fake_username')
+        self.client.credentials(
+            HTTP_AUTHORIZATION='Token {}'.format(new_user.get_auth_token())
+        )
+        url = reverse('treatment-list-shallow')
+        response = self.client.post(url, payload)
+        self.assertEqual(status.HTTP_403_FORBIDDEN, response.status_code)
+
+    def test_create_indicates_missing_or_null_fields(self):
+        car = CarFactory(user=self.user)
+        payload = {'done_by': '""', 'description': ''}
+        response = self.client.post(
+            reverse('treatment-list', kwargs={'car_pk': car.pk}),
+            payload
+        )
         self.assertEqual(status.HTTP_400_BAD_REQUEST, response.status_code)
-        expected = ['year', 'gearbox_type', 'amount_of_owners']
+        self.assertIn('kilometrage', response.data)
+        self.assertIn('description', response.data)
+        self.assertNotIn('done_by', response.data)
+
+    def test_create_shallow_indicates_missing_or_null_fields(self):
+        car = CarFactory(user=self.user)
+        payload = {'car': car.pk, 'done_by': '""', 'description': ''}
+        response = self.client.post(reverse('treatment-list-shallow'), payload)
+        self.assertEqual(status.HTTP_400_BAD_REQUEST, response.status_code)
+        self.assertIn('kilometrage', response.data)
+        self.assertIn('description', response.data)
+        self.assertNotIn('done_by', response.data)
+
+    def test_create_raises_error_with_bad_payload(self):
+        car = CarFactory(user=self.user)
+        payload = {
+            'done_by': 'fake_done_by',
+            'description': 'fake_description',
+            'date': 'bad_formatted_date',
+            'kilometrage': 1111.5,  # must be integer
+        }
+        response = self.client.post(
+            reverse('treatment-list', kwargs={'car_pk': car.pk}),
+            payload
+        )
+        self.assertEqual(status.HTTP_400_BAD_REQUEST, response.status_code)
+        expected = ['date', 'kilometrage']
         self.assertItemsEqual(expected, response.data.keys())
 
-    def _test_delete(self):
-        # DELETE
+    def test_create_shallow_raises_error_with_bad_payload(self):
         car = CarFactory(user=self.user)
+        payload = {
+            'car': car.pk,
+            'done_by': 'fake_done_by',
+            'description': 'fake_description',
+            'date': 'bad_formatted_date',
+            'kilometrage': '1111.5',  # must be integer
+        }
+        response = self.client.post(
+            reverse('treatment-list-shallow'),
+            payload
+        )
+        self.assertEqual(status.HTTP_400_BAD_REQUEST, response.status_code)
+        expected = ['date', 'kilometrage']
+        self.assertItemsEqual(expected, response.data.keys())
+
+    def test_delete(self):
+        car = CarFactory(user=self.user)
+        treatment = TreatmentFactory(car=car)
         response = self.client.delete(
-            reverse('car-detail', kwargs={'pk': car.pk})
+            reverse(
+                'treatment-detail',
+                kwargs={'car_pk': car.pk, 'pk': treatment.pk}
+            )
         )
         self.assertEqual(status.HTTP_204_NO_CONTENT, response.status_code)
 
-    def _test_delete_returns_404_if_not_owner(self):
+    def test_delete_shallow(self):
         car = CarFactory(user=self.user)
+        treatment = TreatmentFactory(car=car)
+        response = self.client.delete(
+            reverse(
+                'treatment-detail-shallow',
+                kwargs={'pk': treatment.pk}
+            )
+        )
+        self.assertEqual(status.HTTP_204_NO_CONTENT, response.status_code)
+
+    def test_delete_returns_403_if_not_owner(self):
+        car = CarFactory(user=self.user)
+        treatment = TreatmentFactory(car=car)
         new_user = UserFactory(username='fake')
         self.client.credentials(
             HTTP_AUTHORIZATION='Token {}'.format(new_user.get_auth_token())
         )
         response = self.client.delete(
-            reverse('car-detail', kwargs={'pk': car.pk})
+            reverse(
+                'treatment-detail',
+                kwargs={'car_pk': car.pk, 'pk': treatment.pk},
+            )
         )
-        self.assertEqual(status.HTTP_404_NOT_FOUND, response.status_code)
+        self.assertEqual(status.HTTP_403_FORBIDDEN, response.status_code)
 
-    def _test_partial_update(self):
+    def test_delete_shallow_returns_403_if_not_owner(self):
+        car = CarFactory(user=self.user)
+        treatment = TreatmentFactory(car=car)
+        new_user = UserFactory(username='fake')
+        self.client.credentials(
+            HTTP_AUTHORIZATION='Token {}'.format(new_user.get_auth_token())
+        )
+        response = self.client.delete(
+            reverse(
+                'treatment-detail-shallow',
+                kwargs={'pk': treatment.pk},
+            )
+        )
+        self.assertEqual(status.HTTP_403_FORBIDDEN, response.status_code)
+
+    def test_partial_update(self):
         # PATCH
         car = CarFactory(user=self.user)
-        payload = {'brand': 'fake_brand'}
+        treatment = TreatmentFactory(car=car, kilometrage=1)
+        payload = {'kilometrage': 777}
         response = self.client.patch(
-            reverse('car-detail', kwargs={'pk': car.pk}),
+            reverse(
+                'treatment-detail',
+                kwargs={'car_pk': car.pk, 'pk': treatment.pk},
+            ),
             payload,
         )
         self.assertEqual(status.HTTP_200_OK, response.status_code)
-        self.assertEqual('fake_brand', response.data['brand'])
+        self.assertEqual(777, response.data['kilometrage'])
 
-    def _test_partial_update_returns_404_if_not_owner(self):
+    def test_partial_update_shallow(self):
+        # PATCH
         car = CarFactory(user=self.user)
+        treatment = TreatmentFactory(car=car, kilometrage=1)
+        payload = {'kilometrage': 777}
+        response = self.client.patch(
+            reverse(
+                'treatment-detail-shallow',
+                kwargs={'pk': treatment.pk},
+            ),
+            payload,
+        )
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
+        self.assertEqual(777, response.data['kilometrage'])
+
+    def test_partial_update_returns_403_if_not_owner(self):
+        car = CarFactory(user=self.user)
+        treatment = TreatmentFactory(car=car)
         new_user = UserFactory(username='fake')
         self.client.credentials(
             HTTP_AUTHORIZATION='Token {}'.format(new_user.get_auth_token())
         )
         payload = {'brand': 'fake_brand'}
         response = self.client.patch(
-            reverse('car-detail', kwargs={'pk': car.pk}),
+            reverse(
+                'treatment-detail',
+                kwargs={'car_pk': car.pk, 'pk': treatment.pk},
+            ),
             payload,
         )
-        self.assertEqual(status.HTTP_404_NOT_FOUND, response.status_code)
+        self.assertEqual(status.HTTP_403_FORBIDDEN, response.status_code)
+
+    def test_partial_update_shallow_returns_403_if_not_owner(self):
+        car = CarFactory(user=self.user)
+        treatment = TreatmentFactory(car=car)
+        new_user = UserFactory(username='fake')
+        self.client.credentials(
+            HTTP_AUTHORIZATION='Token {}'.format(new_user.get_auth_token())
+        )
+        payload = {'brand': 'fake_brand'}
+        response = self.client.patch(
+            reverse(
+                'treatment-detail-shallow',
+                kwargs={'pk': treatment.pk},
+            ),
+            payload,
+        )
+        self.assertEqual(status.HTTP_403_FORBIDDEN, response.status_code)
 
     def test_head(self):
         pass
@@ -339,13 +525,92 @@ class TreatmentViewTests(APITestCase):
     def test_options(self):
         pass
 
-    def _test_car_detail_methods_return_404_for_non_existing_car(self):
-        methods = ['delete', 'get', 'put', 'patch']
-        for method in methods:
-            response = getattr(self.client, method)(
-                reverse('car-detail', kwargs={'pk': 777})
+    def test_detail_put_not_allowed(self):
+        response = self.client.put(
+            reverse(
+                'treatment-detail',
+                kwargs={'car_pk': 777, 'pk': 777},
             )
-            self.assertEqual(status.HTTP_404_NOT_FOUND, response.status_code)
+        )
+        self.assertEqual(
+            status.HTTP_405_METHOD_NOT_ALLOWED,
+            response.status_code
+        )
+
+    def test_detail_shallow_put_not_allowed(self):
+        response = self.client.put(
+            reverse(
+                'treatment-detail-shallow',
+                kwargs={'pk': 777},
+            )
+        )
+        self.assertEqual(
+            status.HTTP_405_METHOD_NOT_ALLOWED,
+            response.status_code
+        )
+
+    def test_list_put_not_allowed(self):
+        response = self.client.put(
+            reverse('treatment-list', kwargs={'car_pk': 777})
+        )
+        self.assertEqual(
+            status.HTTP_405_METHOD_NOT_ALLOWED,
+            response.status_code
+        )
+
+    def test_list_shallow_put_not_allowed(self):
+        response = self.client.put(
+            reverse('treatment-list-shallow')
+        )
+        self.assertEqual(
+            status.HTTP_405_METHOD_NOT_ALLOWED,
+            response.status_code
+        )
+
+    def _test_detail_return_404_if_non_existing_car(self, method):
+        methods = ['delete', 'get', 'patch']
+        if method not in methods:
+            raise Exception('HTTP Method not supported: {}'.format(method))
+        car = CarFactory(user=self.user)
+        treatment = TreatmentFactory(car=car)
+        response = getattr(self.client, method)(
+            reverse(
+                'treatment-detail',
+                kwargs={'car_pk': 777, 'pk': treatment.pk},
+            )
+        )
+        self.assertEqual(status.HTTP_404_NOT_FOUND, response.status_code)
+
+    def _test_detail_return_404_if_non_existing_treatment(self, method):
+        methods = ['delete', 'get', 'patch']
+        if method not in methods:
+            raise Exception('HTTP Method not supported: {}'.format(method))
+        car = CarFactory(user=self.user)
+        response = getattr(self.client, method)(
+            reverse(
+                'treatment-detail',
+                kwargs={'car_pk': car.pk, 'pk': 777},
+            )
+        )
+        self.assertEqual(status.HTTP_404_NOT_FOUND, response.status_code)
+
+    def test_detail_get_return_404_if_non_existing_car(self):
+        self._test_detail_return_404_if_non_existing_car('get')
+
+    def test_detail_patch_return_404_if_non_existing_car(self):
+        self._test_detail_return_404_if_non_existing_car('patch')
+
+    def test_detail_delete_return_404_if_non_existing_car(self):
+        self._test_detail_return_404_if_non_existing_car('delete')
+
+    def test_detail_delete_return_404_if_non_existing_treatment(self):
+        self._test_detail_return_404_if_non_existing_treatment('delete')
+
+    def test_detail_get_return_404_if_non_existing_treatment(self):
+        self._test_detail_return_404_if_non_existing_treatment('get')
+
+    def test_detail_patch_return_404_if_non_existing_treatment(self):
+        self._test_detail_return_404_if_non_existing_treatment('patch')
 
     def _test_car_detail_methods_return_404_if_not_owner(self):
         methods = ['delete', 'get', 'put', 'patch']

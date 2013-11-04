@@ -78,7 +78,7 @@ class CarViewTests(APITestCase):
         )
         self.assertListEqual(expected, response.data['treatments'])
 
-    def test_detail_returns_404_if_user_not_owner(self):
+    def test_detail_returns_403_if_user_not_owner(self):
         car = CarFactory(user=self.user)
         response = self.client.get(
             reverse('car-detail', kwargs={'pk': car.pk})
@@ -92,8 +92,7 @@ class CarViewTests(APITestCase):
         response = self.client.get(
             reverse('car-detail', kwargs={'pk': car.pk})
         )
-        # We'll get 404 since that car id lookup is bad for that user
-        self.assertEqual(status.HTTP_404_NOT_FOUND, response.status_code)
+        self.assertEqual(status.HTTP_403_FORBIDDEN, response.status_code)
 
     def test_create(self):
         # POST
@@ -141,7 +140,7 @@ class CarViewTests(APITestCase):
         )
         self.assertEqual(status.HTTP_204_NO_CONTENT, response.status_code)
 
-    def test_delete_returns_404_if_not_owner(self):
+    def test_delete_returns_403_if_not_owner(self):
         car = CarFactory(user=self.user)
         new_user = UserFactory(username='fake')
         self.client.credentials(
@@ -150,7 +149,7 @@ class CarViewTests(APITestCase):
         response = self.client.delete(
             reverse('car-detail', kwargs={'pk': car.pk})
         )
-        self.assertEqual(status.HTTP_404_NOT_FOUND, response.status_code)
+        self.assertEqual(status.HTTP_403_FORBIDDEN, response.status_code)
 
     def test_partial_update(self):
         # PATCH
@@ -163,7 +162,7 @@ class CarViewTests(APITestCase):
         self.assertEqual(status.HTTP_200_OK, response.status_code)
         self.assertEqual('fake_brand', response.data['brand'])
 
-    def test_partial_update_returns_404_if_not_owner(self):
+    def test_partial_update_returns_403_if_not_owner(self):
         car = CarFactory(user=self.user)
         new_user = UserFactory(username='fake')
         self.client.credentials(
@@ -174,7 +173,7 @@ class CarViewTests(APITestCase):
             reverse('car-detail', kwargs={'pk': car.pk}),
             payload,
         )
-        self.assertEqual(status.HTTP_404_NOT_FOUND, response.status_code)
+        self.assertEqual(status.HTTP_403_FORBIDDEN, response.status_code)
 
     def test_head(self):
         pass
@@ -183,15 +182,15 @@ class CarViewTests(APITestCase):
         pass
 
     def test_car_detail_methods_return_404_for_non_existing_car(self):
-        methods = ['delete', 'get', 'put', 'patch']
+        methods = ['delete', 'get', 'patch']
         for method in methods:
             response = getattr(self.client, method)(
                 reverse('car-detail', kwargs={'pk': 777})
             )
             self.assertEqual(status.HTTP_404_NOT_FOUND, response.status_code)
 
-    def test_car_detail_methods_return_404_if_not_owner(self):
-        methods = ['delete', 'get', 'put', 'patch']
+    def test_car_detail_methods_return_403_if_not_owner(self):
+        methods = ['delete', 'get', 'patch']
         car = CarFactory(user=self.user)
         new_user = UserFactory(username='fake')
         self.client.credentials(
@@ -201,7 +200,7 @@ class CarViewTests(APITestCase):
             response = getattr(self.client, method)(
                 reverse('car-detail', kwargs={'pk': car.pk})
             )
-            self.assertEqual(status.HTTP_404_NOT_FOUND, response.status_code)
+            self.assertEqual(status.HTTP_403_FORBIDDEN, response.status_code)
 
     def test_car_detail_post_not_allowed(self):
         response = self.client.post(
@@ -214,6 +213,17 @@ class CarViewTests(APITestCase):
 
     def test_put_not_allowed_for_car_list(self):
         response = self.client.put(reverse('car-list'))
+        self.assertEqual(
+            status.HTTP_405_METHOD_NOT_ALLOWED,
+            response.status_code
+        )
+
+    def test_put_not_allowed_for_car_detail(self):
+        payload = {'brand': 'fake', 'model': 'fake'}
+        response = self.client.put(
+            reverse('car-detail', kwargs={'pk': 777}),
+            payload,
+        )
         self.assertEqual(
             status.HTTP_405_METHOD_NOT_ALLOWED,
             response.status_code
