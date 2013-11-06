@@ -6,10 +6,15 @@
 <div class="container">
   <div class="row">
     <div class="col-md-3">
-      <ul class="nav nav-pills">
-        {{#each model}}
-          <li>{{#link-to 'car' this}}{{fullName}}{{/link-to}}</li>
-        {{/each}}
+      <ul class="nav nav-pills nav-stacked">
+        {{#with model as cars}}
+          {{#each car in cars}}
+            <li>{{#link-to 'car' car}}{{car.fullName}}{{/link-to}}</li>
+            {{#if car.treatments}}
+              <li class="dropdown-header">{{#link-to 'treatments' car.id}}Treatments{{/link-to}}</li>
+            {{/if}}
+          {{/each}}
+        {{/with}}
       </ul>
     </div>
     <div class="col-md-9">
@@ -38,9 +43,6 @@
       </table>
     </div>
     <div class="row">
-      {{#if car.treatments}}
-      {{#link-to 'treatments'}}Treatments{{/link-to}}
-      {{/if}}
       {{outlet}}
     </div>
     {{/with}}
