@@ -2,12 +2,14 @@ from mycarhistory.settings.base  import *
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+SECRET_KEY = 'fake'
 
 
 STATIC_URL = '/static/'
 
 # BrowserID
 SITE_URL = ['http://localhost:8888', 'http://127.0.0.1:8888']
+
 
 DATABASES = {
     'default': {
