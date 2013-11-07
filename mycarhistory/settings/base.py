@@ -152,7 +152,6 @@ THIRD_PARTY_APPS = (
     'django_browserid',
     'rest_framework',
     'rest_framework.authtoken',
-    'discover_runner',
     'djangosecure',
 )
 
