@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404
 
 from rest_framework.exceptions import MethodNotAllowed, PermissionDenied
-from rest_framework.generics import ListCreateAPIView
+from rest_framework.generics import ListCreateAPIView, ListAPIView
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticated
 
@@ -26,7 +26,7 @@ class TreatmentDetailAPIViewMixin(object):
         raise MethodNotAllowed(method='PUT')
 
 
-class TreatmentListByCarAPIView(TreatmentAPIViewMixin, ListCreateAPIView):
+class TreatmentListByCarAPIView(TreatmentAPIViewMixin, ListAPIView):
 
     model = Treatment
     serializer_class = TreatmentByCarSerializer

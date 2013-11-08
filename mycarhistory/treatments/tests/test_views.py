@@ -229,32 +229,15 @@ class TreatmentViewTests(APITestCase):
         response = self.client.get(url)
         self.assertEqual(status.HTTP_403_FORBIDDEN, response.status_code)
 
-    def test_create(self):
+    def test_create_to_nested_endpoint_returns_405(self):
         # POST
         car = CarFactory(user=self.user)
-        fake_date = datetime.date(2000, 1, 1)
-        payload = {
-            'done_by': 'fake_done_by',
-            'description': 'fake_description',
-            'date': fake_date,
-            'kilometrage': 10,
-            'reason': 1,
-            'category': 1,
-            'parts_replaced': 'part1,part2',
-        }
-        expected = dict({'id': 1, 'car': car.pk}, **payload)
         url = reverse('treatment-list', kwargs={'car_pk': car.pk})
-        response = self.client.post(url, payload)
-        self.assertEqual(expected, response.data)
-        response = self.client.get(url)
-        self.assertEqual(status.HTTP_200_OK, response.status_code)
-        self.assertEqual(1, len(response.data))
-        self.assertEqual(expected, response.data[0])
-
-        # Again
-        expected = dict({'id': 2, 'car': car.pk}, **payload)
-        response = self.client.post(url, payload)
-        self.assertEqual(expected, response.data)
+        response = self.client.post(url, {})
+        self.assertEqual(
+            status.HTTP_405_METHOD_NOT_ALLOWED,
+            response.status_code
+        )
 
     def test_create_shallow(self):
         # POST
@@ -308,26 +291,6 @@ class TreatmentViewTests(APITestCase):
         response = self.client.post(url, payload)
         self.assertEqual(expected, response.data)
 
-    def test_create_returns_403_if_user_not_owner_of_car(self):
-        car = CarFactory(user=self.user)
-        fake_date = datetime.date(2000, 1, 1)
-        payload = {
-            'done_by': 'fake_done_by',
-            'description': 'fake_description',
-            'date': fake_date,
-            'kilometrage': 10,
-            'reason': 1,
-            'category': 1,
-            'parts_replaced': 'part1,part2',
-        }
-        new_user = UserFactory(username='fake_username')
-        self.client.credentials(
-            HTTP_AUTHORIZATION='Token {}'.format(new_user.get_auth_token())
-        )
-        url = reverse('treatment-list', kwargs={'car_pk': car.pk})
-        response = self.client.post(url, payload)
-        self.assertEqual(status.HTTP_403_FORBIDDEN, response.status_code)
-
     def test_create_shallow_returns_403_if_user_not_owner_of_car(self):
         car = CarFactory(user=self.user)
         fake_date = datetime.date(2000, 1, 1)
@@ -349,18 +312,6 @@ class TreatmentViewTests(APITestCase):
         response = self.client.post(url, payload)
         self.assertEqual(status.HTTP_403_FORBIDDEN, response.status_code)
 
-    def test_create_indicates_missing_or_null_fields(self):
-        car = CarFactory(user=self.user)
-        payload = {'done_by': '""', 'description': ''}
-        response = self.client.post(
-            reverse('treatment-list', kwargs={'car_pk': car.pk}),
-            payload
-        )
-        self.assertEqual(status.HTTP_400_BAD_REQUEST, response.status_code)
-        self.assertIn('kilometrage', response.data)
-        self.assertIn('description', response.data)
-        self.assertNotIn('done_by', response.data)
-
     def test_create_shallow_indicates_missing_or_null_fields(self):
         car = CarFactory(user=self.user)
         payload = {'car': car.pk, 'done_by': '""', 'description': ''}
@@ -369,22 +320,6 @@ class TreatmentViewTests(APITestCase):
         self.assertIn('kilometrage', response.data)
         self.assertIn('description', response.data)
         self.assertNotIn('done_by', response.data)
-
-    def test_create_raises_error_with_bad_payload(self):
-        car = CarFactory(user=self.user)
-        payload = {
-            'done_by': 'fake_done_by',
-            'description': 'fake_description',
-            'date': 'bad_formatted_date',
-            'kilometrage': 1111.5,  # must be integer
-        }
-        response = self.client.post(
-            reverse('treatment-list', kwargs={'car_pk': car.pk}),
-            payload
-        )
-        self.assertEqual(status.HTTP_400_BAD_REQUEST, response.status_code)
-        expected = ['date', 'kilometrage']
-        self.assertItemsEqual(expected, response.data.keys())
 
     def test_create_shallow_raises_error_with_bad_payload(self):
         car = CarFactory(user=self.user)
