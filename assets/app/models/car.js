@@ -5,15 +5,18 @@ MyCarHistory.Car = DS.Model.extend({
     gearboxType: DS.attr('number'),
     amountOfOwners: DS.attr('number'),
     treatments: DS.hasMany('treatment', { async: true }),
+
     fullName: function() {
         return this.get('brand') + ' ' + this.get('model') + ' - ' + this.get('year');
     }.property('brand', 'model', 'year'),
+
     gearboxTypeName: function() {
-        return this.gearboxType === 1 ? 'Manual' : 'Automatic';
-    },
+        return this.get('gearboxType') === 1 ? 'Manual' : 'Automatic';
+    }.property('gearboxType'),
+
     isAutomatic: function() {
-        return this.gearboxType === 2;
-    }.property('isAutomatic')
+        return this.get('gearboxType') === 2;
+    }.property('gearboxType')
 
 
 });
