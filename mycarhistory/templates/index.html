@@ -26,6 +26,14 @@
 
 <script type="text/x-handlebars" id="car">
   <div>
+    <div class="row">
+      {{#if isEditing}}
+      {{partial 'car/edit'}}
+        <button {{action 'doneEditing'}}>Done</button>
+      {{else}}
+        <button {{action 'edit'}}>Edit</button>
+      {{/if}}
+    </div>
     {{#with model as car}}
     <div class="row">
       <legend>Car Details</legend>
@@ -53,6 +61,10 @@
   </div>
 </script>
 
+<script type="text/x-handlebars" id="car/_edit">
+  <p>{{input type="text" value=brand}}</p>
+  <p>{{input type="text" value=model.model}}</p>
+</script>
 
 <script type="text/x-handlebars" id="treatments">
   <legend>Treatments</legend>
