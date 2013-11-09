@@ -31,4 +31,5 @@ class CarDetailAPIView(CarAPIViewMixin, RetrieveUpdateDestroyAPIView):
     permission_classes = (IsAuthenticated, CarOwnerPermission)
 
     def put(self, *args, **kwargs):
-        raise MethodNotAllowed(method='PUT')
+        self.get_object()  # Will raise 404 if doesn't exist
+        return super(CarDetailAPIView, self).put(*args, **kwargs)

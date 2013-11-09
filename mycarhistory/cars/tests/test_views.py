@@ -223,13 +223,37 @@ class CarViewTests(APITestCase):
             response.status_code
         )
 
-    def test_put_not_allowed_for_car_detail(self):
+    def test_update_car_detail(self):
+        # PUT
+        car = CarFactory(
+            user=self.user,
+            brand='not_fake',
+            model='not_fake',
+            )
+        expected = 'fake'
+        payload = {'brand': expected, 'model': expected}
+        response = self.client.put(
+            reverse('car-detail', kwargs={'pk': car.pk}),
+            payload,
+        )
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
+        self.assertEqual(expected, response.data['brand'])
+        self.assertEqual(expected, response.data['model'])
+
+    def test_update_car_detail_raises_400_if_missing_attrs(self):
+        car = CarFactory(user=self.user)
+        payload = {'brand': 'fake'}  # Missing model
+        response = self.client.put(
+            reverse('car-detail', kwargs={'pk': car.pk}),
+            payload,
+        )
+        self.assertEqual(status.HTTP_400_BAD_REQUEST, response.status_code)
+        self.assertIn('model', response.data)
+
+    def test_update_car_detail_raises_404_if_non_existent_car(self):
         payload = {'brand': 'fake', 'model': 'fake'}
         response = self.client.put(
             reverse('car-detail', kwargs={'pk': 777}),
             payload,
         )
-        self.assertEqual(
-            status.HTTP_405_METHOD_NOT_ALLOWED,
-            response.status_code
-        )
+        self.assertEqual(status.HTTP_404_NOT_FOUND, response.status_code)

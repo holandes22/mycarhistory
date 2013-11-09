@@ -23,7 +23,8 @@ class TreatmentAPIViewMixin(object):
 class TreatmentDetailAPIViewMixin(object):
 
     def put(self, *args, **kwargs):
-        raise MethodNotAllowed(method='PUT')
+        self.get_object()
+        return super(TreatmentDetailAPIViewMixin, self).put(*args, **kwargs)
 
 
 class TreatmentListByCarAPIView(TreatmentAPIViewMixin, ListAPIView):

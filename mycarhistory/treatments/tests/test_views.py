@@ -477,29 +477,162 @@ class TreatmentViewTests(APITestCase):
     def test_options(self):
         pass
 
-    def test_detail_put_not_allowed(self):
+    def test_update_treatment_detail(self):
+        # PUT
+        car = CarFactory(user=self.user)
+        treatment = TreatmentFactory(
+            car=car,
+            done_by='not_fake',
+            description='not_fake',
+            kilometrage=11,
+        )
+        expected = 'fake'
+        payload = {
+            'done_by': expected,
+            'description': expected,
+            'kilometrage': 22,
+        }
         response = self.client.put(
             reverse(
                 'treatment-detail',
-                kwargs={'car_pk': 777, 'pk': 777},
-            )
+                kwargs={'car_pk': car.pk, 'pk': treatment.pk}
+            ),
+            payload,
         )
-        self.assertEqual(
-            status.HTTP_405_METHOD_NOT_ALLOWED,
-            response.status_code
-        )
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
+        self.assertEqual(expected, response.data['done_by'])
+        self.assertEqual(expected, response.data['description'])
+        self.assertEqual(22, response.data['kilometrage'])
 
-    def test_detail_shallow_put_not_allowed(self):
+    def test_update_treatment_detail_shallow(self):
+        # PUT
+        car = CarFactory(user=self.user)
+        treatment = TreatmentFactory(
+            car=car,
+            done_by='not_fake',
+            description='not_fake',
+            kilometrage=11,
+        )
+        expected = 'fake'
+        payload = {
+            'car': car.pk,
+            'done_by': expected,
+            'description': expected,
+            'kilometrage': 22,
+        }
         response = self.client.put(
             reverse(
                 'treatment-detail-shallow',
-                kwargs={'pk': 777},
-            )
+                kwargs={'pk': treatment.pk}
+            ),
+            payload,
         )
-        self.assertEqual(
-            status.HTTP_405_METHOD_NOT_ALLOWED,
-            response.status_code
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
+        self.assertEqual(expected, response.data['done_by'])
+        self.assertEqual(expected, response.data['description'])
+        self.assertEqual(22, response.data['kilometrage'])
+
+    def test_update_treatment_detail_raises_400_if_missing_attrs(self):
+        car = CarFactory(user=self.user)
+        treatment = TreatmentFactory(car=car)
+        expected = 'fake'
+        payload = {
+            'done_by': expected,
+            'description': expected,
+        }
+        response = self.client.put(
+            reverse(
+                'treatment-detail',
+                kwargs={'car_pk': car.pk, 'pk': treatment.pk}
+            ),
+            payload,
         )
+        self.assertEqual(status.HTTP_400_BAD_REQUEST, response.status_code)
+        self.assertIn('kilometrage', response.data)
+
+    def test_update_shallow_treatment_detail_raises_400_if_missing_attrs(self):
+        car = CarFactory(user=self.user)
+        treatment = TreatmentFactory(car=car)
+        expected = 'fake'
+        payload = {
+            'car': car.pk,
+            'done_by': expected,
+            'description': expected,
+        }
+        response = self.client.put(
+            reverse(
+                'treatment-detail-shallow',
+                kwargs={'pk': treatment.pk}
+            ),
+            payload,
+        )
+        self.assertEqual(status.HTTP_400_BAD_REQUEST, response.status_code)
+        self.assertIn('kilometrage', response.data)
+
+    def test_update_detail_raises_404_if_no_such_car(self):
+        car = CarFactory(user=self.user)
+        treatment = TreatmentFactory(car=car)
+        payload = {
+            'done_by': 'fake',
+            'description': 'fake',
+            'kilometrage': 22,
+        }
+        response = self.client.put(
+            reverse(
+                'treatment-detail',
+                kwargs={'car_pk': 777, 'pk': treatment.pk}),
+            payload,
+        )
+        self.assertEqual(status.HTTP_404_NOT_FOUND, response.status_code)
+
+    def test_update_detail_shallow_raises_400_if_no_such_car(self):
+        car = CarFactory(user=self.user)
+        treatment = TreatmentFactory(car=car)
+        payload = {
+            'car': 777,
+            'done_by': 'fake',
+            'description': 'fake',
+            'kilometrage': 22,
+        }
+        response = self.client.put(
+            reverse(
+                'treatment-detail-shallow',
+                kwargs={'pk': treatment.pk}),
+            payload,
+        )
+        self.assertEqual(status.HTTP_400_BAD_REQUEST, response.status_code)
+        self.assertIn('car', response.data)
+
+    def test_update_detail_raises_404_if_no_such_treatment(self):
+        car = CarFactory(user=self.user)
+        payload = {
+            'done_by': 'fake',
+            'description': 'fake',
+            'kilometrage': 22,
+        }
+        response = self.client.put(
+            reverse(
+                'treatment-detail',
+                kwargs={'car_pk': car.pk, 'pk': 777}),
+            payload,
+        )
+        self.assertEqual(status.HTTP_404_NOT_FOUND, response.status_code)
+
+    def test_update_detail_shallow_raises_404_if_no_such_treatment(self):
+        car = CarFactory(user=self.user)
+        payload = {
+            'car': car.pk,
+            'done_by': 'fake',
+            'description': 'fake',
+            'kilometrage': 22,
+        }
+        response = self.client.put(
+            reverse(
+                'treatment-detail-shallow',
+                kwargs={'pk': 777}),
+            payload,
+        )
+        self.assertEqual(status.HTTP_404_NOT_FOUND, response.status_code)
 
     def test_list_put_not_allowed(self):
         response = self.client.put(
