@@ -25,7 +25,16 @@ class TreatmentViewTests(APITestCase):
         response = self.client.get(
             reverse('treatment-list', kwargs={'car_pk': car.pk})
         )
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
         self.assertEqual(2, len(response.data))
+
+    def test_list_returns_empty_list_if_no_treatments(self):
+        car = CarFactory(user=self.user)
+        response = self.client.get(
+            reverse('treatment-list', kwargs={'car_pk': car.pk})
+        )
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
+        self.assertEqual(0, len(response.data))
 
     def test_list_shallow_filter_by_car_param(self):
         car1 = CarFactory(user=self.user)
@@ -42,7 +51,15 @@ class TreatmentViewTests(APITestCase):
         response = self.client.get(url)
         self.assertEqual(2, len(response.data))
         ids = [_['id'] for _ in response.data]
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
         self.assertTrue(other_treatment.pk not in ids)
+
+    def test_list_shallow_returns_empty_list_if_no_treatments(self):
+        car = CarFactory(user=self.user)
+        url = '{}?car={}'.format(reverse('treatment-list-shallow'), car.pk)
+        response = self.client.get(url)
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
+        self.assertEqual(0, len(response.data))
 
     def test_list_shallow_returns_all_owner_treatments_if_no_car_filter(self):
         car1 = CarFactory(user=self.user)

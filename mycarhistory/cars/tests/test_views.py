@@ -25,6 +25,11 @@ class CarViewTests(APITestCase):
         self.assertEqual(status.HTTP_200_OK, response.status_code)
         self.assertEqual(2, len(response.data))
 
+    def test_list_returns_empty_list_if_no_cars(self):
+        response = self.client.get(reverse('car-list'))
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
+        self.assertEqual(0, len(response.data))
+
     def test_list_only_authenticated_user(self):
         CarFactory(user=self.user)
         new_user = UserFactory(username='fake')
