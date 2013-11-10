@@ -1,4 +1,4 @@
-MyCarHistory.Car = DS.Model.extend({
+App.Car = DS.Model.extend({
     brand: DS.attr('string'),
     model: DS.attr('string'),
     year: DS.attr('number'),

@@ -5,6 +5,6 @@ if ( typeof CURRENT_USER_AUTH_TOKEN != 'undefined'){
     });
 }
 
-MyCarHistory = Ember.Application.create({
+App = Ember.Application.create({
     rootElement: '#emberRoot'
 });

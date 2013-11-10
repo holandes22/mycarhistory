@@ -1,4 +1,4 @@
-MyCarHistory.CarController = Ember.ObjectController.extend({
+App.CarController = Ember.ObjectController.extend({
     isEditing: false,
 
     actions: {

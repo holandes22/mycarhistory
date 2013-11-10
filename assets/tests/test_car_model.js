@@ -1,5 +1,5 @@
 test("Car fullName include brand, model and year", function() {
-    var store = MyCarHistory.__container__.lookup('store:main');
+    var store = App.__container__.lookup('store:main');
     var car = store.createRecord('car', {
         brand: 'fake_b', model: 'fake_m', year: 2000
     })
@@ -19,7 +19,7 @@ test("Car gearboxType raises error if value not 1 nor 2", function() {
 });
 
 test("Car isAutomatic is true when gearboxType is 2", function() {
-    var store = MyCarHistory.__container__.lookup('store:main');
+    var store = App.__container__.lookup('store:main');
     var car = store.createRecord('car', { gearboxType: 2 })
     ok(
         car.get('isAutomatic'),
@@ -28,7 +28,7 @@ test("Car isAutomatic is true when gearboxType is 2", function() {
 });
 
 test("Car isAutomatic is false when gearboxType is 1", function() {
-    var store = MyCarHistory.__container__.lookup('store:main');
+    var store = App.__container__.lookup('store:main');
     var car = store.createRecord('car', { gearboxType: 1 })
     equal(
         false,
@@ -38,7 +38,7 @@ test("Car isAutomatic is false when gearboxType is 1", function() {
 });
 
 test("Car gearboxTypeName is Manual when gearboxType is 1", function() {
-    var store = MyCarHistory.__container__.lookup('store:main');
+    var store = App.__container__.lookup('store:main');
     var car = store.createRecord('car', { gearboxType: 1 })
     equal(
         'Manual',
@@ -48,7 +48,7 @@ test("Car gearboxTypeName is Manual when gearboxType is 1", function() {
 });
 
 test("Car gearboxTypeName is Automatic when gearboxType is 2", function() {
-    var store = MyCarHistory.__container__.lookup('store:main');
+    var store = App.__container__.lookup('store:main');
     var car = store.createRecord('car', { gearboxType: 2 })
     equal(
         'Automatic',
