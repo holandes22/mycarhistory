@@ -5,8 +5,8 @@
 // ==========================================================================
 
 
-// 0.13.1-51-ge332f61
-// e332f61 (2013-10-17 09:52:46 -0700)
+// 0.13.1-66-g043abcb
+// 043abcb (2013-11-12 22:06:25 -0600)
 
 
 (function() {
@@ -105,9 +105,9 @@ DS.DjangoRESTSerializer = DS.RESTSerializer.extend({
 
     /**
       Underscores relationship names when serializing relationship keys.
-  
+
       Stolen from DS.ActiveModelSerializer.
-      
+
       @method keyForRelationship
       @param {String} key
       @param {String} kind
@@ -115,6 +115,47 @@ DS.DjangoRESTSerializer = DS.RESTSerializer.extend({
     */
     keyForRelationship: function(key, kind) {
         return Ember.String.decamelize(key);
+    },
+
+    /**
+      Underscore relationship names when serializing belongsToRelationships
+
+      @method serializeBelongsTo
+    */
+    serializeBelongsTo: function(record, json, relationship) {
+        var key = relationship.key;
+        var belongsTo = record.get(key);
+        var json_key = this.keyForRelationship ? this.keyForRelationship(key, "belongsTo") : key;
+
+        if (Ember.isNone(belongsTo)) {
+          json[json_key] = belongsTo;
+        } else {
+          if (typeof(record.get(key)) === 'string') {
+            json[json_key] = record.get(key);
+          }else{
+            json[json_key] = record.get(key).get('id');
+          }
+        }
+
+        if (relationship.options.polymorphic) {
+          this.serializePolymorphicType(record, json, relationship);
+        }
+    },
+
+    /**
+      Underscore relationship names when serializing hasManyRelationships
+
+      @method serializeHasMany
+    */
+    serializeHasMany: function(record, json, relationship) {
+        var key = relationship.key,
+            json_key = this.keyForRelationship(key, "hasMany"),
+            relationshipType = DS.RelationshipChange.determineRelationshipType(
+                record.constructor, relationship);
+
+        if (relationshipType === 'manyToNone' ||
+            relationshipType === 'manyToMany')
+            json[json_key] = record.get(key).mapBy('id');
     }
 
 });
@@ -150,7 +191,7 @@ DS.DjangoRESTAdapter = DS.RESTAdapter.extend({
 
 
     createRecord: function(store, type, record) {
-        var url = this.getCorrectPostUrl(record, this.buildURL(type.typeKey));
+        var url = this.buildURL(type.typeKey);
         var data = store.serializerFor(type.typeKey).serialize(record);
         return this.ajax(url, "POST", { data: data });
     },
@@ -189,54 +230,7 @@ DS.DjangoRESTAdapter = DS.RESTAdapter.extend({
         if (url.charAt(url.length -1) !== '/') {
             url += '/';
         }
-        return url;
-    },
 
-    getBelongsTo: function(record) {
-        var totalParents = [];
-        record.eachRelationship(function(name, relationship) {
-            if (relationship.kind === 'belongsTo') {
-                totalParents.push(name);
-            }
-        }, this);
-        return totalParents;
-    },
-
-    getNonEmptyRelationships: function(record, totalParents) {
-        var totalHydrated = [];
-        totalParents.forEach(function(item) {
-            if (record.get(item) !== null) {
-                totalHydrated.push(item);
-            }
-        }, this);
-        return totalHydrated;
-    },
-
-    getCorrectPostUrl: function(record, url) {
-        var totalParents = this.getBelongsTo(record);
-        var totalHydrated = this.getNonEmptyRelationships(record, totalParents);
-        if (totalParents.length > 1 && totalHydrated.length <= 1) {
-            return this.buildUrlWithParentWhenAvailable(record, url, totalHydrated);
-        }
-
-        if (totalParents.length === 1 && totalHydrated.length === 1) {
-            var parent_value = record.get(totalParents[0]).get('id'); //todo find pk (not always id)
-            var parent_plural = Ember.String.pluralize(totalParents[0]);
-            var endpoint = url.split('/').reverse()[1];
-            return url.replace(endpoint, parent_plural + "/" + parent_value + "/" + endpoint);
-        }
-
-        return url;
-    },
-
-    buildUrlWithParentWhenAvailable: function(record, url, totalHydrated) {
-        if (record && url && totalHydrated && totalHydrated.length > 0) {
-            var parent_type = totalHydrated[0];
-            var parent_pk = record.get(parent_type).get('id'); //todo find pk (not always id)
-            var parent_plural = Ember.String.pluralize(parent_type);
-            var endpoint = url.split('/').reverse()[1];
-            url = url.replace(endpoint, parent_plural + "/" + parent_pk + "/" + endpoint);
-        }
         return url;
     },
 
