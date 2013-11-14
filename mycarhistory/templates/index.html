@@ -27,12 +27,10 @@
 <script type="text/x-handlebars" id="car">
   <div>
     <div class="row">
-      {{#if isEditing}}
       {{partial 'car/edit'}}
-        <button {{action 'doneEditing'}}>Done</button>
-      {{else}}
-        <button {{action 'edit'}}>Edit</button>
-      {{/if}}
+      <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+        Edit
+      </button>
     </div>
     {{#with model as car}}
     <div class="row">
@@ -61,10 +59,6 @@
   </div>
 </script>
 
-<script type="text/x-handlebars" id="car/_edit">
-  <p>{{input type="text" value=brand}}</p>
-  <p>{{input type="text" value=model.model}}</p>
-</script>
 
 <script type="text/x-handlebars" id="treatments">
   <legend>Treatments</legend>
@@ -90,6 +84,29 @@
       <td>{{date}}</td>
     </tr>
   </table>
+</script>
+
+
+<!-- Modal -->
+<script type="text/x-handlebars" id="car/_edit">
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title" id="myModalLabel">Car Details</h4>
+        </div>
+        <div class="modal-body">
+          <p>{{input type="text" value=brand}}</p>
+          <p>{{input type="text" value=model.model}}</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button {{action 'updateCar'}} type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
 </script>
 
 {% endverbatim %}
