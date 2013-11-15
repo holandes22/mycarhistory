@@ -18,6 +18,5 @@ App.Car = DS.Model.extend({
         return this.get('gearboxType') === 2;
     }.property('gearboxType')
 
-
 });
 

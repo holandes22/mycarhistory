@@ -6,6 +6,8 @@
 <div class="container">
   <div class="row">
     <div class="col-md-3">
+      <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#carAddModal">+ Add Car</button>
+      <legend>Cars</legend>
       <ul class="nav nav-pills nav-stacked">
         {{#with model as cars}}
           {{#each car in cars}}
@@ -18,6 +20,8 @@
       </ul>
     </div>
     <div class="col-md-9">
+      {{partial 'car/add'}}
+      {{partial 'car/delete'}}
       {{outlet}}
     </div>
   </div>
@@ -28,8 +32,11 @@
   <div>
     <div class="row">
       {{partial 'car/edit'}}
-      <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+      <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#carEditModal">
         Edit
+      </button>
+      <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#carDeleteModal">
+        Delete
       </button>
     </div>
     {{#with model as car}}
@@ -87,18 +94,16 @@
 </script>
 
 
-<!-- Modal -->
 <script type="text/x-handlebars" id="car/_edit">
-  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal fade" id="carEditModal" tabindex="-1" role="dialog" aria-labelledby="carEditModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title" id="myModalLabel">Car Details</h4>
+          <h4 class="modal-title" id="carEditModalLabel">Edit {{fullName}} details</h4>
         </div>
         <div class="modal-body">
-          <p>{{input type="text" value=brand}}</p>
-          <p>{{input type="text" value=model.model}}</p>
+          {{partial 'carEditForm'}}
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -107,6 +112,65 @@
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
+</script>
+
+<script type="text/x-handlebars" id="car/_add">
+  <div class="modal fade" id="carAddModal" tabindex="-1" role="dialog" aria-labelledby="carAddModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title" id="carAddModalLabel">Add a new car</h4>
+        </div>
+        <div class="modal-body">
+          {{partial 'carEditForm'}}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button {{action 'addCar'}} type="button" class="btn btn-primary">Add</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+</script>
+
+<script type="text/x-handlebars" id="car/_delete">
+  <div class="modal fade" id="carDeleteModal" tabindex="-1" role="dialog" aria-labelledby="carDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title" id="carDeleteModalLabel">Add a new car</h4>
+        </div>
+        <div class="modal-body">
+          <p>
+            Are you sure you would like to remove {{fullName}} from your car list?. This will also remove all the
+            related treatments.
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button {{action 'deleteCar'}} type="button" class="btn btn-primary">Delete</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+</script>
+
+<script type="text/x-handlebars" id="carEditForm">
+    {{#form-for model}}
+      {{input brand}}
+      {{input model.model label="Model"}}
+      {{input kilometrage as="number"}}
+      {{input year as="number"}}
+      {{input amountOfOwners as="number"}}
+      {{input gearboxType as="select"
+        collection="App.gearboxTypes"
+        selection="gearboxTypes"
+        prompt="Select Gearbox Type"
+      }}
+
+    {{/form-for}}
 </script>
 
 {% endverbatim %}

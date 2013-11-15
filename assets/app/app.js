@@ -6,5 +6,6 @@ if ( typeof CURRENT_USER_AUTH_TOKEN != 'undefined'){
 }
 
 App = Ember.Application.create({
-    rootElement: '#emberRoot'
+    rootElement: '#emberRoot',
+    gearboxTypes: [1, 2]
 });
