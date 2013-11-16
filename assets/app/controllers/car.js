@@ -19,12 +19,8 @@ App.CarsController = Ember.ObjectController.extend({
                 }
             );
             car.save();
-        },
-
-        deleteCar: function(car) {
-            car.deleteRecord();
-            car.save()
         }
+
     }
 
 });
@@ -32,11 +28,13 @@ App.CarsController = Ember.ObjectController.extend({
 App.CarController = Ember.ObjectController.extend({
 
     actions: {
-        updateCar: function(event) {
-            car = this.get('model')
-            this.get('store').find('car', car.id).then(function(car){
-                car.save()
-            });
+        updateCar: function(car) {
+            car.save()
+        },
+
+        deleteCar: function(car) {
+            car.deleteRecord();
+            car.save()
         }
     }
 });
