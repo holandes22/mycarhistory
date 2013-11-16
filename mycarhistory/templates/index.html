@@ -6,8 +6,9 @@
 <div class="container">
   <div class="row">
     <div class="col-md-3">
-      <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#carAddModal">+ Add Car</button>
-      <legend>Cars</legend>
+      <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#carAddModal">
+        <span class="glyphicon glyphicon-plus"></span> Add Car
+      </button>
       <ul class="nav nav-pills nav-stacked">
         {{#with model as cars}}
           {{#each car in cars}}
@@ -32,12 +33,6 @@
     <div class="row">
       {{partial 'car/edit'}}
       {{partial 'car/delete'}}
-      <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#carEditModal">
-        Edit
-      </button>
-      <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#carDeleteModal">
-        Delete
-      </button>
     </div>
     {{#with model as car}}
     <div class="row">
@@ -49,6 +44,7 @@
           <th>Year</th>
           <th>Owners</th>
           <th>Automatic?</th>
+          <th>Actions</th>
         </tr>
         <tr>
           <td>{{car.brand}}</td>
@@ -56,6 +52,14 @@
           <td>{{car.year}}</td>
           <td>{{car.amountOfOwners}}</td>
           <td>{{car.isAutomatic}}</td>
+          <td>
+            <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#carEditModal" title="Edit">
+              <span class="glyphicon glyphicon-edit"></span>
+            </button>
+            <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#carDeleteModal" title="Remove">
+              <span class="glyphicon glyphicon-remove"></span>
+            </button>
+          </td>
         </tr>
       </table>
     </div>
