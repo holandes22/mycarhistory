@@ -24,7 +24,18 @@ App.CarsController = Ember.ObjectController.extend(App.CarControllerMixin, {
                     gearboxType: gearboxType
                 }
             );
-            car.save();
+            car.save().then(
+                function() {
+                    self.transitionToRoute('cars', car.id);
+                },
+                function(error) {
+                    console.log(error.status);
+                    var errors = error.responseJSON;
+                    for (var key in errors) {
+                        console.log(key, errors[key]);
+                    }
+                }
+            );
         }
 
     }
