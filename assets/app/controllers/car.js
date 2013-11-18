@@ -1,10 +1,17 @@
-App.CarsController = Ember.ObjectController.extend({
+App.CarControllerMixin = Ember.Mixin.create({
+    gearboxTypes: [
+        {label: GEARBOX_TYPES['1'] , type: 1},
+        {label: GEARBOX_TYPES['2'], type: 2}
+    ],
+    years: YEAR_LIST
+});
+
+App.CarsController = Ember.ObjectController.extend(App.CarControllerMixin, {
 
     actions: {
         addCar: function(event) {
             var brand = this.get('brand');
             var model = this.get('model.model');
-            var kilometrage = this.get('kilometrage');
             var year = this.get('year');
             var amountOfOwners = this.get('amountOfOwners');
             var gearboxType = this.get('gearboxType');
@@ -12,8 +19,7 @@ App.CarsController = Ember.ObjectController.extend({
                 {
                     brand: brand,
                     model: model,
-                    kilometrage: kilometrage,
-                    year: 1979,
+                    year: year,
                     amountOfOwners: amountOfOwners,
                     gearboxType: gearboxType
                 }
@@ -25,16 +31,16 @@ App.CarsController = Ember.ObjectController.extend({
 
 });
 
-App.CarController = Ember.ObjectController.extend({
+App.CarController = Ember.ObjectController.extend(App.CarControllerMixin, {
 
     actions: {
         updateCar: function(car) {
-            car.save()
+            car.save();
         },
 
         deleteCar: function(car) {
             car.deleteRecord();
-            car.save()
+            car.save();
         }
     }
 });

@@ -16,7 +16,7 @@
           var CURRENT_USER_AUTH_TOKEN = "{{ user.get_auth_token }}";
         {% endif %}
     </script>
-  
+
     {% browserid_info %}
     <script type="text/x-handlebars" id="application">
     <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
@@ -56,7 +56,7 @@
     {% endverbatim %}
 
     </script>
-    
+
     {% block page_content %}{% endblock page_content%}
 
     {% comment %}
@@ -71,12 +71,14 @@
     <script src="{{ STATIC_URL }}libs/js/ember.js" type="text/javascript"></script>
     <script src="{{ STATIC_URL }}libs/js/ember-data.js" type="text/javascript"></script>
     <script src="{{ STATIC_URL }}libs/js/ember-data-django-rest-adapter.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}libs/js/moment.min.js" type="text/javascript"></script>
     {% browserid_js %}
     {% comment %}
     =========
     Ember App
     =========
     {% endcomment %}
+    <script src="{{ STATIC_URL }}app/definitions.js" type="text/javascript"></script>
     <script src="{{ STATIC_URL }}app/app.js" type="text/javascript"></script>
     <script src="{{ STATIC_URL }}app/models/car.js" type="text/javascript"></script>
     <script src="{{ STATIC_URL }}app/models/treatment.js" type="text/javascript"></script>

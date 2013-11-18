@@ -11,12 +11,13 @@ App.Car = DS.Model.extend({
     }.property('brand', 'model', 'year'),
 
     gearboxTypeName: function() {
-        return this.get('gearboxType') === 1 ? 'Manual' : 'Automatic';
+        return this.get('gearboxType') === 1 ? GEARBOX_TYPES['1'] : GEARBOX_TYPES['2'];
     }.property('gearboxType'),
 
     isAutomatic: function() {
         return this.get('gearboxType') === 2;
-    }.property('gearboxType')
+    }.property('gearboxType'),
 
 });
+
 

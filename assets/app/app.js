@@ -5,6 +5,6 @@ if ( typeof CURRENT_USER_AUTH_TOKEN != 'undefined'){
     });
 }
 
-App = Ember.Application.create({
+var App = Ember.Application.create({
     rootElement: '#emberRoot',
 });
