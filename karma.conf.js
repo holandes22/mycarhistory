@@ -11,6 +11,7 @@ module.exports = function(config) {
       'libs/js/ember-data.js',
       'libs/js/bootstrap.min.js',
       'libs/js/ember-data-django-rest-adapter.js',
+      'libs/js/moment.min.js',
 
       'app/*.js',
       'app/adapters/*.js',
