@@ -12,7 +12,7 @@ App.CarsRoute = Ember.Route.extend({
     model: function() {
         return this.store.find('car');
     },
-})
+});
 
 App.TreatmentsRoute = Ember.Route.extend({
     model: function(params, transition, queryParams) {
@@ -20,4 +20,4 @@ App.TreatmentsRoute = Ember.Route.extend({
             { car: transition.params.car_id }
         );
     }
-})
+});
