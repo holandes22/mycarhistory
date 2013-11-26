@@ -191,10 +191,14 @@
       <div class="form-group">
         <label>Amount of owners</label>
         {{input type="number" class="form-control" value=amountOfOwners}}
+        <div class="form-error-field" data-toggle="tooltip" title="">{{controller.errors.amountOfOwners}}</div>
       </div>
     </form>
 </script>
 
 
 {% endverbatim %}
+
+
+
 {% endblock page_content %}

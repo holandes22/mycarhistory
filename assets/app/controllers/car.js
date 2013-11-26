@@ -7,7 +7,6 @@ App.CarControllerMixin = Ember.Mixin.create({
 });
 
 App.CarsController = Ember.ObjectController.extend(App.CarControllerMixin, {
-
     actions: {
         addCar: function(event) {
             var brand = this.get('brand');
@@ -24,16 +23,20 @@ App.CarsController = Ember.ObjectController.extend(App.CarControllerMixin, {
                     gearboxType: gearboxType
                 }
             );
+            var self = this; // CarsController
             car.save().then(
-                function() {
-                    self.transitionToRoute('cars', car.id);
+                function(newCar) {
+                    var newCarId = newCar.get('id');
+                    self.transitionTo('car', newCarId);
                 },
                 function(error) {
-                    console.log(error.status);
-                    var errors = error.responseJSON;
-                    for (var key in errors) {
-                        console.log(key, errors[key]);
-                    }
+                    var errors = {};
+                    var APIErrors = error.responseJSON;
+                    jQuery.each(APIErrors, function(key, value){
+                        var camelCaseKey = Ember.String.camelize(key);
+                        errors[camelCaseKey] = value[0];
+                    });
+                    self.set('errors', errors);
                 }
             );
         }
