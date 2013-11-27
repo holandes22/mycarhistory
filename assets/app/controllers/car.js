@@ -30,9 +30,10 @@ App.CarsController = Ember.ObjectController.extend(App.CarControllerMixin, {
                     self.transitionTo('car', newCarId);
                 },
                 function(error) {
+                    car.deleteRecord();
                     var errors = {};
-                    var APIErrors = error.responseJSON;
-                    jQuery.each(APIErrors, function(key, value){
+                    var errorsFromAPI = error.responseJSON;
+                    jQuery.each(errorsFromAPI, function(key, value){
                         var camelCaseKey = Ember.String.camelize(key);
                         errors[camelCaseKey] = value[0];
                     });
