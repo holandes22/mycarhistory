@@ -7,6 +7,7 @@ App.CarControllerMixin = Ember.Mixin.create({
 });
 
 App.CarsController = Ember.ObjectController.extend(App.CarControllerMixin, {
+    needs: 'application',
     actions: {
         addCar: function(event) {
             var brand = this.get('brand');
@@ -26,18 +27,24 @@ App.CarsController = Ember.ObjectController.extend(App.CarControllerMixin, {
             var self = this; // CarsController
             car.save().then(
                 function(newCar) {
+                    $('.modal').modal('hide');  // TODO: View logic, Should be placed elsewhere, where??
                     var newCarId = newCar.get('id');
-                    self.transitionTo('car', newCarId);
+                    self.transitionToRoute('car', newCarId);
                 },
                 function(error) {
-                    car.deleteRecord();
-                    var errors = {};
-                    var errorsFromAPI = error.responseJSON;
-                    jQuery.each(errorsFromAPI, function(key, value){
-                        var camelCaseKey = Ember.String.camelize(key);
-                        errors[camelCaseKey] = value[0];
-                    });
-                    self.set('errors', errors);
+                    if (error.status === 400) {
+                        car.deleteRecord();
+                        var errors = {};
+                        var errorsFromAPI = error.responseJSON;
+                        jQuery.each(errorsFromAPI, function(key, value){
+                            var camelCaseKey = Ember.String.camelize(key);
+                            errors[camelCaseKey] = value[0];
+                        });
+                        self.set('errors', errors);
+                    } else {
+                        $('.modal').modal('hide');
+                        self.get('controllers.application').send('error', error);
+                    }
                 }
             );
         }
@@ -55,7 +62,15 @@ App.CarController = Ember.ObjectController.extend(App.CarControllerMixin, {
 
         deleteCar: function(car) {
             car.deleteRecord();
-            car.save();
+            var self = this;
+            car.save().then(
+                function() {
+                    self.transitionTo('cars');
+                },
+                function(error) {
+                    alert(error);
+                }
+            );
         }
     }
 });

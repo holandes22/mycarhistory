@@ -2,6 +2,18 @@
 {% block page_content %}
 {% verbatim %}
 
+<script type="text/x-handlebars" id="404">
+  <div class="container">
+    <div class="alert alert-info"><strong>404</strong> The requested resource cannot be found.</div>
+  </div>
+</script>
+
+<script type="text/x-handlebars" id="error">
+  <div class="container">
+    <div class="alert alert-danger"><strong>{{status}}</strong> {{message}}</div>
+  </div>
+</script>
+
 <script type="text/x-handlebars" id="cars">
 <div class="container">
   <div class="row">
