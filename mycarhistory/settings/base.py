@@ -99,8 +99,7 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'compressor.finders.CompressorFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    'pipeline.finders.PipelineFinder',
 )
 
 # Make this unique, and don't share it with anybody.
@@ -153,7 +152,7 @@ THIRD_PARTY_APPS = (
     'rest_framework',
     'rest_framework.authtoken',
     'djangosecure',
-    'compressor',
+    'pipeline',
 )
 
 LOCAL_APPS = (
@@ -188,17 +187,46 @@ REST_FRAMEWORK = {
 
 BROWSERID_CREATE_USER = True
 
-NODE_ROOT = root('..', 'node_modules')
-HANDLEBARS_PATH = os.path.join(
-    NODE_ROOT,
-    'django-ember-precompile',
-    'bin',
-    'django-ember-precompile'
-)
+# Pipeline
 
-COMPRESS_PRECOMPILERS = (
-    ('text/x-handlebars', '{} {{infile}}'.format(HANDLEBARS_PATH)),
-)
+STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
+PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.slimit.SlimItCompressor'
+
+PIPELINE_JS = {
+    'libs': {
+        'source_filenames': (
+            'libs/js/jquery-2.0.3.js',
+            'libs/js/bootstrap.js',
+            'libs/js/handlebars-1.0.0.js',
+            'libs/js/ember.js',
+            'libs/js/ember-data.js',
+            'libs/js/ember-data-django-rest-adapter.js',
+            'libs/js/moment.js',
+        ),
+        'output_filename': 'libs.min.js',
+    },
+    'app': {
+        'source_filenames': (
+            'app/definitions.js',
+            'app/app.js',
+            'app/models/*.js',
+            'app/controllers/*.js',
+            'app/views/*.js',
+            'app/adapters/*.js',
+            'app/router.js',
+            'app/templates/*.handlebars',
+            'app/templates/car/*.handlebars',
+            'app/templates/treatment/*.handlebars',
+        ),
+        'output_filename': 'app.min.js',
+    },
+}
+
+
+PIPELINE_TEMPLATE_EXT = '.handlebars'
+PIPELINE_TEMPLATE_FUNC = 'Ember.Handlebars.compile'
+PIPELINE_TEMPLATE_NAMESPACE = 'window.Ember.TEMPLATES'
+PIPELINE_TEMPLATE_SEPARATOR = '/'
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

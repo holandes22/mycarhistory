@@ -26,3 +26,7 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.herokuapp.com']
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 SITE_ID = 1
+
+# Assets pipeline
+PIPELINE_DISABLE_WRAPPER = True   # Default False screws up moment.js namespace for some reason
+PIPELINE_ENABLED = True

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load staticfiles %}
+{% load compressed %}
 {% load browserid %}
 <html lang="en">
   <head>
@@ -65,29 +66,14 @@
     JavaScript Libs
     ===============
     {% endcomment %}
-
-    <script src="{% static 'libs/js/jquery-2.0.3.min.js' %}"></script>
-    <script src="{% static 'libs/js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'libs/js/handlebars-1.0.0.js' %}"></script>
-    <script src="{% static 'libs/js/ember.js' %}"></script>
-    <script src="{% static 'libs/js/ember-data.js' %}"></script>
-    <script src="{% static 'libs/js/ember-data-django-rest-adapter.js' %}"></script>
-    <script src="{% static 'libs/js/moment.min.js' %}"></script>
+    {% compressed_js 'libs' %}
     {% browserid_js %}
     {% comment %}
     =========
     Ember App
     =========
     {% endcomment %}
-    <script src="{% static 'app/definitions.js' %}"></script>
-    <script src="{% static 'app/app.js' %}"></script>
-    <script src="{% static 'app/models/car.js' %}"></script>
-    <script src="{% static 'app/models/treatment.js' %}"></script>
-    <script src="{% static 'app/controllers/car.js' %}"></script>
-    <script src="{% static 'app/controllers/errors.js' %}"></script>
-    <script src="{% static 'app/views/car.js' %}"></script>
-    <script src="{% static 'app/adapters/django_rest.js' %}"></script>
-    <script src="{% static 'app/router.js' %}"></script>
+    {% compressed_js 'app' %}
     {% block extra_js %}{% endblock extra_js %}
   </body>
 </html>
