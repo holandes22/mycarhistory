@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "bower": "*",
+    "django-ember-precompile": "1.2.0",
     "karma-ember-preprocessor": "*",
     "karma-qunit": "*",
     "karma": "*"

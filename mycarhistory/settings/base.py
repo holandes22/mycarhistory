@@ -99,6 +99,7 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
@@ -119,7 +120,6 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    # Uncomment the next line for simple clickjacking protection:
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
@@ -153,6 +153,7 @@ THIRD_PARTY_APPS = (
     'rest_framework',
     'rest_framework.authtoken',
     'djangosecure',
+    'compressor',
 )
 
 LOCAL_APPS = (
@@ -186,6 +187,18 @@ REST_FRAMEWORK = {
 # BrowserID
 
 BROWSERID_CREATE_USER = True
+
+NODE_ROOT = root('..', 'node_modules')
+HANDLEBARS_PATH = os.path.join(
+    NODE_ROOT,
+    'django-ember-precompile',
+    'bin',
+    'django-ember-precompile'
+)
+
+COMPRESS_PRECOMPILERS = (
+    ('text/x-handlebars', '{} {{infile}}'.format(HANDLEBARS_PATH)),
+)
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

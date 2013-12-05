@@ -26,3 +26,4 @@ pycrypto==2.6.1
 requests==2.0.0
 six==1.4.1
 wsgiref==0.1.2
+django_compressor

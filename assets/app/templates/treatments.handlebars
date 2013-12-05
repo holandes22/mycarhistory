@@ -1,0 +1,15 @@
+<legend>Treatments</legend>
+<div id="treatmentList">
+  <input class="search" placeholder="Search" {{bind-attr value=search}}/>
+  <button class="sort" data-sort="done_by">
+    Sort by mechanic
+  </button>
+  <ul class="list-group">
+  {{#each model}}
+    <li class="list-group-item">
+      {{doneBy}} - {{date}} -{{kilometrage}} - {{link-to 'Details' 'treatment' this}}
+    </li>
+  {{/each}}
+  </ul>
+  {{outlet}}
+</div>
