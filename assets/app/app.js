@@ -16,6 +16,5 @@ Ember.RSVP.configure('onerror', function(error) {
 
 
 Ember.Handlebars.helper('determine-error-class', function(error) {
-    console.log(error);
     return (error.status == 404) ? 'info' : 'danger';
 });

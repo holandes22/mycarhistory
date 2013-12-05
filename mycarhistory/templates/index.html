@@ -10,7 +10,14 @@
 
 <script type="text/x-handlebars" id="error">
   <div class="container">
-    <div class="alert alert-{{unbound determine-error-class model}}"><strong>{{model.status}}</strong> {{model.responseText}}</div>
+    <div class="alert alert-{{unbound determine-error-class model}}">
+      <strong>{{model.status}}</strong> 
+        {{#if model.responseJSON.detail}}
+          {{model.responseJSON.detail}}
+        {{else}}
+          {{model.responseText}}
+        {{/if}}
+    </div>
   </div>
 </script>
 
