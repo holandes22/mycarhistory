@@ -28,9 +28,10 @@ apt::source { "pgdg":
   require     => Exec["pg-apt-key"],      
 }
 
+apt::ppa { "ppa:chris-lea/node.js": }
 
 ### Packages ###
-$needed_packages = [ "build-essential", "postgresql-9.3", "postgresql-server-dev-9.3", "pgadmin3", "libpq-dev", "libevent-dev"]
+$needed_packages = [ "build-essential", "postgresql-9.3", "postgresql-server-dev-9.3", "pgadmin3", "libpq-dev", "libevent-dev", "nodejs"]
 $enhancer_packages = [ "git", "vim"]
 
 package { "all-packages" : 
