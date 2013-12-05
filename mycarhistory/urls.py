@@ -62,14 +62,3 @@ urlpatterns = patterns(
     # BrowserID
     (r'^browserid/', include('django_browserid.urls')),
 )
-
-if settings.DEBUG:
-    urlpatterns += patterns(
-        '',
-        (
-            r'^static/(?P<path>.*)$',
-            'django.views.static.serve',
-            {'document_root': settings.STATIC_ROOT}
-        ),
-        (r'^rest_framework/(?P<path>.*)$', 'django.views.static.serve', {}),
-    )
