@@ -31,9 +31,9 @@
       <ul class="nav nav-pills nav-stacked">
         {{#with model as cars}}
           {{#each car in cars}}
-            <li>{{#link-to 'car' car}}{{car.fullName}}{{/link-to}}</li>
+            <li>{{link-to car.fullName 'car' car}}</li>
             {{#if car.treatments}}
-              <li class="dropdown-header">{{#link-to 'treatments' car.id}}Treatments{{/link-to}}</li>
+              <li class="dropdown-header">{{link-to 'Treatments' 'treatments' car.id}}</li>
             {{/if}}
           {{/each}}
         {{/with}}
@@ -100,7 +100,7 @@
     <ul class="list-group">
     {{#each model}}
       <li class="list-group-item">
-        {{doneBy}} - {{date}} -{{kilometrage}} - {{#link-to 'treatment' this}}Details{{/link-to}}
+        {{doneBy}} - {{date}} -{{kilometrage}} - {{link-to 'Details' 'treatment' this}}
       </li>
     {{/each}}
     </ul>
