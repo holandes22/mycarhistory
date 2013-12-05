@@ -14,4 +14,8 @@ Ember.RSVP.configure('onerror', function(error) {
     console.log(error.stack);
 });
 
-$('#tooltip').tooltip({placement: 'right'})
+
+Ember.Handlebars.helper('determine-error-class', function(error) {
+    console.log(error);
+    return (error.status == 404) ? 'info' : 'danger';
+});

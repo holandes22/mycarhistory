@@ -65,7 +65,7 @@ App.CarController = Ember.ObjectController.extend(App.CarControllerMixin, {
             var self = this;
             car.save().then(
                 function() {
-                    self.transitionTo('cars');
+                    self.transitionToRoute('cars');
                 },
                 function(error) {
                     alert(error);

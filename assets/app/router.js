@@ -7,39 +7,11 @@ App.Router.map(function() {
         });
     });
     this.route("error404", { path: '*:' });
-    this.route("error", { path: '/error' });
 });
 
 App.Error404Route = Ember.Route.extend({
     renderTemplate: function() {
         this.render('404');
-    }
-});
-
-App.ErrorRoute = Ember.Route.extend({
-    renderTemplate: function() {
-        this.render('error');
-    }
-});
-
-App.ApplicationRoute = Ember.Route.extend({
-    actions: {
-        error: function(error, transition) {
-            console.log('Global error catcher:', error.responseText, error.status);
-            if (error.status === 404) {
-                this.transitionTo('error404');
-            }
-            else {
-                controller = this.controllerFor('error');
-                controller.set('status', error.status);
-                if (error.responseJSON.detail) {
-                    controller.set('message', error.responseJSON.detail);
-                } else {
-                    controller.set('message', error.responseText);
-                }
-                this.transitionTo('error');
-            }
-        }
     }
 });
 
