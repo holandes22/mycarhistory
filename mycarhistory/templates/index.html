@@ -85,28 +85,40 @@
 
 <script type="text/x-handlebars" id="treatments">
   <legend>Treatments</legend>
-  <ul>
-  {{#each model}}
-    <li>{{#link-to 'treatment' this}}Treatment done on {{date}}{{/link-to}}</li>
-  {{/each}}
-  {{outlet}}
-  </ul>
+  <div id="treatmentList">
+    <input class="search" placeholder="Search" {{bind-attr value=search}}/>
+    <button class="sort" data-sort="done_by">
+      Sort by mechanic
+    </button>
+    <ul class="list-group">
+    {{#each model}}
+      <li class="list-group-item">
+        {{doneBy}} - {{date}} -{{kilometrage}} - {{#link-to 'treatment' this}}Details{{/link-to}}
+      </li>
+    {{/each}}
+    </ul>
+    {{outlet}}
+  </div>
 </script>
 
 <script type="text/x-handlebars" id="treatment">
   <legend>Treatment Details</legend>
-  <table class="table table-stripped table-bordered">
+  <table class="table table-stripped table-bordered" id="treatmentDetails">
     <tr>
       <th>Done By</th>
       <th>Description</th>
-      <th>Date</th>
+      <th class="hidden">Date</th>
+      <th>Kilometrage</th>
     </tr>
     <tr>
-      <td>{{done_by}}</td>
+      <td>{{doneBy}}</td>
       <td>{{description}}</td>
-      <td>{{date}}</td>
+      <td class="hidden">{{date}}</td>
+      <td>{{kilometrage}}</td>
     </tr>
   </table>
+
+  <button onclick="$('#treatmentDetails tr:eq(0) th:eq(2), #treatmentDetails tr:eq(1) td:eq(2)').toggleClass('hidden');">Showz!</button>
 </script>
 
 
