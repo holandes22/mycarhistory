@@ -3,11 +3,11 @@ $project_name = "mycarhistory"
 
 Exec { path => "/usr/bin:/bin:/usr/sbin:/sbin" }
 
-exec { "apt-get-update": 
+exec { "apt-get-update":
     command => "apt-get update",
 }
 
-exec { "pg-apt-key": 
+exec { "pg-apt-key":
     command => "wget --quiet -O - http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc | sudo apt-key add -"
 }
 
@@ -25,16 +25,25 @@ apt::source { "pgdg":
   release     => "squeeze-pgdg",  # Using debian squeeze seems to work fine in Ubuntu 13.04
   repos       => "main",
   include_src => false,
-  require     => Exec["pg-apt-key"],      
+  require     => Exec["pg-apt-key"],
 }
 
 apt::ppa { "ppa:chris-lea/node.js": }
 
 ### Packages ###
-$needed_packages = [ "build-essential", "postgresql-9.3", "postgresql-server-dev-9.3", "pgadmin3", "libpq-dev", "libevent-dev", "nodejs"]
+$needed_packages = [
+    "build-essential",
+    "postgresql-9.3",
+    "postgresql-server-dev-9.3",
+    "pgadmin3",
+    "libpq-dev",
+    "libevent-dev",
+    "nodejs",
+    "language-pack-en"
+]
 $enhancer_packages = [ "git", "vim"]
 
-package { "all-packages" : 
+package { "all-packages" :
     name    => [$needed_packages, $enhancer_packages],
     ensure  => present,
     require => [Exec["apt-get-update"], Class["apt"]]
@@ -49,7 +58,7 @@ $db_password = postgresql_password($db_user, $db_user)
 
 class { "postgresql::server": }
 
-postgresql::server::db { $db_name: 
+postgresql::server::db { $db_name:
     user => $db_user,
     password => $db_password,
 }
