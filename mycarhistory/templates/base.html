@@ -23,16 +23,20 @@
     <script type="text/x-handlebars" id="application">
     <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
       <div class="navbar-header">
-        <a class="navbar-brand" href="#">My Car History</a>
+        {% verbatim %}
+          {{link-to "My Car History" "main" class="navbar-brand"}}
+        {% endverbatim %}
       </div>
       <div>
         <ul class="nav navbar-nav">
+          {% verbatim %}
           <li>
-            {% verbatim %}
               {{link-to "Cars" "cars"}}
-            {% endverbatim %}
           </li>
-          <li><a>About</a></li>
+          <li>
+            {{link-to "About" "about"}}
+          </li>
+          {% endverbatim %}
           <li class="divider-vertical"></li>
         </ul>
       </div>
@@ -47,10 +51,9 @@
               <li>{% browserid_logout text="Log Out" %}</li>
             </ul>
           {% else %}
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Log In <b class="caret"></b></a>
-            <ul class="dropdown-menu">
-              <li>{% browserid_login text="Log in with Persona" color="orange" %}</li>
-            </ul>
+            {% verbatim %}
+              {{link-to "Log In" "login"}}
+            {% endverbatim %}
           {% endif %}
         </li>
       </ul>

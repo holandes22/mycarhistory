@@ -6,7 +6,10 @@ App.Router.map(function() {
             });
         });
     });
-    this.route("error404", { path: '*:' });
+    this.resource('login');
+    this.resource('about');
+    this.resource('main');
+    this.route('error404', { path: '*:' });
 });
 
 App.Error404Route = Ember.Route.extend({
