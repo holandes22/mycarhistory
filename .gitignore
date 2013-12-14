@@ -1,3 +1,20 @@
 modules/
 mycarhistory.log
 
+# compiled output
+*/dist
+*/tmp
+
+# dependencies
+/frontend/node_modules
+/frontend/vendor/*
+!/frontend/vendor/loader.js
+!/frontend/ember-data-django-rest-adapter/ember-data-django-rest-adapter.js
+
+# misc
+/frontend/.sass-cache
+/frontend/connect.lock
+/frontend/libpeerconnection.log
+.DS_Store
+Thumbs.db
+*/coverage/*
