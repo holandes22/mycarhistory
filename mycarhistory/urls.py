@@ -49,6 +49,11 @@ urlpatterns = patterns(
     ),
 
     url(
+        r'^api/v1/get-auth-token/',
+        'users.views.get_auth_token',
+        name='get-auth-token',
+    ),
+    url(
         r'^api-auth/',
         include('rest_framework.urls', namespace='rest_framework')
     ),
