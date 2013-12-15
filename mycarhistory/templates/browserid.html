@@ -1,0 +1,12 @@
+{% load staticfiles %}
+{% load browserid %}
+
+{% browserid_info %}
+<div class="authentication">
+  {% if user.is_authenticated %}
+    {% browserid_logout text='Log Out' %}
+  {% else %}
+    {% browserid_login text='Log In with Mozilla Persona' color='orange' %}
+  {% endif %}
+</div>
+
