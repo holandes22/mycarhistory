@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 {% load staticfiles %}
 {% load compressed %}
-{% load browserid %}
 <html lang="en">
   <head>
     <meta charset=utf-8>
     <title>{% block page_title %}My Car History{% endblock %}</title>
     <link rel="stylesheet" href="{{ STATIC_URL}}libs/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="{{ STATIC_URL}}libs/css/bootstrap-theme.min.css"/>
-    {% browserid_css %}
+    <link rel="stylesheet" href="/static/browserid/persona-buttons.css" />
     {% block extra_css %}{% endblock extra_css %}
   </head>
   <body>
@@ -19,7 +18,6 @@
         {% endif %}
     </script>
 
-    {% browserid_info %}
     <script type="text/x-handlebars" id="application">
     <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
       <div class="navbar-header">
@@ -48,7 +46,11 @@
             <ul class="dropdown-menu pull-right">
               <li><a href="#">Profile</a></li>
               <li class="divider"></li>
-              <li>{% browserid_logout text="Log Out" %}</li>
+              <li>
+                <a href="/browserid/logout/" data-next="None" class="browserid-logout">
+                  <span>Log Out</span>
+                </a>
+              </li>
             </ul>
           {% else %}
             {% verbatim %}
@@ -70,7 +72,8 @@
     ===============
     {% endcomment %}
     {% compressed_js 'libs' %}
-    {% browserid_js %}
+    <script type="text/javascript" src="/static/browserid/browserid.js"></script>
+    <script type="text/javascript" src="https://login.persona.org/include.js"></script>
     {% comment %}
     =========
     Ember App

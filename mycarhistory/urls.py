@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls import patterns, include, url
 
-from mycarhistory.views import HomePageView
+from mycarhistory.views import HomePageView, BrowserIDPageView
 from mycarhistory.cars.views import CarListAPIView, CarDetailAPIView
 from mycarhistory.treatments.views import TreatmentListByCarAPIView
 from mycarhistory.treatments.views import TreatmentDetailByCarAPIView
@@ -65,5 +65,6 @@ urlpatterns = patterns(
     url(r'^$', HomePageView.as_view(), name='home'),
 
     # BrowserID
+    (r'^browserid/page/', BrowserIDPageView.as_view()),
     (r'^browserid/', include('django_browserid.urls')),
 )
