@@ -17,7 +17,7 @@ var CarController = Ember.ObjectController.extend(CarControllerMixin, {
                     self.transitionToRoute('cars');
                 },
                 function(error) {
-                    alert(error);
+                    window.alert(error);
                 }
             );
         }

@@ -4,17 +4,24 @@ mycarhistory.log
 # compiled output
 */dist
 */tmp
+/static/*
 
 # dependencies
-/frontend/node_modules
-/frontend/vendor/*
-!/frontend/vendor/loader.js
-!/frontend/ember-data-django-rest-adapter/ember-data-django-rest-adapter.js
+frontend/node_modules
+frontend/vendor/*
+!frontend/vendor/loader.js
+!frontend/vendor/browserid
+!frontend/vendor/ember-data-django-rest-adapter
+
+#!/frontend/vendor/ember-data-django-rest-adapter/ember-data-django-rest-adapter.js
+#!/frontend/vendor/browserid/browserid.js
+#!/frontend/vendor/browserid/persona-buttons.css
 
 # misc
-/frontend/.sass-cache
-/frontend/connect.lock
-/frontend/libpeerconnection.log
+frontend/.sass-cache
+frontend/connect.lock
+frontend/libpeerconnection.log
 .DS_Store
 Thumbs.db
-*/coverage/*
+coverage
+.coverage

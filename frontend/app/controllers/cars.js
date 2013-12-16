@@ -30,7 +30,7 @@ var CarsController = Ember.ObjectController.extend(CarControllerMixin, {
                         car.deleteRecord();
                         var errors = {};
                         var errorsFromAPI = error.responseJSON;
-                        jQuery.each(errorsFromAPI, function(key, value){
+                        Ember.$.each(errorsFromAPI, function(key, value){
                             var camelCaseKey = Ember.String.camelize(key);
                             errors[camelCaseKey] = value[0];
                         });

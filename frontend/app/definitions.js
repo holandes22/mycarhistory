@@ -1,5 +1,5 @@
 function getYearList(){
-    var currentYear = moment().year();
+    var currentYear = window.moment().year();
     var startingYear = 1920;
     var years = [];
     for (var i=currentYear; i >= startingYear; i--) {

@@ -3,9 +3,15 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>App</title>
+  <title>My Car History</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- build:css(tmp/result) assets/vendor.min.css -->
+  <link rel="stylesheet" href="/vendor/bootstrap/dist/css/bootstrap.css">
+  <link rel="stylesheet" href="/vendor/bootstrap/dist/css/bootstrap-theme.css">
+  <link rel="stylesheet" href="/vendor/browserid/persona-buttons.css" />
+  <!-- endbuild -->
 
   <!-- build:css(tmp/result) assets/app.min.css -->
   <link rel="stylesheet" href="/assets/app.css">
@@ -34,6 +40,8 @@
 
     <script src="/vendor/jquery/jquery.js"></script>
     <script src="/vendor/moment/moment.js"></script>
+    <script src="/vendor/browserid/browserid.js"></script>
+    <script type="text/javascript" src="https://login.persona.org/include.js"></script>
 
     <!-- @if dist=false -->
     <script src="/vendor/handlebars/handlebars.js"></script>
