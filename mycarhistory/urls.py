@@ -49,9 +49,24 @@ urlpatterns = patterns(
     ),
 
     url(
-        r'^api/v1/get-auth-token/',
+        r'^api/v1/user/auth/token/',
         'users.views.get_auth_token',
         name='get-auth-token',
+    ),
+    url(
+        r'^api/v1/user/auth/login/',
+        'users.views.login',
+        name='login',
+    ),
+    url(
+        r'^api/v1/user/auth/logout/',
+        'users.views.logout',
+        name='logout',
+    ),
+    url(
+        r'^api/v1/user/',
+        UserDetailAPIView.as_view(),
+        name='user-detail',
     ),
     url(
         r'^api-auth/',

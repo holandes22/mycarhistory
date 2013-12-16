@@ -17,7 +17,7 @@ def credentials(client, user):
         client.credentials()
 
 
-class CarViewTests(APITestCase):
+class UserAuthTests(APITestCase):
 
     def setUp(self):
         self.user = UserFactory()
@@ -32,7 +32,7 @@ class CarViewTests(APITestCase):
         response = self.client.get(reverse('get-auth-token'))
         self.assertEqual(status.HTTP_401_UNAUTHORIZED, response.status_code)
 
-    def test_get_auth_token_raises_405_if_method_is_not_get(self):
+    def test_get_auth_token_returns_405_if_method_is_not_get(self):
         methods = ['post', 'put', 'patch', 'delete']
         with credentials(self.client, self.user):
             for method in methods:
@@ -42,3 +42,60 @@ class CarViewTests(APITestCase):
                     status.HTTP_405_METHOD_NOT_ALLOWED,
                     response.status_code
                 )
+
+    def test_login_return_403_if_method_is_not_post(self):
+        pass
+
+    def test_login_does_not_require_authentication(self):
+        pass
+
+    def test_login_does_not_require_api_token(self):
+        pass
+
+    def test_login_calls_persona_verify(self):
+        pass
+
+    def test_login_creates_user_if_new_using_email_from_persona(self):
+        pass
+
+    def test_login_returns_40X_if_persona_verify_failed(self):
+        pass
+
+    def test_logout_return_403_if_method_is_not_post(self):
+        pass
+
+    def test_logout_returns_401_if_not_authenticated(self):
+        pass
+
+    def test_logout_clears_session_if_success(self):
+        pass
+
+    def test_logout_calls_django_logout(self):
+        pass
+
+
+class UserProfileTests(APITestCase):
+
+
+    def test_get_returns_expected_details(self):
+        # email, short_name, full_name
+        pass
+
+    def test_get_returns_currently_authenticated_user(self):
+        pass
+
+    def test_methods_returns_401_if_user_not_authenticated(self):
+        pass
+
+    def test_put_returns_405(self):
+        pass
+
+    def test_post_modifies_user(self):
+        pass
+
+    def test_patch_modifies_user_partially(self):
+        pass
+
+    def test_delete_removes_user_and_its_related_objects(self):
+        # cars and treatments that belong to it should be removed
+        pass

@@ -24,4 +24,4 @@ var CarController = Ember.ObjectController.extend(CarControllerMixin, {
     }
 });
 
-export default CarControllerMixin;
+export default CarController;
