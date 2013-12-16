@@ -3,10 +3,10 @@ import sys
 from django.core.urlresolvers import reverse_lazy
 from django.conf import global_settings as DEFAULT_SETTINGS
 
+
 here = lambda * x: os.path.join(os.path.abspath(os.path.dirname(__file__)), *x)
 PROJECT_ROOT = here("..")
 root = lambda * x: os.path.join(os.path.abspath(PROJECT_ROOT), *x)
-
 
 
 DEBUG = False
@@ -38,8 +38,8 @@ LOGOUT_REDIRECT_URL = reverse_lazy('home')
 AUTH_USER_MODEL = 'users.User'
 
 AUTHENTICATION_BACKENDS = (
-   'django.contrib.auth.backends.ModelBackend',
-   'django_browserid.auth.BrowserIDBackend',
+    'django.contrib.auth.backends.ModelBackend',
+    'django_browserid.auth.BrowserIDBackend',
 )
 
 # Local time zone for this installation. Choices can be found here:
@@ -109,7 +109,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
+    # 'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -120,6 +120,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'mycarhistory.middleware.xssharing.XsSharingMiddleware',
 )
 
 ROOT_URLCONF = 'mycarhistory.urls'
@@ -129,9 +130,6 @@ WSGI_APPLICATION = 'mycarhistory.wsgi.application'
 
 TEMPLATE_DIRS = (
     root('templates')
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
 )
 
 DJANGO_APPS = (
@@ -180,7 +178,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ),
     'FILTER_BACKEND': 'rest_framework.filters.DjangoFilterBackend',
-    # 'PAGINATE_BY': 10  # Disabled for now as it is not working with DRF Adapter
+    # 'PAGINATE_BY': 10  # Currently not working with DRF Adapter
 }
 
 # BrowserID
@@ -227,6 +225,9 @@ PIPELINE_TEMPLATE_EXT = '.handlebars'
 PIPELINE_TEMPLATE_FUNC = 'Ember.Handlebars.compile'
 PIPELINE_TEMPLATE_NAMESPACE = 'window.Ember.TEMPLATES'
 PIPELINE_TEMPLATE_SEPARATOR = '/'
+
+
+XS_SHARING_ALLOWED_HEADERS = ["Content-Type"]
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
