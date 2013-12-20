@@ -13,10 +13,6 @@ frontend/vendor/*
 !frontend/vendor/browserid
 !frontend/vendor/ember-data-django-rest-adapter
 
-#!/frontend/vendor/ember-data-django-rest-adapter/ember-data-django-rest-adapter.js
-#!/frontend/vendor/browserid/browserid.js
-#!/frontend/vendor/browserid/persona-buttons.css
-
 # misc
 frontend/.sass-cache
 frontend/connect.lock
