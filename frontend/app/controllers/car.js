@@ -1,5 +1,3 @@
-import YEAR_LIST from 'appkit/definitions';
-import GEARBOX_TYPES from 'appkit/definitions';
 import CarControllerMixin from 'appkit/controllers/mixins';
 
 var CarController = Ember.ObjectController.extend(CarControllerMixin, {
