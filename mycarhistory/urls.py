@@ -1,8 +1,7 @@
 from django.contrib import admin
-from django.conf import settings
 from django.conf.urls import patterns, include, url
 
-from mycarhistory.views import HomePageView, BrowserIDPageView
+from mycarhistory.users.views import UserListAPIView, UserDetailAPIView
 from mycarhistory.cars.views import CarListAPIView, CarDetailAPIView
 from mycarhistory.treatments.views import TreatmentListByCarAPIView
 from mycarhistory.treatments.views import TreatmentDetailByCarAPIView
@@ -47,39 +46,21 @@ urlpatterns = patterns(
         TreatmentDetailAPIView.as_view(),
         name='treatment-detail-shallow',
     ),
-
     url(
-        r'^api/v1/user/auth/token/',
-        'users.views.get_auth_token',
-        name='get-auth-token',
-    ),
-    url(
-        r'^api/v1/user/auth/login/',
+        r'^api/v1/auth/login/$',
         'users.views.login',
         name='login',
     ),
     url(
-        r'^api/v1/user/auth/logout/',
-        'users.views.logout',
-        name='logout',
+        r'^api/v1/users/$',
+        UserListAPIView.as_view(),
+        name='user-list',
     ),
     url(
-        r'^api/v1/user/',
+        r'^api/v1/users/(?P<pk>\d+/$)',
         UserDetailAPIView.as_view(),
         name='user-detail',
     ),
-    url(
-        r'^api-auth/',
-        include('rest_framework.urls', namespace='rest_framework')
-    ),
-
     # Admin
     url(r'^admin/', include(admin.site.urls)),
-
-    # Index
-    url(r'^$', HomePageView.as_view(), name='home'),
-
-    # BrowserID
-    (r'^browserid/page/', BrowserIDPageView.as_view()),
-    (r'^browserid/', include('django_browserid.urls')),
 )

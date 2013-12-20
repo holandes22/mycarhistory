@@ -1,77 +1,80 @@
-from contextlib import contextmanager
+from mock import patch
 
 from django.core.urlresolvers import reverse
 
 from rest_framework import status
 from rest_framework.test import APITestCase
+from django_browserid.base import BrowserIDException
 
 from mycarhistory.users.factories import UserFactory
 
 
-@contextmanager
-def credentials(client, user):
-        client.credentials(
-            HTTP_AUTHORIZATION='Token {}'.format(user.get_auth_token())
-        )
-        yield
-        client.credentials()
+class AuthAPITests(APITestCase):
 
+    def test_login_returns_400_if_no_assertion(self):
+        response = self.client.post(reverse('login'), {})
+        self.assertEqual(status.HTTP_400_BAD_REQUEST, response.status_code)
 
-class UserAuthTests(APITestCase):
-
-    def setUp(self):
-        self.user = UserFactory()
-
-    def test_get_auth_token_returns_200_if_authenticated(self):
-        with credentials(self.client, self.user):
-            response = self.client.get(reverse('get-auth-token'))
+    @patch('mycarhistory.users.views.auth.authenticate')
+    def test_login_returns_email_and_token_if_authenticated(self,
+                                                            authenticate):
+        with self.settings(PERSONA_AUDIENCE='fake_audience'):
+            user = UserFactory(email='fake_email')
+            authenticate.return_value = user
+            response = self.client.post(reverse('login'), {'assertion': 'abc'})
             self.assertEqual(status.HTTP_200_OK, response.status_code)
-            self.assertEqual(self.user.get_auth_token(), response.data)
+            self.assertEqual(user.email, response.data['email'])
+            self.assertEqual(user.get_auth_token(), response.data['token'])
 
-    def test_get_auth_token_returns_401_if_not_authenticated(self):
-        response = self.client.get(reverse('get-auth-token'))
-        self.assertEqual(status.HTTP_401_UNAUTHORIZED, response.status_code)
+    def test_login_returns_500_if_audience_is_missing_in_conf(self):
+        response = self.client.post(reverse('login'), {'assertion': 'abc'})
+        self.assertEqual(
+            status.HTTP_500_INTERNAL_SERVER_ERROR,
+            response.status_code,
+        )
+        self.assertIn('audience', response.data)
 
-    def test_get_auth_token_returns_405_if_method_is_not_get(self):
-        methods = ['post', 'put', 'patch', 'delete']
-        with credentials(self.client, self.user):
-            for method in methods:
-                func = getattr(self.client, method)
-                response = func(reverse('get-auth-token'))
-                self.assertEqual(
-                    status.HTTP_405_METHOD_NOT_ALLOWED,
-                    response.status_code
-                )
+    @patch('mycarhistory.users.views.auth.authenticate')
+    def test_login_returns_500_if_authentication_fails(self, authenticate):
+        with self.settings(PERSONA_AUDIENCE='fake_audience'):
+            authenticate.side_effect = BrowserIDException('msg')
+            response = self.client.post(reverse('login'), {'assertion': 'abc'})
+            self.assertEqual(
+                status.HTTP_500_INTERNAL_SERVER_ERROR,
+                response.status_code,
+            )
+            self.assertIn('Authentication failed', response.data)
 
-    def test_login_return_403_if_method_is_not_post(self):
-        pass
+    def _test_login_returns_405_if_method_not_allowed(self, method):
+        func = getattr(self.client, method)
+        response = func(reverse('login'))
+        self.assertEqual(
+            status.HTTP_405_METHOD_NOT_ALLOWED,
+            response.status_code
+        )
 
-    def test_login_does_not_require_authentication(self):
-        pass
+    def test_login_returns_405_if_method_is_get(self):
+        self._test_login_returns_405_if_method_not_allowed('get')
 
-    def test_login_does_not_require_api_token(self):
-        pass
+    def test_login_returns_405_if_method_is_patch(self):
+        self._test_login_returns_405_if_method_not_allowed('patch')
 
-    def test_login_calls_persona_verify(self):
-        pass
+    def test_login_returns_405_if_method_is_put(self):
+        self._test_login_returns_405_if_method_not_allowed('put')
 
-    def test_login_creates_user_if_new_using_email_from_persona(self):
-        pass
+    def test_login_returns_405_if_method_is_delete(self):
+        self._test_login_returns_405_if_method_not_allowed('delete')
 
-    def test_login_returns_40X_if_persona_verify_failed(self):
-        pass
-
-    def test_logout_return_403_if_method_is_not_post(self):
-        pass
-
-    def test_logout_returns_401_if_not_authenticated(self):
-        pass
-
-    def test_logout_clears_session_if_success(self):
-        pass
-
-    def test_logout_calls_django_logout(self):
-        pass
+    @patch('mycarhistory.users.views.auth.authenticate')
+    def test_login_return_500_if_something_goes_wrong(self, authenticate):
+        with self.settings(PERSONA_AUDIENCE='fake_audience'):
+            authenticate.side_effect = ValueError()
+            response = self.client.post(reverse('login'), {'assertion': 'abc'})
+            self.assertEqual(
+                status.HTTP_500_INTERNAL_SERVER_ERROR,
+                response.status_code,
+            )
+            self.assertIn('unexpected', response.data)
 
 
 class UserProfileTests(APITestCase):

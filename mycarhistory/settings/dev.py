@@ -8,7 +8,7 @@ SECRET_KEY = 'fake'
 STATIC_URL = '/static/'
 
 # BrowserID
-SITE_URL = ['http://localhost:8888', 'http://127.0.0.1:8888']
+PERSONA_AUDIENCE = 'http://localhost:8000'
 
 XS_SHARING_ALLOWED_ORIGINS = 'http://localhost:8000'
 
