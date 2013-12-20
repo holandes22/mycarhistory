@@ -10,6 +10,7 @@ Router.map(function() {
             });
         });
     });
+    this.route('user', { path: '/user/profile' });
     this.resource('login');
     this.resource('logout');
     this.resource('about');

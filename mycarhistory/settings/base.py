@@ -227,7 +227,7 @@ PIPELINE_TEMPLATE_NAMESPACE = 'window.Ember.TEMPLATES'
 PIPELINE_TEMPLATE_SEPARATOR = '/'
 
 
-XS_SHARING_ALLOWED_HEADERS = ["Content-Type"]
+XS_SHARING_ALLOWED_HEADERS = ["Authorization"]
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

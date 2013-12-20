@@ -5,7 +5,7 @@
   <div>
     <ul class="nav navbar-nav">
       <li>
-          {{link-to "Cars" "cars"}}
+        {{link-to "Cars" "cars"}}
       </li>
       <li>
         {{link-to "About" "about"}}
@@ -15,16 +15,16 @@
   </div>
   <ul class="nav navbar-nav navbar-right">
     <li class="dropdown">
-    {{#if isAuthenticated }}
+    {{#if loggedInUser}}
       <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user">
-      {{email}} <b class="caret"></b></a>
+      {{loggedInUser}} <b class="caret"></b></a>
       <ul class="dropdown-menu pull-right">
-        <li><a href="#">Profile</a></li>
+        <li>
+            {{link-to "Profile" "user"}}
+        </li>
         <li class="divider"></li>
         <li>
-          <a href="/browserid/logout/" data-next="None" class="browserid-logout">
-            <span>Log Out</span>
-          </a>
+            <a href="#" {{action 'logout'}}>Log Out</a>
         </li>
       </ul>
     {{else}}

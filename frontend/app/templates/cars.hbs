@@ -5,6 +5,8 @@
         <span class="glyphicon glyphicon-plus"></span> Add Car
       </button>
       <ul class="nav nav-pills nav-stacked">
+        {{log controller}}
+        {{log model}}
         {{#with model as cars}}
           {{#each car in cars}}
             <li>{{link-to car.fullName 'car' car}}</li>
