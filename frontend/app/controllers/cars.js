@@ -1,4 +1,4 @@
-import CarControllerMixin from 'appkit/controllers/mixins';
+import CarControllerMixin from 'appkit/controllers/mixins/car';
 
 var CarsController = Ember.ObjectController.extend(CarControllerMixin, {
     needs: 'application',
