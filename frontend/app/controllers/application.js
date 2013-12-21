@@ -1,7 +1,6 @@
 var ApplicationController = Ember.ObjectController.extend({
     needs: 'logout',
     loggedInUser: null,
-
     setAuthHeader: function() {
         var token = window.sessionStorage.getItem('loggedInUserToken');
         DS.RESTAdapter.reopen({
@@ -18,9 +17,7 @@ var ApplicationController = Ember.ObjectController.extend({
             // https://developer.mozilla.org/en-US/docs/Web/API/navigator.id.watch
             loggedInUser: null,
             onlogin: function(assertion) {
-                if ( controller.get('loggedInUser') ) {
-                    controller.setAuthHeader();
-                } else {
+                if ( !controller.get('loggedInUser') ) {
                     window.jQuery.ajax({
                         type: 'POST',
                         data: { assertion: assertion },
@@ -31,10 +28,12 @@ var ApplicationController = Ember.ObjectController.extend({
                             window.sessionStorage.setItem('loggedInUser', data.email);
                             window.sessionStorage.setItem('loggedInUserToken', data.token);
                             controller.setAuthHeader();
-                            controller.transitionToRoute('user');
+                            // TODO: get next from server and redirect to that
+                            controller.transitionToRoute('index');
                         },
                         function(error) {
                             window.navigator.id.logout();
+                            // Probably server down
                             window.alert(error);
                         }
                     );
