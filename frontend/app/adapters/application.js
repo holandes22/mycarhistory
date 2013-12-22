@@ -1,6 +1,6 @@
 var ApplicationAdapter = DS.DjangoRESTAdapter.extend({
-    namespace: 'api/v1',
-    host: 'http://localhost:8888' //TODO: Generate with Grunt according to dev/prod
+    namespace: window.ENV.apiNamespace,
+    host: window.ENV.apiURL
 });
 
 export default ApplicationAdapter;
