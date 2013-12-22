@@ -29,7 +29,7 @@ var ApplicationController = Ember.ObjectController.extend({
                             window.sessionStorage.setItem('loggedInUserToken', data.token);
                             controller.setAuthHeader();
                             // TODO: get next from server and redirect to that
-                            controller.transitionToRoute('index');
+                            controller.transitionToRoute('cars');
                         },
                         function(error) {
                             window.navigator.id.logout();

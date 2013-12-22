@@ -1,6 +1,4 @@
-var GEARBOX_TYPES = {
+export default {
     1: 'Manual',
     2: 'Automatic'
 };
-
-export default GEARBOX_TYPES;
