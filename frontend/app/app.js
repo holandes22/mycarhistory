@@ -1,4 +1,5 @@
 import Resolver from 'resolver';
+import determineErrorClass from 'appkit/helpers/determine-error-class';
 
 var App = Ember.Application.extend({
   LOG_ACTIVE_GENERATION: true,
@@ -19,4 +20,5 @@ Ember.RSVP.configure('onerror', function(error) {
   }
 });
 
+Ember.Handlebars.registerHelper('determine-error-class', determineErrorClass);
 export default App;

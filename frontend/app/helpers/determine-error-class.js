@@ -1,4 +1,4 @@
-export default Ember.Handlebars.makeBoundHelper(function(error) {
+export default function(error) {
     return (error.status === 404) ? 'info' : 'danger';
-});
+}
 
