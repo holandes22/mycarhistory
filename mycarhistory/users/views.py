@@ -22,14 +22,19 @@ def login(request):
             'assertion parameter is missing',
             status.HTTP_400_BAD_REQUEST
         )
-
-    # TODO: Compare to referer??
-    audience = getattr(settings, 'PERSONA_AUDIENCE', None)
-    if not audience:
+    audiences = getattr(settings, 'PERSONA_AUDIENCES', None)
+    if not audiences:
         return Response(
             'audience is missing. Check configuration',
             status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
+    audience = request.META.get('HTTP_REFERER').rstrip('/')
+    if audience not in audiences:
+        return Response(
+            'Audience {} not authorized'.format(audience),
+            status.HTTP_500_INTERNAL_SERVER_ERROR,
+        )
+
     try:
         user = auth.authenticate(
             assertion=assertion,

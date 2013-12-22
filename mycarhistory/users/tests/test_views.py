@@ -18,10 +18,14 @@ class AuthAPITests(APITestCase):
     @patch('mycarhistory.users.views.auth.authenticate')
     def test_login_returns_email_and_token_if_authenticated(self,
                                                             authenticate):
-        with self.settings(PERSONA_AUDIENCE='fake_audience'):
+        with self.settings(PERSONA_AUDIENCES=('au1', 'au2')):
             user = UserFactory(email='fake_email')
             authenticate.return_value = user
-            response = self.client.post(reverse('login'), {'assertion': 'abc'})
+            response = self.client.post(
+                reverse('login'),
+                data={'assertion': 'abc'},
+                HTTP_REFERER='au1',
+            )
             self.assertEqual(status.HTTP_200_OK, response.status_code)
             self.assertEqual(user.email, response.data['email'])
             self.assertEqual(user.get_auth_token(), response.data['token'])
@@ -36,9 +40,13 @@ class AuthAPITests(APITestCase):
 
     @patch('mycarhistory.users.views.auth.authenticate')
     def test_login_returns_500_if_authentication_fails(self, authenticate):
-        with self.settings(PERSONA_AUDIENCE='fake_audience'):
+        with self.settings(PERSONA_AUDIENCES=('fake_audience')):
             authenticate.side_effect = BrowserIDException('msg')
-            response = self.client.post(reverse('login'), {'assertion': 'abc'})
+            response = self.client.post(
+                reverse('login'),
+                data={'assertion': 'abc'},
+                HTTP_REFERER='fake_audience',
+            )
             self.assertEqual(
                 status.HTTP_500_INTERNAL_SERVER_ERROR,
                 response.status_code,
@@ -67,18 +75,49 @@ class AuthAPITests(APITestCase):
 
     @patch('mycarhistory.users.views.auth.authenticate')
     def test_login_return_500_if_something_goes_wrong(self, authenticate):
-        with self.settings(PERSONA_AUDIENCE='fake_audience'):
+        with self.settings(PERSONA_AUDIENCES=('fake_audience')):
             authenticate.side_effect = ValueError()
-            response = self.client.post(reverse('login'), {'assertion': 'abc'})
+            response = self.client.post(
+                reverse('login'),
+                data={'assertion': 'abc'},
+                HTTP_REFERER='fake_audience',
+            )
             self.assertEqual(
                 status.HTTP_500_INTERNAL_SERVER_ERROR,
                 response.status_code,
             )
             self.assertIn('unexpected', response.data)
 
+    @patch('mycarhistory.users.views.auth.authenticate')
+    def test_login_return_500_if_audience_not_is_authorized_list(self, authenticate):
+        with self.settings(PERSONA_AUDIENCES=('audience1', 'audience2')):
+            authenticate.side_effect = ValueError()
+            response = self.client.post(
+                reverse('login'),
+                data={'assertion': 'abc'},
+                HTTP_REFERER='malicious_audience',
+            )
+            self.assertEqual(
+                status.HTTP_500_INTERNAL_SERVER_ERROR,
+                response.status_code,
+            )
+            self.assertIn('malicious_audience', response.data)
+
+    @patch('mycarhistory.users.views.auth.authenticate')
+    def test_login_audience_with_trailing_backslash(self, authenticate):
+        with self.settings(PERSONA_AUDIENCES=('au1', 'au2')):
+            user = UserFactory(email='fake_email')
+            authenticate.return_value = user
+            response = self.client.post(
+                reverse('login'),
+                data={'assertion': 'abc'},
+                HTTP_REFERER='au1/',
+            )
+            self.assertEqual(status.HTTP_200_OK, response.status_code)
+            self.assertEqual(user.email, response.data['email'])
+
 
 class UserProfileTests(APITestCase):
-
 
     def test_get_returns_expected_details(self):
         # email, short_name, full_name
