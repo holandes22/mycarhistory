@@ -1,13 +1,9 @@
-var ApplicationController = Ember.ObjectController.extend({
-    needs: 'logout',
-    loggedInUser: null,
-    setAuthHeader: function() {
-        var token = window.sessionStorage.getItem('loggedInUserToken');
-        DS.RESTAdapter.reopen({
-            headers: { 'Authorization': 'Token ' + token }
-        });
+import setAuthHeader from 'appkit/utils/set_auth_headers';
 
-    },
+var ApplicationController = Ember.ObjectController.extend({
+    needs: ['logout', 'error'],
+    loggedInUser: null,
+    loginError: null,
     init: function() {
         this._super();
         var controller = this;
@@ -27,21 +23,27 @@ var ApplicationController = Ember.ObjectController.extend({
                             controller.set('loggedInUser', data.email);
                             window.sessionStorage.setItem('loggedInUser', data.email);
                             window.sessionStorage.setItem('loggedInUserToken', data.token);
-                            controller.setAuthHeader();
+                            setAuthHeader();
                             // TODO: get next from server and redirect to that
                             controller.transitionToRoute('cars');
                         },
                         function(error) {
-                            window.navigator.id.logout();
                             // Probably server down
-                            window.alert(error);
+                            controller.set('loginError', error);
+                            window.navigator.id.logout();
                         }
                     );
                 }
             },
             onlogout: function() {
                 window.sessionStorage.clear();
-                window.location.replace('/');
+                if ( controller.loginError ) {
+                    controller.get('controllers.error').set('status', controller.loginError.status);
+                    controller.get('controllers.error').set('message', 'Log In failed. Is server up?');
+                    controller.transitionToRoute('error');
+                } else {
+                    window.location.replace('/');
+                }
             }
         });
     },

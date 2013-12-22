@@ -1,4 +1,6 @@
-var CarsRoute = Ember.Route.extend({
+import AuthenticatedRoute from 'appkit/routes/authenticated';
+
+var CarsRoute = AuthenticatedRoute.extend({
     model: function() {
         return this.store.find('car');
     },
