@@ -7,7 +7,8 @@
     "ember": "~1.2.0",
     "ember-data": "http://builds.emberjs.com/canary/ember-data.js",
     "ember-resolver": "git://github.com/stefanpenner/ember-jj-abrams-resolver.git#master",
-    "ic-ajax": "~0.1",
+    "ic-ajax": "~0.2",
+    "ember-testing-httpRespond": "~0.1.1",
     "bootstrap": "~3.0.3",
     "moment": "~2.4.0"
   }
