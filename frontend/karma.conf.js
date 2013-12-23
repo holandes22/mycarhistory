@@ -11,9 +11,12 @@ module.exports = function(config) {
       'vendor/loader.js',
       'vendor/ember-resolver/dist/ember-resolver.js',
       'vendor/jquery/jquery.js',
+      'vendor/bootstrap/dist/js/bootstrap.js',
+      'vendor/moment/moment.js',
       'vendor/handlebars/handlebars.js',
       'vendor/ember/ember.js',
-      'vendor/ember-data/ember-data.js',
+      'vendor/ember-data/index.js',
+      'vendor/ember-data-django-rest-adapter/ember-data-django-rest-adapter.js',
       'vendor/ic-ajax/main.js',
       'tmp/result/assets/templates.js',
       'tmp/result/assets/app.js',
@@ -73,7 +76,7 @@ module.exports = function(config) {
     // - Safari (only Mac)
     // - PhantomJS
     // - IE (only Windows)
-    browsers: ['Chrome'],
+    browsers: ['PhantomJS'],
 
     // If browser does not capture in given timeout [ms], kill it
     captureTimeout: 60000,

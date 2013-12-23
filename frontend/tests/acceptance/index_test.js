@@ -1,3 +1,4 @@
+/*
 var App;
 
 module('Acceptances - Index', {
@@ -22,3 +23,4 @@ test('index renders', function(){
     equal(list.text(), 'redyellowblue');
   });
 });
+*/

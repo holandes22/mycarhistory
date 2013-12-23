@@ -1,3 +1,4 @@
+/*
 var App;
 
 module("Acceptances - Helper", {
@@ -16,4 +17,4 @@ test("helper output is rendered", function(){
     ok(exists("h3:contains('My name is Ember.')"));
   });
 });
-
+*/

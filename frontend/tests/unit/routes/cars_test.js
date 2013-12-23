@@ -1,21 +1,21 @@
-import Index from 'appkit/routes/index';
+import CarsRoute from 'appkit/routes/cars';
 
 var route;
-module("Unit - IndexRoute", {
+module('Unit - CarsRoute', {
   setup: function(){
     var container = isolatedContainer([
-      'route:index'
+      'route:cars'
     ]);
 
-    route = container.lookup('route:index');
+    route = container.lookup('route:cars');
   }
 });
 
 test("it exists", function(){
   ok(route);
-  ok(route instanceof Index);
+  ok(route instanceof CarsRoute);
 });
 
 test("#model", function(){
-  deepEqual(route.model(), ['red', 'yellow', 'blue']);
+  deepEqual([1], [1]);
 });

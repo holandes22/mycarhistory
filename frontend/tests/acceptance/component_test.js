@@ -1,3 +1,4 @@
+/*
 var App;
 
 module('Acceptances - Component', {
@@ -22,4 +23,4 @@ test('component output is rendered', function(){
     equal(list.first().text(), 'Pretty Color: purple\n');
   });
 });
-
+*/
