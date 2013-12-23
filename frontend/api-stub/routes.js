@@ -1,31 +1,45 @@
 module.exports = function(server) {
 
-  // Create an API namespace, so that the root does not 
-  // have to be repeated for each end point.
-	server.namespace('/api', function() {
+    server.namespace('/api', function() {
 
-		// Return fixture data for '/api/posts/:id'
-		server.get('/posts/:id', function(req, res) {
-			var post = {
-					  "post": {
-					    "id": 1,
-					    "title": "Rails is omakase",
-					    "comments": ["1", "2"],
-					    "user" : "dhh"
-					  },
+        server.post('/cars', function(req, res) {
+            var car = {
+                amount_of_owners: 2,
+                brand: "2",
+                gearbox_type: 1,
+                id: 35,
+                model: "2",
+                treatments: [],
+                user: 3,
+                year: 2013
+            };
+            res.send(car);
+        });
+        server.get('/cars', function(req, res) {
+            var cars = [
+                {
+                    amount_of_owners: 2,
+                    brand: "1",
+                    gearbox_type: 1,
+                    id: 1,
+                    model: "1",
+                    treatments: [],
+                    user: 3,
+                    year: 2013
+                },
+                {
+                    amount_of_owners: 2,
+                    brand: "2",
+                    gearbox_type: 1,
+                    id: 2,
+                    model: "2",
+                    treatments: [],
+                    user: 3,
+                    year: 2013
+                }
+            ];
+            res.send(cars);
 
-					  "comments": [{
-					    "id": "1",
-					    "body": "Rails is unagi"
-					  }, {
-					    "id": "2",
-					    "body": "Omakase O_o"
-					  }]
-					};
-
-			res.send(post);
-		});
-
-	});
-
+        });
+    });
 };
