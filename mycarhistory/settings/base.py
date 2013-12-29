@@ -150,7 +150,6 @@ THIRD_PARTY_APPS = (
     'rest_framework',
     'rest_framework.authtoken',
     'djangosecure',
-    'pipeline',
 )
 
 LOCAL_APPS = (
@@ -178,55 +177,13 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ),
     'FILTER_BACKEND': 'rest_framework.filters.DjangoFilterBackend',
-    # 'PAGINATE_BY': 10  # Currently not working with DRF Adapter
 }
 
 # BrowserID
 
 BROWSERID_CREATE_USER = True
 
-# Pipeline
-
-STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
-PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.slimit.SlimItCompressor'
-
-PIPELINE_JS = {
-    'libs': {
-        'source_filenames': (
-            'libs/js/jquery-2.0.3.js',
-            'libs/js/bootstrap.js',
-            'libs/js/handlebars-1.0.0.js',
-            'libs/js/ember.js',
-            'libs/js/ember-data.js',
-            'libs/js/ember-data-django-rest-adapter.js',
-            'libs/js/moment.js',
-        ),
-        'output_filename': 'libs.min.js',
-    },
-    'app': {
-        'source_filenames': (
-            'app/definitions.js',
-            'app/app.js',
-            'app/models/*.js',
-            'app/controllers/*.js',
-            'app/views/*.js',
-            'app/adapters/*.js',
-            'app/router.js',
-            'app/templates/*.handlebars',
-            'app/templates/car/*.handlebars',
-            'app/templates/treatment/*.handlebars',
-        ),
-        'output_filename': 'app.min.js',
-    },
-}
-
-
-PIPELINE_TEMPLATE_EXT = '.handlebars'
-PIPELINE_TEMPLATE_FUNC = 'Ember.Handlebars.compile'
-PIPELINE_TEMPLATE_NAMESPACE = 'window.Ember.TEMPLATES'
-PIPELINE_TEMPLATE_SEPARATOR = '/'
-
-
+# Allow CORS
 XS_SHARING_ALLOWED_HEADERS = ['Content-Type', 'Authorization']
 
 # A sample logging configuration. The only tangible logging
