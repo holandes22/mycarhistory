@@ -7,7 +7,7 @@ FORGE
       puppetlabs/stdlib (>= 2.2.1)
     puppetlabs/concat (1.0.0-rc1)
     puppetlabs/firewall (0.4.2)
-    puppetlabs/postgresql (3.0.0-rc2)
+    puppetlabs/postgresql (3.2.0)
       puppetlabs/apt (< 2.0.0, >= 1.1.0)
       puppetlabs/concat (< 2.0.0, >= 1.0.0)
       puppetlabs/firewall (>= 0.0.4)
@@ -24,6 +24,6 @@ GIT
 DEPENDENCIES
   attachmentgenie/locales (= 1.0.2)
   puppetlabs/apt (>= 0)
-  puppetlabs/postgresql (= 3.0.0)
+  puppetlabs/postgresql (= 3.2.0)
   python (>= 0)
 
