@@ -1,5 +1,5 @@
 modules/
-mycarhistory.log
+logs/*.log
 
 # compiled output
 */dist
