@@ -9,12 +9,14 @@ install: pip install -r requirements.txt
 before_script:
     # until travis supports multi-language: https://groups.google.com/forum/#!topic/travis-ci/3pzCgvxWZAo
     - cd frontend
-    - npm install grunt-cli
-    - npm install bower
+    - npm install -g grunt-cli
+    - npm install -g bower
     - bower install
     - cd ..
 script:
     - coverage run manage.py test --settings=mycarhistory.settings.test
     - cd frontend && grunt test:ci
+    - ls
+    - cd ..
     - ls
 
