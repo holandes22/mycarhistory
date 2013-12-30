@@ -15,8 +15,6 @@ before_script:
     - cd ..
 script:
     - coverage run manage.py test --settings=mycarhistory.settings.test
-    - cd frontend && grunt test:ci
-    - ls
-    - cd ..
-    - ls
-
+    - cd frontend
+    - npm install
+    - grunt test:ci
