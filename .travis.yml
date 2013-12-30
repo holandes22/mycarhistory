@@ -7,8 +7,15 @@ before_install:
     - sudo apt-get install -y libevent-dev
 install: pip install -r requirements.txt
 before_script:
-    - npm install # until travis supports multi-language: https://groups.google.com/forum/#!topic/travis-ci/3pzCgvxWZAo
+    # until travis supports multi-language: https://groups.google.com/forum/#!topic/travis-ci/3pzCgvxWZAo
+    - npm install grunt-cli
+    - npm install bower
+    - cd frontend
+    - bower install
+    - cd ..
 script:
     - coverage run manage.py test --settings=mycarhistory.settings.test
-    - karma start --single-run 
+    - cd frontend
+    - grunt test:ci
+    - cd ..
 
