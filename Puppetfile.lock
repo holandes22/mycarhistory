@@ -3,7 +3,7 @@ FORGE
   specs:
     attachmentgenie/locales (1.0.2)
       puppetlabs/stdlib (>= 2.2.1)
-    puppetlabs/apt (1.2.0)
+    puppetlabs/apt (1.4.0)
       puppetlabs/stdlib (>= 2.2.1)
     puppetlabs/concat (1.0.0-rc1)
     puppetlabs/firewall (0.4.2)
@@ -17,9 +17,9 @@ FORGE
 GIT
   remote: git://github.com/stankevich/puppet-python.git
   ref: master
-  sha: a017bd325e677159e37d22d5b2ef65377846b23e
+  sha: de7c5b770adba8e6846a57f8f538617593234d8d
   specs:
-    python (1.1.4)
+    python (1.3.1)
 
 DEPENDENCIES
   attachmentgenie/locales (= 1.0.2)
