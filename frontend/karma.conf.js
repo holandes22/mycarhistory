@@ -15,7 +15,7 @@ module.exports = function(config) {
       'vendor/moment/moment.js',
       'vendor/handlebars/handlebars.js',
       'vendor/ember/ember.js',
-      'vendor/ember-data/index.js',
+      'vendor/ember-data/ember-data.js',
       'vendor/ember-data-django-rest-adapter/ember-data-django-rest-adapter.js',
       'vendor/ic-ajax/main.js',
       'tmp/result/assets/templates.js',
