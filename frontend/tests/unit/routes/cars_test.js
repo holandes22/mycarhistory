@@ -1,21 +1,18 @@
 import CarsRoute from 'appkit/routes/cars';
 
+
 var route;
 module('Unit - CarsRoute', {
-  setup: function(){
-    var container = isolatedContainer([
-      'route:cars'
-    ]);
+    setup: function(){
+        var container = isolatedContainer([
+          'route:cars'
+        ]);
 
-    route = container.lookup('route:cars');
-  }
+        route = container.lookup('route:cars');
+    },
 });
 
 test("it exists", function(){
-  ok(route);
-  ok(route instanceof CarsRoute);
-});
-
-test("#model", function(){
-  deepEqual([1], [1]);
+    ok(route);
+    ok(route instanceof CarsRoute);
 });
