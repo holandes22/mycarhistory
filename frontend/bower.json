@@ -9,6 +9,7 @@
     "ember-resolver": "git://github.com/stefanpenner/ember-jj-abrams-resolver.git#master",
     "ic-ajax": "~0.2",
     "ember-testing-httpRespond": "~0.1.1",
+    "sinonjs": "~1.7.3",
     "bootstrap": "~3.0.3",
     "moment": "~2.4.0"
   },

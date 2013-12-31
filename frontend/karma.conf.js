@@ -22,6 +22,7 @@ module.exports = function(config) {
       'vendor/FakeXMLHttpRequest/fake_xml_http_request.js',
       'vendor/fakehr/fakehr.js',
       'vendor/ember-testing-httpRespond/httpRespond-1.1.js',
+      'vendor/sinonjs/sinon.js',
       'tmp/result/assets/templates.js',
       'tmp/result/assets/app.js',
       'tmp/transpiled/tests/**/*.js',
