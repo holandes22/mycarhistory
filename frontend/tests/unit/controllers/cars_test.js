@@ -4,7 +4,6 @@ var controller;
 
 module('Unit - CarController', {
     setup: function(){
-        fakehr.start();
         App = startApp();
         controller = App.__container__.lookup('controller:cars');
         controller.set('model', {});
@@ -15,7 +14,6 @@ module('Unit - CarController', {
         controller.set('gearboxType', 1);
     },
     teardown: function() {
-        fakehr.reset();
         Ember.run(App, 'destroy');
     }
 });
@@ -23,17 +21,20 @@ module('Unit - CarController', {
 test('it creates record using correct attributes', function(){
 
     Ember.run(function(){
-        controller.addedCarSucceded.bind = window.sinon.stub();
-        controller.addedCarFailed.bind = window.sinon.stub();
-        var car = window.sinon.stub();
-        var promise = window.sinon.stub();
-        promise.then = window.sinon.stub();
-        car.save = window.sinon.stub().returns(promise);
-        controller.store.createRecord = window.sinon.stub().returns(car);
+        controller.addCarSucceded.bind = sinon.stub();
+        controller.addCarFailed.bind = sinon.stub();
+        var car = sinon.stub();
+        var promise = sinon.stub();
+        promise.then = sinon.stub();
+        car.save = sinon.stub().returns(promise);
+        controller.store.createRecord = sinon.stub().returns(car);
 
         controller.send('addCar');
 
-        ok(controller.store.createRecord.calledOnce, 'createRecord was called more than once by addCar');
+        ok(
+            controller.store.createRecord.calledOnce,
+            'createRecord was called more than once by addCar'
+        );
         ok(
             controller.store.createRecord.calledWith(
                 'car',
@@ -41,6 +42,41 @@ test('it creates record using correct attributes', function(){
             ),
             'createRecord was not called with the correct attributes'
         );
-
     });
+});
+
+test('it transitions to new car on add car success', function(){
+
+    controller.transitionToRoute = sinon.stub();
+    var car = sinon.stub();
+    car.get = sinon.stub().returns(1);
+    controller.addCarSucceded(car);
+    ok(controller.transitionToRoute.calledWith('car', 1));
+
+});
+
+test('it shows validation errors if response is 400', function(){
+
+    var car = sinon.stub();
+    car.deleteRecord = sinon.stub();
+    controller.car = car;
+    var error = sinon.stub();
+    error.status = 400;
+    error.responseJSON = {amount_of_owners: ['This field is required.']};
+    var expectedErrors = {amountOfOwners: 'This field is required.'};
+
+    controller.addCarFailed(error);
+
+    deepEqual(expectedErrors, controller.get('errors'));
+    ok(car.deleteRecord.calledOnce);
+});
+
+test('it fires an error event through ApplicationController', function(){
+    var error = sinon.stub();
+    error.status = 500;
+    var appController = sinon.stub();
+    appController.send = sinon.stub();
+    controller.get = sinon.stub().returns(appController);
+    controller.addCarFailed(error);
+    ok(appController.send.calledWith('error', error));
 });

@@ -3,12 +3,12 @@ import CarControllerMixin from 'appkit/controllers/mixins/car';
 var CarsController = Ember.ObjectController.extend(CarControllerMixin, {
     needs: 'application',
     car: null,
-    addedCarSucceded: function(newCar) {
+    addCarSucceded: function(newCar) {
         $('.modal').modal('hide');  // TODO: View logic, Should be placed elsewhere, where??
         var newCarId = newCar.get('id');
         this.transitionToRoute('car', newCarId);
     },
-    addedCarFailed: function(error) {
+    addCarFailed: function(error) {
         if (error.status === 400) {
             this.car.deleteRecord();
             var errors = {};
@@ -42,8 +42,8 @@ var CarsController = Ember.ObjectController.extend(CarControllerMixin, {
             );
             this.car = car;
             car.save().then(
-                this.addedCarSucceded.bind(this),
-                this.addedCarFailed.bind(this)
+                this.addCarSucceded.bind(this),
+                this.addCarFailed.bind(this)
             );
 
         }

@@ -41,7 +41,8 @@
     "startApp",
     "ic",
     "fakehr",
-    "httpRespond"
+    "httpRespond",
+    "sinon"
   ],
   "node" : false,
   "browser" : false,
