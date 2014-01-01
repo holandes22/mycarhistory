@@ -2,7 +2,8 @@ var LoginController = Ember.ObjectController.extend({
 
     actions: {
         navigatorRequest: function() {
-            window.navigator.id.request();
+            var args = {siteName: 'My Car History'};
+            window.navigator.id.request(args);
         }
     }
 });
