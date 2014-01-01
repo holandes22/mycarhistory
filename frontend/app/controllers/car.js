@@ -1,10 +1,17 @@
+import HandleCRUDPromiseMixin from 'appkit/controllers/mixins/handle_crud_promise';
 import CarControllerMixin from 'appkit/controllers/mixins/car';
 
-var CarController = Ember.ObjectController.extend(CarControllerMixin, {
+var CarController = Ember.ObjectController.extend(HandleCRUDPromiseMixin, CarControllerMixin, {
+    record: null,
+    errors: null,
+    routeToTransition: 'car',
 
     actions: {
         updateCar: function(car) {
-            car.save();
+            car.save().then(
+                this.addEditSucceded.bind(this),
+                this.addFailed.bind(this)
+            );
         },
 
         deleteCar: function(car) {
