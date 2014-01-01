@@ -1,29 +1,13 @@
+import HandleCRUDPromiseMixin from 'appkit/controllers/mixins/handle_crud_promise';
 import CarControllerMixin from 'appkit/controllers/mixins/car';
 
-var CarsController = Ember.ObjectController.extend(CarControllerMixin, {
+var CarsController = Ember.ObjectController.extend(HandleCRUDPromiseMixin, CarControllerMixin, {
     needs: 'application',
-    car: null,
-    addCarSucceded: function(newCar) {
-        $('.modal').modal('hide');  // TODO: View logic, Should be placed elsewhere, where??
-        var newCarId = newCar.get('id');
-        this.transitionToRoute('car', newCarId);
-    },
-    addCarFailed: function(error) {
-        if (error.status === 400) {
-            this.car.deleteRecord();
-            var errors = {};
-            var errorsFromAPI = error.responseJSON;
-            Ember.$.each(errorsFromAPI, function(key, value){
-                var camelCaseKey = Ember.String.camelize(key);
-                errors[camelCaseKey] = value[0];
-            });
-            this.set('errors', errors);
-        } else {
-            $('.modal').modal('hide');
-            this.get('controllers.application').send('error', error);
-        }
+    record: null,
+    errors: null,
+    routeToTransition: 'car',
 
-    },
+
     actions: {
         addCar: function(event) {
             var brand = this.get('brand');
@@ -40,10 +24,10 @@ var CarsController = Ember.ObjectController.extend(CarControllerMixin, {
                     gearboxType: gearboxType
                 }
             );
-            this.car = car;
+            this.record = car;
             car.save().then(
-                this.addCarSucceded.bind(this),
-                this.addCarFailed.bind(this)
+                this.addEditSucceded.bind(this),
+                this.addFailed.bind(this)
             );
 
         }

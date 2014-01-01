@@ -21,8 +21,8 @@ module('Unit - CarController', {
 test('it creates record using correct attributes', function(){
 
     Ember.run(function(){
-        controller.addCarSucceded.bind = sinon.stub();
-        controller.addCarFailed.bind = sinon.stub();
+        controller.addEditSucceded.bind = sinon.stub();
+        controller.addFailed.bind = sinon.stub();
         var car = sinon.stub();
         var promise = sinon.stub();
         promise.then = sinon.stub();
@@ -50,7 +50,7 @@ test('it transitions to new car on add car success', function(){
     controller.transitionToRoute = sinon.stub();
     var car = sinon.stub();
     car.get = sinon.stub().returns(1);
-    controller.addCarSucceded(car);
+    controller.addEditSucceded(car);
     ok(controller.transitionToRoute.calledWith('car', 1));
 
 });
@@ -59,13 +59,19 @@ test('it shows validation errors if response is 400', function(){
 
     var car = sinon.stub();
     car.deleteRecord = sinon.stub();
-    controller.car = car;
+    controller.record = car;
     var error = sinon.stub();
     error.status = 400;
-    error.responseJSON = {amount_of_owners: ['This field is required.']};
-    var expectedErrors = {amountOfOwners: 'This field is required.'};
+    error.responseJSON = {
+        amount_of_owners: ['This field is required.'],
+        year: ['Select a valid choice. 2014 is not one of the available choices.']
+    };
+    var expectedErrors = {
+        amountOfOwners: 'This field is required.',
+        year: 'Select a valid choice. 2014 is not one of the available choices.'
+    };
 
-    controller.addCarFailed(error);
+    controller.addFailed(error);
 
     deepEqual(expectedErrors, controller.get('errors'));
     ok(car.deleteRecord.calledOnce);
@@ -77,6 +83,6 @@ test('it fires an error event through ApplicationController', function(){
     var appController = sinon.stub();
     appController.send = sinon.stub();
     controller.get = sinon.stub().returns(appController);
-    controller.addCarFailed(error);
+    controller.addFailed(error);
     ok(appController.send.calledWith('error', error));
 });
