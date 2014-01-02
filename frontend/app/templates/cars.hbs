@@ -1,7 +1,7 @@
 <div class="container">
   <div class="row">
     <div class="col-md-3">
-      <button class="btn btn-primary btn-sm btn-block" data-toggle="modal" data-target="#carAddModal">
+      <button class="btn btn-primary btn-sm btn-block" data-toggle="modal" data-target="#addCarModal">
         <span class="glyphicon glyphicon-plus"></span> Add Car
       </button>
       <ul class="nav nav-pills nav-stacked">
@@ -18,7 +18,7 @@
       </ul>
     </div>
     <div class="col-md-9">
-      {{partial 'car/add'}}
+      {{view "addCarModal"}}
       {{outlet}}
     </div>
   </div>

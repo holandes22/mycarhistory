@@ -1,0 +1,17 @@
+<div class="modal fade" {{bind-attr id=view.id}} tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title" id="modalLabel">{{view.title}}</h4>
+        </div>
+        <div class="modal-body">
+            {{partial view.bodyTemplate}}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" {{action addCar}}>{{view.actionName}}</button>
+        </div>
+      </div>
+    </div>
+</div>
