@@ -21,7 +21,7 @@ module('Unit - CarController', {
 test('it creates record using correct attributes', function(){
 
     Ember.run(function(){
-        controller.addUpdateSucceded.bind = sinon.stub();
+        controller.addUpdateSucceeded.bind = sinon.stub();
         controller.addUpdateFailed.bind = sinon.stub();
         var car = sinon.stub();
         var promise = sinon.stub();
@@ -50,7 +50,7 @@ test('it transitions to new car on add car success', function(){
     controller.transitionToRoute = sinon.stub();
     var car = sinon.stub();
     car.get = sinon.stub().returns(1);
-    controller.addUpdateSucceded(car);
+    controller.addUpdateSucceeded(car);
     ok(controller.transitionToRoute.calledWith('car', 1));
 
 });

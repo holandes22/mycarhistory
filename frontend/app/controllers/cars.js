@@ -28,7 +28,7 @@ var CarsController = Ember.ObjectController.extend(HandleCRUDPromiseMixin, CarCo
             );
             this.record = car;
             car.save().then(
-                this.addUpdateSucceded.bind(this),
+                this.addUpdateSucceeded.bind(this),
                 this.addUpdateFailed.bind(this)
             );
 

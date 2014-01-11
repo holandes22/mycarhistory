@@ -1,7 +1,7 @@
 var HandleCRUDPromiseMixin = Ember.Mixin.create({
     needs: 'application',
 
-    addUpdateSucceded: function(record) {
+    addUpdateSucceeded: function(record) {
 
         $('.modal').modal('hide');  // TODO: View logic, Should be placed elsewhere, where??
         var id = record.get('id');
