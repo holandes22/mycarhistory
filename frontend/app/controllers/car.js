@@ -4,7 +4,10 @@ import CarControllerMixin from 'appkit/controllers/mixins/car';
 var CarController = Ember.ObjectController.extend(HandleCRUDPromiseMixin, CarControllerMixin, {
     record: null,
     errors: null,
-    routeToTransition: 'car',
+    transitions: {
+        addUpdate: 'car',
+        delete: 'cars'
+    },
 
     actions: {
         updateCar: function(car) {
