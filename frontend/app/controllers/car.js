@@ -9,8 +9,8 @@ var CarController = Ember.ObjectController.extend(HandleCRUDPromiseMixin, CarCon
     actions: {
         updateCar: function(car) {
             car.save().then(
-                this.addEditSucceded.bind(this),
-                this.addFailed.bind(this)
+                this.addUpdateSucceded.bind(this),
+                this.addUpdateFailed.bind(this)
             );
         },
 

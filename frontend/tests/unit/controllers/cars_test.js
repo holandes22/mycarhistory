@@ -21,8 +21,8 @@ module('Unit - CarController', {
 test('it creates record using correct attributes', function(){
 
     Ember.run(function(){
-        controller.addEditSucceded.bind = sinon.stub();
-        controller.addFailed.bind = sinon.stub();
+        controller.addUpdateSucceded.bind = sinon.stub();
+        controller.addUpdateFailed.bind = sinon.stub();
         var car = sinon.stub();
         var promise = sinon.stub();
         promise.then = sinon.stub();
@@ -50,7 +50,7 @@ test('it transitions to new car on add car success', function(){
     controller.transitionToRoute = sinon.stub();
     var car = sinon.stub();
     car.get = sinon.stub().returns(1);
-    controller.addEditSucceded(car);
+    controller.addUpdateSucceded(car);
     ok(controller.transitionToRoute.calledWith('car', 1));
 
 });
@@ -71,7 +71,7 @@ test('it shows validation errors if response is 400', function(){
         year: 'Select a valid choice. 2014 is not one of the available choices.'
     };
 
-    controller.addFailed(error);
+    controller.addUpdateFailed(error);
 
     deepEqual(expectedErrors, controller.get('errors'));
     ok(car.deleteRecord.calledOnce);
@@ -83,6 +83,6 @@ test('it fires an error event through ApplicationController', function(){
     var appController = sinon.stub();
     appController.send = sinon.stub();
     controller.get = sinon.stub().returns(appController);
-    controller.addFailed(error);
+    controller.addUpdateFailed(error);
     ok(appController.send.calledWith('error', error));
 });
