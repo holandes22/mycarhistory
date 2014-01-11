@@ -5,11 +5,7 @@ var CarsController = Ember.ObjectController.extend(HandleCRUDPromiseMixin, CarCo
     needs: 'application',
     record: null,
     errors: null,
-    transitions: {
-        addUpdate: 'car',
-        delete: 'cars'
-    },
-
+    transitions: { addUpdate: 'car' },
     actions: {
         addCar: function(event) {
             var brand = this.get('brand');

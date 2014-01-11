@@ -77,12 +77,27 @@ test('it shows validation errors if response is 400', function(){
     ok(car.deleteRecord.calledOnce);
 });
 
-test('it fires an error event through ApplicationController', function(){
+test('it fires an error event through ApplicationController when updating car fails', function(){
     var error = sinon.stub();
     error.status = 500;
     var appController = sinon.stub();
     appController.send = sinon.stub();
     controller.get = sinon.stub().returns(appController);
     controller.addUpdateFailed(error);
+    ok(appController.send.calledWith('error', error));
+});
+
+test('it transitions to cars on delete car success', function(){
+    controller.transitionToRoute = sinon.stub();
+    controller.deleteSucceeded(sinon.stub());
+    ok(controller.transitionToRoute.calledWith('cars'));
+});
+
+test('it fires an error event through ApplicationController when deleting car fails', function(){
+    var error = sinon.stub();
+    var appController = sinon.stub();
+    appController.send = sinon.stub();
+    controller.get = sinon.stub().returns(appController);
+    controller.deleteFailed(error);
     ok(appController.send.calledWith('error', error));
 });

@@ -21,12 +21,8 @@ var CarController = Ember.ObjectController.extend(HandleCRUDPromiseMixin, CarCon
             car.deleteRecord();
             var self = this;
             car.save().then(
-                function() {
-                    self.transitionToRoute('cars');
-                },
-                function(error) {
-                    window.alert(error);
-                }
+                this.deleteSucceeded.bind(this),
+                this.deleteFailed.bind(this)
             );
         }
     }
