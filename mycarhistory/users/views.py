@@ -1,3 +1,5 @@
+import logging
+
 from django.contrib import auth
 from django.conf import settings
 
@@ -10,6 +12,9 @@ from django_browserid.base import BrowserIDException
 
 from mycarhistory.users.models import User
 from mycarhistory.users.serializers import UserSerializer
+
+
+logger = logging.getLogger(__name__)
 
 
 @api_view(['POST'])
@@ -49,7 +54,8 @@ def login(request):
             'Authentication failed',
             status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
-    except Exception:
+    except Exception as e:
+        logger.error('login: Got error {}'.format(e))
         return Response(
             'An unexpected error occured while authenticating.',
             status.HTTP_500_INTERNAL_SERVER_ERROR,
