@@ -31,10 +31,11 @@ After cloning the repo:
 
     cd mycarhistory
     pip install -r requirements.txt  # Best in a venv
-    librarian-puppet install  # you need librarian-puppet installed: gem install librarian-puppet
+    pip install ansible
     vagrant up
     fab vagrant syncdb
     fab vagrant createsuperuser
+    fab vagrant migrate  # in order to apply token migration from DRF
     fab vagrant runserver  # choose the default dev option
 
 In another window:
