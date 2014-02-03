@@ -22,3 +22,4 @@ frontend/libpeerconnection.log
 Thumbs.db
 coverage
 .coverage
+vagrant_ansible_inventory_default

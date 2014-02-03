@@ -9,15 +9,15 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.boot_timeout = 120
 
   config.vm.network :forwarded_port, guest: 8000, host: 8888
-  
+
   config.vm.provider :virtualbox do |vb|
     vb.name = "mycarhistory"
   end
 
-  config.vm.provision :puppet do |puppet|
-      puppet.manifests_path = "manifests"
-      puppet.manifest_file  = "default.pp"
-      puppet.module_path = "modules"
-      # puppet.options = "--verbose --debug"
+  config.vm.provision :ansible do |ansible|
+      ansible.playbook = "provisioning/playbook.yml"
+      ansible.sudo = true
+      ansible.host_key_checking = false
   end
+
 end
