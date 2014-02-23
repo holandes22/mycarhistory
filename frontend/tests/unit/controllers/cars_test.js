@@ -1,17 +1,20 @@
 var App;
-var controller;
+var carsController;
+var carController;
 
 
 module('Unit - CarController', {
     setup: function(){
         App = startApp();
-        controller = App.__container__.lookup('controller:cars');
-        controller.set('model', {});
-        controller.set('brand', 'fake_brand');
-        controller.set('model.model', 'fake_model');
-        controller.set('year', '2000');
-        controller.set('amountOfOwners', 1);
-        controller.set('gearboxType', 1);
+        carsController = App.__container__.lookup('controller:cars');
+        carsController.set('model', {});
+        carsController.set('brand', 'fake_brand');
+        carsController.set('model.model', 'fake_model');
+        carsController.set('year', '2000');
+        carsController.set('amountOfOwners', 1);
+        carsController.set('gearboxType', 1);
+
+        carController = App.__container__.lookup('controller:car');
     },
     teardown: function() {
         Ember.run(App, 'destroy');
@@ -21,22 +24,22 @@ module('Unit - CarController', {
 test('it creates record using correct attributes', function(){
 
     Ember.run(function(){
-        controller.addUpdateSucceeded.bind = sinon.stub();
-        controller.addUpdateFailed.bind = sinon.stub();
+        carsController.addUpdateSucceeded.bind = sinon.stub();
+        carsController.addUpdateFailed.bind = sinon.stub();
         var car = sinon.stub();
         var promise = sinon.stub();
         promise.then = sinon.stub();
         car.save = sinon.stub().returns(promise);
-        controller.store.createRecord = sinon.stub().returns(car);
+        carsController.store.createRecord = sinon.stub().returns(car);
 
-        controller.send('addCar');
+        carsController.send('addCar');
 
         ok(
-            controller.store.createRecord.calledOnce,
+            carsController.store.createRecord.calledOnce,
             'createRecord was called more than once by addCar'
         );
         ok(
-            controller.store.createRecord.calledWith(
+            carsController.store.createRecord.calledWith(
                 'car',
                 {brand:'fake_brand', model:'fake_model', year:'2000', amountOfOwners: 1, gearboxType: 1}
             ),
@@ -47,11 +50,11 @@ test('it creates record using correct attributes', function(){
 
 test('it transitions to new car on add car success', function(){
 
-    controller.transitionToRoute = sinon.stub();
+    carsController.transitionToRoute = sinon.stub();
     var car = sinon.stub();
     car.get = sinon.stub().returns(1);
-    controller.addUpdateSucceeded(car);
-    ok(controller.transitionToRoute.calledWith('car', 1));
+    carsController.addUpdateSucceeded(car);
+    ok(carsController.transitionToRoute.calledWith('car', 1));
 
 });
 
@@ -59,7 +62,7 @@ test('it shows validation errors if response is 400', function(){
 
     var car = sinon.stub();
     car.deleteRecord = sinon.stub();
-    controller.record = car;
+    carsController.record = car;
     var error = sinon.stub();
     error.status = 400;
     error.responseJSON = {
@@ -71,9 +74,9 @@ test('it shows validation errors if response is 400', function(){
         year: 'Select a valid choice. 2014 is not one of the available choices.'
     };
 
-    controller.addUpdateFailed(error);
+    carsController.addUpdateFailed(error);
 
-    deepEqual(expectedErrors, controller.get('errors'));
+    deepEqual(expectedErrors, carsController.get('errors'));
     ok(car.deleteRecord.calledOnce);
 });
 
@@ -82,22 +85,22 @@ test('it fires an error event through ApplicationController when updating car fa
     error.status = 500;
     var appController = sinon.stub();
     appController.send = sinon.stub();
-    controller.get = sinon.stub().returns(appController);
-    controller.addUpdateFailed(error);
+    carsController.get = sinon.stub().returns(appController);
+    carsController.addUpdateFailed(error);
     ok(appController.send.calledWith('error', error));
 });
 
 test('it transitions to cars on delete car success', function(){
-    controller.transitionToRoute = sinon.stub();
-    controller.deleteSucceeded(sinon.stub());
-    ok(controller.transitionToRoute.calledWith('cars'));
+    carController.transitionToRoute = sinon.stub();
+    carController.deleteSucceeded(sinon.stub());
+    ok(carController.transitionToRoute.calledWith('cars'));
 });
 
 test('it fires an error event through ApplicationController when deleting car fails', function(){
     var error = sinon.stub();
     var appController = sinon.stub();
     appController.send = sinon.stub();
-    controller.get = sinon.stub().returns(appController);
-    controller.deleteFailed(error);
+    carsController.get = sinon.stub().returns(appController);
+    carsController.deleteFailed(error);
     ok(appController.send.calledWith('error', error));
 });
