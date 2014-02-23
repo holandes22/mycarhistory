@@ -4,3 +4,4 @@ var ApplicationAdapter = DS.DjangoRESTAdapter.extend({
 });
 
 export default ApplicationAdapter;
+export default DS.FixtureAdapter.extend();

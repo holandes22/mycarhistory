@@ -1,4 +1,4 @@
-import Resolver from 'resolver';
+import Resolver from 'ember/resolver';
 import determineErrorClass from 'appkit/helpers/determine-error-class';
 
 var App = Ember.Application.extend({
@@ -9,15 +9,6 @@ var App = Ember.Application.extend({
   LOG_VIEW_LOOKUPS: true,
   modulePrefix: 'appkit', // TODO: loaded via config
   Resolver: Resolver['default']
-});
-
-Ember.RSVP.configure('onerror', function(error) {
-  // ensure unhandled promises raise awareness.
-  // may result in false negatives, but visibility is more important
-  if (error instanceof Error) {
-    Ember.Logger.assert(false, error);
-    Ember.Logger.error(error.stack);
-  }
 });
 
 Ember.Handlebars.registerHelper('determine-error-class', determineErrorClass);

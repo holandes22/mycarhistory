@@ -7,19 +7,19 @@
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- build:css(tmp/result) assets/vendor.min.css -->
+  <!-- build:css(tmp/result) /assets/vendor.min.css -->
   <link rel="stylesheet" href="/vendor/bootstrap/dist/css/bootstrap.css">
   <link rel="stylesheet" href="/vendor/bootstrap/dist/css/bootstrap-theme.css">
   <link rel="stylesheet" href="/vendor/browserid/persona-buttons.css" />
   <!-- endbuild -->
 
-  <!-- build:css(tmp/result) assets/app.min.css -->
+  <!-- build:css(tmp/result) /assets/app.min.css -->
   <link rel="stylesheet" href="/assets/app.css">
   <!-- endbuild -->
 
   <!-- for more details visit: https://github.com/yeoman/grunt-usemin -->
 
-  <!-- build:js(tmp/result) assets/config.min.js -->
+  <!-- build:js(tmp/result) /assets/config.min.js -->
 
     <script src="/config/environment.js"></script>
     <!-- @if tests=false -->
@@ -106,8 +106,9 @@
   <div id="qunit"></div>
   <div id="qunit-fixture"></div>
   <script src="/tests/tests.js"></script>
-  <script src="/tests/test_helper.js"></script>
-  <script src="/tests/test_loader.js"></script>
+  <script src="/tests/test-helper.js"></script>
+  <script src="/tests/test-loader.js"></script>
+  <script src="/testem.js"></script>
   <!-- @endif -->
 
   <!-- @if tests=false -->

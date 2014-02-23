@@ -42,7 +42,8 @@
     "ic",
     "fakehr",
     "httpRespond",
-    "sinon"
+    "sinon",
+    "DS"
   ],
   "node" : false,
   "browser" : false,
