@@ -12,7 +12,6 @@ frontend/vendor/*
 !frontend/vendor/shims
 !frontend/vendor/loader.js
 !frontend/vendor/browserid
-!frontend/vendor/ember-data-django-rest-adapter
 
 # misc
 frontend/.sass-cache
