@@ -11,7 +11,7 @@
     "ic-ajax": "~0.3.0",
     "ember-testing-httpRespond": "~0.1.1",
     "sinonjs": "~1.7.3",
-    "bootstrap": "~3.0.3",
+    "bootstrap": "~3.1.1",
     "moment": "~2.4.0"
   },
   "resolutions": {
