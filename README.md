@@ -1,5 +1,4 @@
-About
------
+# About
 
 I started this project mainly to learn three things:
 
@@ -24,24 +23,34 @@ At the beginning I had no idea how to make it work, but thanks to @toranb
 who made an example project https://github.com/toranb/complex-ember-data-example/
 I was able to start building something
 
-Getting started
----------------
+## Setting development environment
 
-After cloning the repo:
+
+### Backend
+
+Run all the actions below in a virtual env.
 
     cd mycarhistory
-    pip install -r requirements.txt  # Best in a venv
+    pip install -r requirements.txt
     pip install ansible
     vagrant up
+
+Choose default option for all steps below:
+
     fab vagrant syncdb
     fab vagrant createsuperuser
     fab vagrant migrate  # in order to apply token migration from DRF
-    fab vagrant runserver  # choose the default dev option
+    fab vagrant runserver  # choose the default dev option, runs at localhost:8888 (from VM)
 
-In another window:
-    cd mycarhistory/frontend
-    bower install
+
+### Frontend
+
+You need to have PhantomJS installed to be able to run the tests from the command line:
+
+    npm install -g phantomjs # you might need sudo for this
+
+Open another window terminal and run:
+
+    cd frontend
     npm install
     grunt server  # serves frontend at localhost:8000
-
-
