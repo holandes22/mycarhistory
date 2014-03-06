@@ -1,10 +1,12 @@
-<div class="container">
+<div class="container-fluid">
   <div class="row">
-    <div class="col-md-3">
-      <button class="btn btn-primary btn-sm btn-block" data-toggle="modal" data-target="#addCarModal">
-        <span class="glyphicon glyphicon-plus"></span> Add Car
-      </button>
-      <ul class="nav nav-pills nav-stacked">
+    <div class="col-sm-3 col-md-2 sidebar">
+      <ul class="nav nav-sidebar">
+        <button class="btn btn-primary btn-block" data-toggle="modal" data-target="#addCarModal">
+          <span class="glyphicon glyphicon-plus"></span> Add Car
+        </button>
+      </ul>
+      <ul class="nav nav-sidebar">
         {{log controller}}
         {{log model}}
         {{#with model as cars}}
@@ -17,7 +19,7 @@
         {{/with}}
       </ul>
     </div>
-    <div class="col-md-9">
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
       {{view "addCarModal"}}
       {{outlet}}
     </div>
