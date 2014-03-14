@@ -9,6 +9,8 @@ logs/*.log
 # dependencies
 frontend/node_modules
 frontend/vendor/*
+!frontend/vendor/ember-shim.js
+!frontend/vendor/qunit-shim.js
 !frontend/vendor/shims
 !frontend/vendor/loader.js
 !frontend/vendor/browserid
