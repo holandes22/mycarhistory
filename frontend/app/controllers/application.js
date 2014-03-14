@@ -38,8 +38,13 @@ var ApplicationController = Ember.ObjectController.extend({
             onlogout: function() {
                 window.sessionStorage.clear();
                 if ( controller.loginError ) {
+                    var message = 'Log In failed.';
+                    var hint = (controller.loginError.status === 0) ? ' Is server up?' : '';
+
                     controller.get('controllers.error').set('status', controller.loginError.status);
-                    controller.get('controllers.error').set('message', 'Log In failed. Is server up?');
+                    controller.get('controllers.error').set('message', message);
+                    controller.get('controllers.error').set('hint', hint);
+
                     controller.transitionToRoute('error');
                 } else {
                     window.location.replace('/');

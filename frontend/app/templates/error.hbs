@@ -1,14 +1,22 @@
 <div class="container">
     <div class="alert alert-{{unbound determine-error-class controller}}">
-      <strong>{{status}}</strong>
-        {{#if message}}
-          {{message}}
-        {{else}}
-          {{#if responseJSON.detail}}
-            {{responseJSON.detail}}
+        <div>
+          <strong>HTTP Status code: {{status}}</strong>
+        </div>
+        <div>
+          Message:
+          {{#if message}}
+            {{message}}
           {{else}}
-            {{responseText}}
+            {{#if responseJSON.detail}}
+              {{responseJSON.detail}}
+            {{else}}
+              {{responseText}}
+            {{/if}}
           {{/if}}
-        {{/if}}
+        </div>
+        <div>
+          {{hint}}
+        </div>
     </div>
 </div>

@@ -15,6 +15,7 @@ Router.map(function() {
     this.resource('logout');
     this.resource('about');
     this.resource('main');
+    this.route('error');
     this.route('error404', { path: '*:' });
 });
 
