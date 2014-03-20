@@ -47,8 +47,11 @@ class TreatmentViewTests(APITestCase):
         other_car = CarFactory(user=other_user)
         other_treatment = TreatmentFactory(car=other_car)
 
-        url = '{}?car={}'.format(reverse('treatment-list-shallow'), car1.pk)
-        response = self.client.get(url)
+        response = self.client.get(
+            reverse('treatment-list-shallow'),
+            data={'car': car1.pk},
+        )
+
         self.assertEqual(2, len(response.data))
         ids = [_['id'] for _ in response.data]
         self.assertEqual(status.HTTP_200_OK, response.status_code)
@@ -124,8 +127,8 @@ class TreatmentViewTests(APITestCase):
         car2 = CarFactory(user=new_user)
         TreatmentFactory(car=car2)
 
-        url = '{}?car={}'.format(reverse('treatment-list-shallow'), car2.pk)
-        response = self.client.get(url)
+        url = reverse('treatment-list-shallow')
+        response = self.client.get(url, data={'car': car2.pk})
         self.assertEqual(status.HTTP_403_FORBIDDEN, response.status_code)
 
     def test_list_returns_401_if_not_authenticated(self):
