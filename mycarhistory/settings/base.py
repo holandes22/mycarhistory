@@ -77,7 +77,7 @@ ROOT_URLCONF = 'mycarhistory.urls'
 WSGI_APPLICATION = 'mycarhistory.wsgi.application'
 
 TEMPLATE_DIRS = (
-    root('templates')
+    root('templates'),
 )
 
 DJANGO_APPS = (
@@ -91,7 +91,6 @@ DJANGO_APPS = (
 )
 
 THIRD_PARTY_APPS = (
-    'south',
     'storages',
     'gunicorn',
     'django_browserid',
