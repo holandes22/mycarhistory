@@ -4,6 +4,7 @@ logs/*.log
 # compiled output
 */dist
 */tmp
+*/doc
 /static/*
 
 # dependencies
@@ -12,7 +13,6 @@ frontend/vendor/*
 !frontend/vendor/ember-shim.js
 !frontend/vendor/qunit-shim.js
 !frontend/vendor/shims
-!frontend/vendor/loader.js
 !frontend/vendor/browserid
 
 # misc
