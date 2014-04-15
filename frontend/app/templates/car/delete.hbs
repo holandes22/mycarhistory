@@ -1,4 +1,8 @@
-<p>
-  Are you sure you would like to remove {{fullName}} from your car list?. This will also remove all the
-  related treatments.
-</p>
+<form role="form">
+  <p>
+    Are you sure you would like to remove {{fullName}} from your car list?. This will also remove all the
+    related treatments.
+  </p>
+  <button type="submit" class="btn btn-primary" {{action "deleteCar" this}}>Remove</button>
+</form>
+

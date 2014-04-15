@@ -1,4 +1,5 @@
 var HandleCRUDPromiseMixin = Ember.Mixin.create({
+    record: null,
     needs: 'application',
 
     addUpdateSucceeded: function(record) {
@@ -6,8 +7,8 @@ var HandleCRUDPromiseMixin = Ember.Mixin.create({
         this.transitionToRoute(this.transitions.addUpdate, id);
     },
     addUpdateFailed: function(error) {
+        this.record.deleteRecord();
         if (error.status === 400) {
-            this.record.deleteRecord();
             var errors = {};
             var errorsFromAPI = error.responseJSON;
             Ember.$.each(errorsFromAPI, function(key, value){
