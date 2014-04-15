@@ -2,8 +2,8 @@ from mycarhistory.settings.base  import *
 
 SECRET_KEY = 'fake'
 
-TEST_DISCOVER_TOP_LEVEL = root('..')
-TEST_DISCOVER_PATTERN = "test_*"
+#TEST_DISCOVER_TOP_LEVEL = root('..')
+#TEST_DISCOVER_PATTERN = "test_*"
 
 DATABASES = {
     "default": {
