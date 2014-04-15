@@ -3,6 +3,7 @@ import YEAR_LIST from 'appkit/definitions/year_list';
 
 
 var CarControllerMixin = Ember.Mixin.create({
+    errors: null,
     gearboxTypes: [
         {label: GEARBOX_TYPES['1'], type: 1},
         {label: GEARBOX_TYPES['2'], type: 2}

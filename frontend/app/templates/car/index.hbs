@@ -1,0 +1,35 @@
+<div>
+    {{#with model as car}}
+    <div class="row">
+      <legend>Car Details</legend>
+      <table class="table table-striped">
+        <tr>
+          <th>Brand</th>
+          <th>Model</th>
+          <th>Year</th>
+          <th>Owners</th>
+          <th>Automatic?</th>
+          <th>Actions</th>
+        </tr>
+        <tr>
+          <td>{{car.brand}}</td>
+          <td>{{car.model}}</td>
+          <td>{{car.year}}</td>
+          <td>{{car.amountOfOwners}}</td>
+          <td>{{#if car.isAutomatic}}Yes{{else}}No{{/if}}</td>
+          <td>
+            {{#link-to 'car.edit' car class='btn btn-primary btn-sm' title='Update'}}
+              <span class="glyphicon glyphicon-edit"></span>
+            {{/link-to}}
+            {{#link-to 'car.delete' car class='btn btn-danger btn-sm' title='Delete'}}
+              <span class="glyphicon glyphicon-remove"></span>
+            {{/link-to}}
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="row">
+      {{outlet}}
+    </div>
+    {{/with}}
+</div>

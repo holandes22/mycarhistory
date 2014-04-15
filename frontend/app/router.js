@@ -2,7 +2,10 @@ var Router = Ember.Router.extend(); // ensure we don't share routes between all 
 
 Router.map(function() {
     this.resource('cars', function() {
+        this.route('add');
         this.resource('car', { path: ':car_id' }, function() {
+            this.route('edit');
+            this.route('delete');
             this.resource('treatments', function() {
                 this.resource('treatment', { path: ':treatment_id' });
             });

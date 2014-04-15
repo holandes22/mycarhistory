@@ -2,13 +2,9 @@
   <div class="row">
     <div class="col-sm-3 col-md-2 sidebar">
       <ul class="nav nav-sidebar">
-        <button class="btn btn-primary btn-block" data-toggle="modal" data-target="#addCarModal">
-          <span class="glyphicon glyphicon-plus"></span> Add Car
-        </button>
+        {{link-to 'Add Car' 'cars.add' class='btn btn-primary btn-block'}}
       </ul>
       <ul class="nav nav-sidebar">
-        {{log controller}}
-        {{log model}}
         {{#with model as cars}}
           {{#each car in cars}}
             <li>{{link-to car.fullName 'car' car}}</li>
@@ -20,7 +16,6 @@
       </ul>
     </div>
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-      {{view "addCarModal"}}
       {{outlet}}
     </div>
   </div>
