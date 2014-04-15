@@ -7,6 +7,7 @@ Router.map(function() {
             this.route('edit');
             this.route('delete');
             this.resource('treatments', function() {
+                this.route('add');
                 this.resource('treatment', { path: ':treatment_id' });
             });
         });
