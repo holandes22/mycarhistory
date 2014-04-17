@@ -84,11 +84,15 @@ test('it shows validation errors if response is 400', function(){
 
 test('it fires an error event through ApplicationController when updating car fails', function(){
     var error = sinon.stub();
+    var record = sinon.stub();
+    record.deleteRecord = sinon.stub();
     error.status = 500;
     var appController = sinon.stub();
     appController.send = sinon.stub();
     carEditController.get = sinon.stub().returns(appController);
+    carEditController.record = record;
     carEditController.addUpdateFailed(error);
+    ok(record.deleteRecord.calledOnce);
     ok(appController.send.calledWith('error', error));
 });
 
