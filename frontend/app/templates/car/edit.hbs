@@ -1,4 +1,1 @@
-<form role="form">
-  {{car-form car=controller}}
-  <button type="submit" class="btn btn-primary" {{action 'updateCar' model}}>Submit</button>
-</form>
+{{car-form car=controller submitAction='updateCar' actionParam=model}}
