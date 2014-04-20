@@ -2,9 +2,6 @@ import HandleCRUDPromiseMixin from 'appkit/controllers/mixins/handle_crud_promis
 import CarControllerMixin from 'appkit/controllers/mixins/car';
 
 var CarsAddController = Ember.ObjectController.extend(HandleCRUDPromiseMixin, CarControllerMixin, {
-    needs: 'application',
-    record: null,
-    errors: null,
     transitions: { addUpdate: 'car' },
     actions: {
         addCar: function(event) {

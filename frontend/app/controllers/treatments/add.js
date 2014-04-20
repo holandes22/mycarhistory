@@ -1,11 +1,11 @@
 import HandleCRUDPromiseMixin from 'appkit/controllers/mixins/handle_crud_promise';
 
 var TreatmentsAddController = Ember.ObjectController.extend(HandleCRUDPromiseMixin, {
-    needs: 'application',
+    needs: 'car',
     transitions: { addUpdate: 'treatment' },
     actions: {
-        addTreatment: function(params) {
-            window.console.log(params);
+        addTreatment: function() {
+            var car = this.get('controllers.car').get('model');
             var doneBy = this.get('doneBy');
             var description = this.get('description');
             var date = this.get('date');
@@ -15,6 +15,7 @@ var TreatmentsAddController = Ember.ObjectController.extend(HandleCRUDPromiseMix
             var partsReplaced = this.get('partsReplaced');
             var treatment = this.store.createRecord('treatment',
                 {
+                    car: car,
                     doneBy: doneBy,
                     description: description,
                     date: date,

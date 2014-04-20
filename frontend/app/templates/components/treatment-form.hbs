@@ -1,34 +1,37 @@
-<div class="form-group">
-  <label>doneBy</label>
-  {{input type="text" class="form-control" value=treatment.doneBy}}
-</div>
+<form class="form input-sm" role="form">
+  <div class="form-group">
+    <label>Done By</label>
+    {{input type="text" class="form-control" value=treatment.doneBy}}
+  </div>
 
-<div class="form-group">
-  <label>Description</label>
-  {{input type="text" class="form-control" value=treatment.description}}
-</div>
+  <div class="form-group">
+    <label>Description</label>
+    {{input type="text" class="form-control" value=treatment.description}}
+  </div>
 
-<div class="form-group">
-  <label>Date</label>
-  {{input type="text" class="form-control" value=treatment.date}}
-</div>
+  <div class="form-group">
+    <label>Date</label>
+    {{input type="text" class="form-control" value=treatment.date}}
+  </div>
 
-<div class="form-group">
-  <label>Kilometrage</label>
-  {{input type="text" class="form-control" value=treatment.kilometrage}}
-</div>
+  <div class="form-group">
+    <label>Kilometrage</label>
+    {{input type="text" class="form-control" value=treatment.kilometrage}}
+  </div>
 
-<div class="form-group">
-  <label>Reason</label>
-  {{input type="text" class="form-control" value=treatment.reason}}
-</div>
+  <div class="form-group">
+    <label>Reason</label>
+    {{input type="text" class="form-control" value=treatment.reason}}
+  </div>
 
-<div class="form-group">
-  <label>Category</label>
-  {{input type="text" class="form-control" value=treatment.category}}
-</div>
+  <div class="form-group">
+    <label>Category</label>
+    {{input type="text" class="form-control" value=treatment.category}}
+  </div>
 
-<div class="form-group">
-  <label>Parts Replaced</label>
-  {{input type="text" class="form-control" value=treatment.partsReplaced}}
-</div>
+  <div class="form-group">
+    <label>Parts Replaced</label>
+    {{input type="text" class="form-control" value=treatment.partsReplaced}}
+  </div>
+  <button type="submit" class="btn btn-primary" {{action 'submit'}}>Submit</button>
+</form>
