@@ -1,4 +1,4 @@
-import HandleCRUDPromiseMixin from 'appkit/controllers/mixins/handle_crud_promise';
+import HandleCRUDPromiseMixin from 'appkit/controllers/mixins/handle-crud-promise';
 import CarControllerMixin from 'appkit/controllers/mixins/car';
 
 var CarDeleteController = Ember.ObjectController.extend(HandleCRUDPromiseMixin, CarControllerMixin, {

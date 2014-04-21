@@ -1,4 +1,4 @@
-import setAuthHeader from 'appkit/utils/set_auth_headers';
+import setAuthHeader from 'appkit/utils/set-auth-headers';
 
 var ApplicationController = Ember.ObjectController.extend({
     needs: ['logout', 'error'],

@@ -1,5 +1,5 @@
-import GEARBOX_TYPES from 'appkit/definitions/gearbox_types';
-import YEAR_LIST from 'appkit/definitions/year_list';
+import GEARBOX_TYPES from 'appkit/definitions/gearbox-types';
+import YEAR_LIST from 'appkit/definitions/year-list';
 
 var CarControllerMixin = Ember.Mixin.create({
     gearboxTypes: [

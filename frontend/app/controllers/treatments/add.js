@@ -1,4 +1,4 @@
-import HandleCRUDPromiseMixin from 'appkit/controllers/mixins/handle_crud_promise';
+import HandleCRUDPromiseMixin from 'appkit/controllers/mixins/handle-crud-promise';
 
 var TreatmentsAddController = Ember.ObjectController.extend(HandleCRUDPromiseMixin, {
     needs: 'car',

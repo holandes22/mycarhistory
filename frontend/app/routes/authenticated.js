@@ -1,4 +1,4 @@
-import setAuthHeader from 'appkit/utils/set_auth_headers';
+import setAuthHeader from 'appkit/utils/set-auth-headers';
 
 var AuthenticatedRoute = Ember.Route.extend({
     beforeModel: function(transition) {
