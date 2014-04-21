@@ -33,7 +33,14 @@ class Treatment(models.Model):
     car = models.ForeignKey(Car, related_name='treatments')
     done_by = models.CharField(default='', max_length=150)
     description = models.TextField(blank=True)
-    date = models.DateField(default=datetime.datetime.now())
+    date = models.DateField(
+        default=datetime.datetime.now(),
+        # TODO: just for now until fixed date serialize at frontend:
+        # https://github.com/toranb/ember-data-django-rest-adapter/issues/61
+        # put back as mandatory afterwards
+        blank=True,
+        null=True,
+    )
     kilometrage = models.IntegerField(help_text='Kilometrage at the time')
     reason = models.CharField(
         max_length=50,
