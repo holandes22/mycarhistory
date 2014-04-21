@@ -77,13 +77,14 @@ class TreatmentListAPIView(TreatmentAPIViewMixin, ListCreateAPIView):
     car = None
 
     def get_car(self):
-        car_pk = self.request.POST.get('car', None)
-        if not car_pk:
-            car_pk = self.request.QUERY_PARAMS.get('car', None)
-        if car_pk:
-            self.car = get_object_or_404(Car, pk=car_pk)
-            self.check_object_permissions(self.request, self.car)
-        return self.car
+        car_pk = None
+        for attr in ['DATA', 'QUERY_PARAMS', 'POST']:
+            car_pk = getattr(self.request, attr).get('car', None)
+            if car_pk:
+                self.car = get_object_or_404(Car, pk=car_pk)
+                self.check_object_permissions(self.request, self.car)
+                return self.car
+        return None
 
     def get_queryset(self):
         car = self.get_car()
