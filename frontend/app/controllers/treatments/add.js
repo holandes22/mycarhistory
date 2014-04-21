@@ -27,6 +27,7 @@ var TreatmentsAddController = Ember.ObjectController.extend(HandleCRUDPromiseMix
                 }
             );
             this.record = treatment;
+            this.recordParent = car;
             treatment.save().then(
                 this.addUpdateSucceeded.bind(this),
                 this.addUpdateFailed.bind(this)

@@ -9,7 +9,7 @@
           {{#each car in cars}}
             <li>{{link-to car.fullName 'car' car}}</li>
             {{#if car.treatments}}
-              <li class="dropdown-header">{{link-to 'Treatments' 'treatments' car.id}}</li>
+              <li class="dropdown-header">{{link-to 'Treatments' 'treatments' car}}</li>
             {{/if}}
           {{/each}}
         {{/with}}

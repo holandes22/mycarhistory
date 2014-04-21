@@ -1,5 +1,6 @@
 var HandleCRUDPromiseMixin = Ember.Mixin.create({
     record: null,
+    recordParent: null,
     errors: null,
     needs: 'error',
 
@@ -11,6 +12,9 @@ var HandleCRUDPromiseMixin = Ember.Mixin.create({
 
     addUpdateSucceeded: function(record) {
         var id = record.get('id');
+        if (this.recordParent) {
+            this.recordParent.reload();
+        }
         this.transitionToRoute(this.transitions.addUpdate, id);
     },
     addUpdateFailed: function(error) {
