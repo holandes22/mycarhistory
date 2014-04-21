@@ -29,45 +29,45 @@ test("Car fullName include brand, model and year", function() {
 
 });
 
-test("Car gearboxType should either be 1 or 2", function() {
+test("Car gearboxType should either be manual or automatic", function() {
     expect(0);
 });
 
-test("Car gearboxType raises error if value not 1 nor 2", function() {
+test("Car gearboxType raises error if value not manual nor automatic", function() {
     expect(0);
 });
 
-test("Car isAutomatic is true when gearboxType is 2", function() {
-    var car = createCar({ gearboxType: 2 });
+test("Car isAutomatic is true when gearboxType is 'automatic'", function() {
+    var car = createCar({ gearboxType: 'automatic' });
     ok(
         car.get('isAutomatic'),
-        'isAutomatic should return true if gearboxType is 2'
+        'isAutomatic should return true if gearboxType is automatic'
     );
 });
 
-test("Car isAutomatic is false when gearboxType is 1", function() {
-    var car = createCar({ gearboxType: 1 });
+test("Car isAutomatic is false when gearboxType is 'manual'", function() {
+    var car = createCar({ gearboxType: 'manual' });
     equal(
         false,
         car.get('isAutomatic'),
-        'isAutomatic should return false if gearboxType is 1'
+        'isAutomatic should return false if gearboxType is manual'
     );
 });
 
-test("Car gearboxTypeName is Manual when gearboxType is 1", function() {
-    var car = createCar({ gearboxType: 1 });
+test("Car gearboxTypeName is Manual when gearboxType is 'manual'", function() {
+    var car = createCar({ gearboxType: 'manual' });
     equal(
         'Manual',
         car.get('gearboxTypeName'),
-        'gearboxTypeName should return Manual if gearboxType is 1'
+        'gearboxTypeName should return Manual if gearboxType is manual'
     );
 });
 
-test("Car gearboxTypeName is Automatic when gearboxType is 2", function() {
-    var car = createCar({ gearboxType: 2 });
+test("Car gearboxTypeName is Automatic when gearboxType is 'automatic'", function() {
+    var car = createCar({ gearboxType:'automatic' });
     equal(
         'Automatic',
         car.get('gearboxTypeName'),
-        'gearboxTypeName should return Automatic if gearboxType is 2'
+        'gearboxTypeName should return Automatic if gearboxType is automatic'
     );
 });

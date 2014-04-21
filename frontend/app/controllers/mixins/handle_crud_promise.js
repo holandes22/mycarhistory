@@ -1,5 +1,6 @@
 var HandleCRUDPromiseMixin = Ember.Mixin.create({
     record: null,
+    errors: null,
     needs: 'application',
 
     addUpdateSucceeded: function(record) {

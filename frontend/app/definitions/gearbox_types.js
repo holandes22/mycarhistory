@@ -1,4 +1,11 @@
 export default {
-    1: 'Manual',
-    2: 'Automatic'
+    manual: 'Manual',
+    automatic: 'Automatic'
 };
+
+/*
+{
+    manual: {type: 'manual', label: 'Manual'},
+    automatic: {type: 'automatic', label: 'Automatic'}
+};
+*/

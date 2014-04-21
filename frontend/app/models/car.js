@@ -4,7 +4,7 @@ var CarModel = DS.Model.extend({
     brand: DS.attr('string'),
     model: DS.attr('string'),
     year: DS.attr('number'),
-    gearboxType: DS.attr('number'),
+    gearboxType: DS.attr('string'),
     amountOfOwners: DS.attr('number'),
     treatments: DS.hasMany('treatment', { async: true }),
 
@@ -13,11 +13,11 @@ var CarModel = DS.Model.extend({
     }.property('brand', 'model', 'year'),
 
     gearboxTypeName: function() {
-        return this.get('gearboxType') === 1 ? GEARBOX_TYPES['1'] : GEARBOX_TYPES['2'];
+        return this.get('gearboxType') === 'manual' ? GEARBOX_TYPES.manual : GEARBOX_TYPES.automatic;
     }.property('gearboxType'),
 
     isAutomatic: function() {
-        return this.get('gearboxType') === 2;
+        return this.get('gearboxType') === 'automatic';
     }.property('gearboxType'),
 
 });
