@@ -1,3 +1,5 @@
+import GEARBOX_TYPES from 'appkit/definitions/gearbox_types';
+
 var App, store;
 
 module('Unit - CarModel', {
@@ -38,7 +40,7 @@ test("Car gearboxType raises error if value not manual nor automatic", function(
 });
 
 test("Car isAutomatic is true when gearboxType is 'automatic'", function() {
-    var car = createCar({ gearboxType: 'automatic' });
+    var car = createCar({ gearboxType: GEARBOX_TYPES.automatic.type });
     ok(
         car.get('isAutomatic'),
         'isAutomatic should return true if gearboxType is automatic'
@@ -46,7 +48,7 @@ test("Car isAutomatic is true when gearboxType is 'automatic'", function() {
 });
 
 test("Car isAutomatic is false when gearboxType is 'manual'", function() {
-    var car = createCar({ gearboxType: 'manual' });
+    var car = createCar({ gearboxType: GEARBOX_TYPES.manual.type });
     equal(
         false,
         car.get('isAutomatic'),
@@ -55,7 +57,7 @@ test("Car isAutomatic is false when gearboxType is 'manual'", function() {
 });
 
 test("Car gearboxTypeName is Manual when gearboxType is 'manual'", function() {
-    var car = createCar({ gearboxType: 'manual' });
+    var car = createCar({ gearboxType: GEARBOX_TYPES.manual.type });
     equal(
         'Manual',
         car.get('gearboxTypeName'),
@@ -64,7 +66,7 @@ test("Car gearboxTypeName is Manual when gearboxType is 'manual'", function() {
 });
 
 test("Car gearboxTypeName is Automatic when gearboxType is 'automatic'", function() {
-    var car = createCar({ gearboxType:'automatic' });
+    var car = createCar({ gearboxType: GEARBOX_TYPES.automatic.type });
     equal(
         'Automatic',
         car.get('gearboxTypeName'),

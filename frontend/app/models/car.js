@@ -13,11 +13,11 @@ var CarModel = DS.Model.extend({
     }.property('brand', 'model', 'year'),
 
     gearboxTypeName: function() {
-        return this.get('gearboxType') === 'manual' ? GEARBOX_TYPES.manual : GEARBOX_TYPES.automatic;
+        return this.get('gearboxType') === GEARBOX_TYPES.manual.type ? GEARBOX_TYPES.manual.label : GEARBOX_TYPES.automatic.label;
     }.property('gearboxType'),
 
     isAutomatic: function() {
-        return this.get('gearboxType') === 'automatic';
+        return this.get('gearboxType') === GEARBOX_TYPES.automatic.type;
     }.property('gearboxType'),
 
 });
