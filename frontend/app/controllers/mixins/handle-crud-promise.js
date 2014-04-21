@@ -1,7 +1,13 @@
 var HandleCRUDPromiseMixin = Ember.Mixin.create({
     record: null,
     errors: null,
-    needs: 'application',
+    needs: 'error',
+
+    genericErrorHandler: function(error) {
+        this.get('controllers.error').set('status', error.status);
+        this.get('controllers.error').set('responseJSON', error.responseJSON);
+        this.transitionToRoute('error');
+    },
 
     addUpdateSucceeded: function(record) {
         var id = record.get('id');
@@ -18,14 +24,14 @@ var HandleCRUDPromiseMixin = Ember.Mixin.create({
             });
             this.set('errors', errors);
         } else {
-            this.get('controllers.application').send('error', error);
+            this.genericErrorHandler(error);
         }
     },
     deleteSucceeded: function(record) {
         this.transitionToRoute(this.transitions.delete);
     },
     deleteFailed: function(error) {
-        this.get('controllers.application').send('error', error);
+        this.genericErrorHandler(error);
     }
 
 });
