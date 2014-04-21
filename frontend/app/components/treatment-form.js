@@ -1,8 +1,3 @@
-export default Ember.Component.extend({
+import SubmitEvent from 'appkit/components/mixins/submit-event';
 
-    actions: {
-        submit: function() {
-            this.sendAction('submitAction', this.get('actionParam'));
-        }
-    }
-});
+export default Ember.Component.extend(SubmitEvent);
