@@ -4,8 +4,8 @@ var TreatmentModel = DS.Model.extend({
     description: DS.attr('string'),
     date: DS.attr('date'),
     kilometrage: DS.attr('number'),
-    reason: DS.attr('number'),
-    category: DS.attr('number'),
+    reason: DS.attr('string'),
+    category: DS.attr('string'),
     partsReplaced: DS.attr('string')
 });
 

@@ -21,12 +21,22 @@
 
   <div class="form-group">
     <label>Reason</label>
-    {{input type="text" class="form-control" value=treatment.reason}}
+    {{view Ember.Select
+           content=treatment.treatmentReasons
+           optionValuePath="content.type"
+           optionLabelPath="content.label"
+           value=treatment.reason
+           class="form-control"}}
   </div>
 
   <div class="form-group">
     <label>Category</label>
-    {{input type="text" class="form-control" value=treatment.category}}
+    {{view Ember.Select
+           content=treatment.treatmentCategories
+           optionValuePath="content.type"
+           optionLabelPath="content.label"
+           value=treatment.category
+           class="form-control"}}
   </div>
 
   <div class="form-group">
