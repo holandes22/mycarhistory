@@ -5,8 +5,9 @@ from django.core.urlresolvers import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from mycarhistory.users.factories import UserFactory
+from mycarhistory.treatments.models import Treatment
 from mycarhistory.cars.factories import CarFactory
+from mycarhistory.users.factories import UserFactory
 from mycarhistory.treatments.factories import TreatmentFactory
 
 
@@ -183,9 +184,9 @@ class TreatmentViewTests(APITestCase):
             'description': 'fake_description',
             'date': fake_date,
             'kilometrage': 1,
-            'reason': 1,
-            'category': 1,
-            'parts_replaced': 'None',
+            'reason': Treatment.NO_REASON,
+            'category': Treatment.BODYWORK_CAT,
+            'parts_replaced': '',
         }
         self.assertEqual(status.HTTP_200_OK, response.status_code)
         self.assertDictEqual(expected, response.data)
@@ -208,9 +209,9 @@ class TreatmentViewTests(APITestCase):
             'description': 'fake_description',
             'date': fake_date,
             'kilometrage': 1,
-            'reason': 1,
-            'category': 1,
-            'parts_replaced': 'None',
+            'reason': Treatment.NO_REASON,
+            'category': Treatment.BODYWORK_CAT,
+            'parts_replaced': '',
         }
         self.assertEqual(status.HTTP_200_OK, response.status_code)
         self.assertDictEqual(expected, response.data)
@@ -269,8 +270,8 @@ class TreatmentViewTests(APITestCase):
             'description': 'fake_description',
             'date': fake_date,
             'kilometrage': 10,
-            'reason': 1,
-            'category': 1,
+            'reason': Treatment.BROKEN_REASON,
+            'category': Treatment.WHEELS_CAT,
             'parts_replaced': 'part1,part2',
         }
         expected = dict({'id': 1}, **payload)
@@ -287,6 +288,25 @@ class TreatmentViewTests(APITestCase):
         response = self.client.post(url, payload)
         self.assertEqual(expected, response.data)
 
+    def test_create_raises_400_if_invalid_selection(self):
+        car = CarFactory(user=self.user)
+        fake_date = datetime.date(2000, 1, 1)
+        payload = {
+            'car': car.pk,
+            'done_by': 'fake_done_by',
+            'date': fake_date,
+            'kilometrage': 10,
+            'reason': 'fake_reason',
+            'category': Treatment.ENGINE_CAT,
+        }
+        url = '{}?car={}'.format(reverse('treatment-list-shallow'), car.pk)
+        response = self.client.post(url, payload)
+        self.assertEqual(status.HTTP_400_BAD_REQUEST, response.status_code)
+        self.assertIn(
+            'not one of the available choices',
+            response.data['reason'][0],
+        )
+
     def test_create_shallow_disregards_query_param(self):
         # POST
         car = CarFactory(user=self.user)
@@ -297,8 +317,8 @@ class TreatmentViewTests(APITestCase):
             'description': 'fake_description',
             'date': fake_date,
             'kilometrage': 10,
-            'reason': 1,
-            'category': 1,
+            'reason': Treatment.NO_REASON,
+            'category': Treatment.ENGINE_CAT,
             'parts_replaced': 'part1,part2',
         }
         expected = dict({'id': 1}, **payload)
@@ -317,12 +337,10 @@ class TreatmentViewTests(APITestCase):
         payload = {
             'car': car.pk,
             'done_by': 'fake_done_by',
-            'description': 'fake_description',
             'date': fake_date,
             'kilometrage': 10,
-            'reason': 1,
-            'category': 1,
-            'parts_replaced': 'part1,part2',
+            'reason': Treatment.SERVICE_REASON,
+            'category': Treatment.ENGINE_CAT,
         }
         new_user = UserFactory(username='fake_username')
         self.client.credentials(
@@ -334,11 +352,10 @@ class TreatmentViewTests(APITestCase):
 
     def test_create_shallow_indicates_missing_or_null_fields(self):
         car = CarFactory(user=self.user)
-        payload = {'car': car.pk, 'done_by': '""', 'description': ''}
+        payload = {'car': car.pk, 'done_by': '""', 'description': 'fake'}
         response = self.client.post(reverse('treatment-list-shallow'), payload)
         self.assertEqual(status.HTTP_400_BAD_REQUEST, response.status_code)
         self.assertIn('kilometrage', response.data)
-        self.assertIn('description', response.data)
         self.assertNotIn('done_by', response.data)
 
     def test_create_shallow_raises_error_with_bad_payload(self):

@@ -9,8 +9,8 @@ YEAR_CHOICES = [(year, str(year)) for year in
 
 class Car(models.Model):
 
-    GEARBOX_MANUAL = 1
-    GEARBOX_AUTOMATIC = 2
+    GEARBOX_MANUAL = 'manual'
+    GEARBOX_AUTOMATIC = 'automatic'
     GEARBOX_CHOICES = (
         (GEARBOX_MANUAL, 'Manual'),
         (GEARBOX_AUTOMATIC, 'Automatic'),
@@ -23,12 +23,13 @@ class Car(models.Model):
         choices=YEAR_CHOICES,
         default=str(datetime.datetime.now().year),
     )
-    gearbox_type = models.IntegerField(
+    gearbox_type = models.CharField(
+        max_length=50,
         choices=GEARBOX_CHOICES,
         default=GEARBOX_AUTOMATIC,
     )
     amount_of_owners = models.IntegerField(
-        default=0,
+        default=1,
         help_text='Amount of owners (incluing current)',
     )
 

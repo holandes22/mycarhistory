@@ -6,23 +6,23 @@ from mycarhistory.cars.models import Car
 
 class Treatment(models.Model):
 
-    BODYWORK_CAT = 1
-    ELECTRIC_CAT = 2
-    ENGINE_CAT = 3
-    WHEELS_CAT = 4
-    CHASIS_CAT = 5
+    BODYWORK_CAT = 'bodywork'
+    ELECTRIC_CAT = 'electricity'
+    ENGINE_CAT = 'engine'
+    WHEELS_CAT = 'wheels'
+    CHASSIS_CAT = 'chassis'
     TREATMENT_CATS = (
         (BODYWORK_CAT, 'Body work'),
         (ELECTRIC_CAT, 'Electricity'),
         (ENGINE_CAT, 'Engine'),
         (WHEELS_CAT, 'Wheels'),
-        (CHASIS_CAT, 'Chasis'),
+        (CHASSIS_CAT, 'Chassis'),
     )
 
-    BROKEN_REASON = 1
-    SERVICE_REASON = 2
-    AESTHETIC_REASON = 3
-    NO_REASON = 4
+    BROKEN_REASON = 'broken'
+    SERVICE_REASON = 'service'
+    AESTHETIC_REASON = 'aesthetic'
+    NO_REASON = 'none'
     TREATMENT_REASONS = (
         (BROKEN_REASON, 'Failing component'),
         (SERVICE_REASON, 'Service'),
@@ -31,20 +31,22 @@ class Treatment(models.Model):
     )
 
     car = models.ForeignKey(Car, related_name='treatments')
-    done_by = models.TextField(default='')
-    description = models.TextField(default='')
+    done_by = models.CharField(default='', max_length=150)
+    description = models.TextField(blank=True)
     date = models.DateField(default=datetime.datetime.now())
     kilometrage = models.IntegerField(help_text='Kilometrage at the time')
-    reason = models.IntegerField(
+    reason = models.CharField(
+        max_length=50,
         choices=TREATMENT_REASONS,
-        default=BROKEN_REASON,
+        default=NO_REASON,
     )
-    category = models.IntegerField(
+    category = models.CharField(
+        max_length=50,
         choices=TREATMENT_CATS,
         default=BODYWORK_CAT,
     )
     parts_replaced = models.CharField(
-        max_length=300,
-        default='None',
+        max_length=400,
+        blank=True,
         help_text='Replaced parts, comma separated',
     )

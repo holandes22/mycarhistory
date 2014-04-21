@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
+from mycarhistory.cars.models import Car
 from mycarhistory.users.factories import UserFactory
 from mycarhistory.cars.factories import CarFactory
 from mycarhistory.treatments.factories import TreatmentFactory
@@ -66,8 +67,8 @@ class CarViewTests(APITestCase):
             'brand': 'fake_brand',
             'model': 'fake_model',
             'year': 2000,
-            'gearbox_type': 2,
-            'amount_of_owners': 0,
+            'gearbox_type': Car.GEARBOX_AUTOMATIC,
+            'amount_of_owners': 1,
         }
         self.assertDictEqual(expected, response.data)
 
@@ -105,7 +106,7 @@ class CarViewTests(APITestCase):
             'brand': 'fake_brand',
             'model': 'fake_model',
             'year': 2000,
-            'gearbox_type': 2,
+            'gearbox_type': Car.GEARBOX_MANUAL,
             'amount_of_owners': 3,
         }
         expected = dict(
