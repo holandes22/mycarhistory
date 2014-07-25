@@ -1,17 +1,14 @@
+import Ember from 'ember';
 import Resolver from 'ember/resolver';
 import loadInitializers from 'ember/load-initializers';
-import determineErrorClass from 'appkit/helpers/determine-error-class';
+
+Ember.MODEL_FACTORY_INJECTIONS = true;
 
 var App = Ember.Application.extend({
-  LOG_ACTIVE_GENERATION: true,
-  LOG_MODULE_RESOLVER: true,
-  LOG_TRANSITIONS: true,
-  LOG_TRANSITIONS_INTERNAL: true,
-  LOG_VIEW_LOOKUPS: true,
-  modulePrefix: 'appkit', // TODO: loaded via config
+  modulePrefix: 'app-kit', // TODO: loaded via config
   Resolver: Resolver
 });
 
-Ember.Handlebars.registerHelper('determine-error-class', determineErrorClass);
-loadInitializers(App, 'appkit');
+loadInitializers(App, 'app-kit');
+
 export default App;
