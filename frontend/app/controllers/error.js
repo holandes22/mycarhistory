@@ -1,3 +1,5 @@
+import Ember from 'ember';
+
 var ErrorController = Ember.ObjectController.extend({
     status: null,
     message: null,

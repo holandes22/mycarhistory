@@ -1,20 +1,14 @@
 {
-  "predef": [
-    "document",
-    "window",
-    "location",
-    "setTimeout",
-    "Ember",
-    "Em",
-    "DS",
-    "$"
-  ],
-  "node" : false,
-  "browser" : false,
+  "predef": {
+    "document": true,
+    "window": true,
+    "AppKitENV": true
+  },
+  "browser" : true,
   "boss" : true,
-  "curly": false,
+  "curly": true,
   "debug": false,
-  "devel": false,
+  "devel": true,
   "eqeqeq": true,
   "evil": true,
   "forin": false,
@@ -33,5 +27,6 @@
   "strict": false,
   "white": false,
   "eqnull": true,
-  "esnext": true
+  "esnext": true,
+  "unused": true
 }

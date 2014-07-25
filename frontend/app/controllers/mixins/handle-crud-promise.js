@@ -1,3 +1,5 @@
+import Ember from 'ember';
+
 var HandleCRUDPromiseMixin = Ember.Mixin.create({
     record: null,
     recordParent: null,

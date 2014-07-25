@@ -1,3 +1,5 @@
+import Ember from 'ember';
+
 var TreatmentAutocompleteController = Ember.Controller.extend({
     searchText: null,
 

@@ -1,4 +1,5 @@
-import GEARBOX_TYPES from 'appkit/definitions/gearbox-types';
+import DS from "ember-data";
+import GEARBOX_TYPES from 'app-kit/definitions/gearbox-types';
 
 var CarModel = DS.Model.extend({
     brand: DS.attr('string'),

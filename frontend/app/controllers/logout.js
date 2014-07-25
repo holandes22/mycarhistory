@@ -1,3 +1,5 @@
+import Ember from 'ember';
+
 var LogoutController = Ember.ObjectController.extend({
 
     actions: {

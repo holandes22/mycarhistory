@@ -1,6 +1,7 @@
-import TREATMENT_CATEGORIES from 'appkit/definitions/treatment-categories';
-import TREATMENT_REASONS from 'appkit/definitions/treatment-reasons';
-import getTypeLabelMap from 'appkit/utils/get-type-label-map';
+import Ember from 'ember';
+import TREATMENT_CATEGORIES from 'app-kit/definitions/treatment-categories';
+import TREATMENT_REASONS from 'app-kit/definitions/treatment-reasons';
+import getTypeLabelMap from 'app-kit/utils/get-type-label-map';
 
 
 var TreatmentControllerMixin = Ember.Mixin.create({
