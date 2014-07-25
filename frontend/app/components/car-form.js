@@ -1,3 +1,3 @@
-import SubmitEvent from 'appkit/components/mixins/submit-event';
+import SubmitEvent from 'app-kit/components/mixins/submit-event';
 
 export default Ember.Component.extend(SubmitEvent);
