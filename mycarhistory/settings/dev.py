@@ -19,7 +19,7 @@ PERSONA_AUDIENCES = (
     'https://127.0.0.1:4200',
 )
 
-XS_SHARING_ALLOWED_ORIGINS = 'http://localhost:8000'
+XS_SHARING_ALLOWED_ORIGINS = 'http://localhost:4200'
 
 
 DATABASES = {
