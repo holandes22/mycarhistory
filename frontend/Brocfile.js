@@ -19,7 +19,7 @@ var app = new EmberApp();
 
 app.import('vendor/bootstrap/dist/css/bootstrap.css');
 app.import('vendor/bootstrap/dist/css/bootstrap-theme.css');
-app.import('vendor/browserid/persona-button.css');
+app.import('vendor/browserid/persona-buttons.css');
 
 app.import('vendor/bootstrap/dist/js/bootstrap.js');
 app.import('vendor/moment/moment.js');
