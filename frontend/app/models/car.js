@@ -1,3 +1,4 @@
+import DS from "ember-data";
 import GEARBOX_TYPES from 'app-kit/definitions/gearbox-types';
 
 var CarModel = DS.Model.extend({

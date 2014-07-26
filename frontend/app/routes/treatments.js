@@ -1,3 +1,5 @@
+import Ember from 'ember';
+
 var TreatmentsRoute = Ember.Route.extend({
     model: function(queryParams, transition) {
         return this.store.find('treatment',

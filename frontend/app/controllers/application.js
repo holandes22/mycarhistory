@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import setAuthHeader from 'app-kit/utils/set-auth-headers';
 
 var ApplicationController = Ember.ObjectController.extend({

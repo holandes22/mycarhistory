@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import HandleCRUDPromiseMixin from 'app-kit/controllers/mixins/handle-crud-promise';
 import CarControllerMixin from 'app-kit/controllers/mixins/car';
 

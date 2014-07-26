@@ -1,3 +1,5 @@
+import DS from "ember-data";
+
 var TreatmentModel = DS.Model.extend({
     car: DS.belongsTo('Car'),
     doneBy: DS.attr('string'),

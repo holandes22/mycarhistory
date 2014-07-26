@@ -1,3 +1,5 @@
+import DS from "ember-data";
+
 var UserModel = DS.Model.extend({
     email: DS.attr('string'),
     fullName: DS.attr('string'),

@@ -17,4 +17,12 @@ var app = new EmberApp();
 // please specify an object with the list of modules as keys
 // along with the exports of each module as its value.
 
+app.import('vendor/bootstrap/dist/css/bootstrap.css');
+app.import('vendor/bootstrap/dist/css/bootstrap-theme.css');
+app.import('vendor/browserid/persona-button.css');
+
+app.import('vendor/bootstrap/dist/js/bootstrap.js');
+app.import('vendor/moment/moment.js');
+app.import('vendor/browserid/browserid.js');
+
 module.exports = app.toTree();

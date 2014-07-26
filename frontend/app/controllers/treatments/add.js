@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import HandleCRUDPromiseMixin from 'app-kit/controllers/mixins/handle-crud-promise';
 import TreatmentControllerMixin from 'app-kit/controllers/mixins/treatment';
 
