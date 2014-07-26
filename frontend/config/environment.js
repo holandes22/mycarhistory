@@ -25,13 +25,16 @@ module.exports = function(environment) {
     // ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
     ENV.APP.LOG_VIEW_LOOKUPS = true;
 
-    ENV.APP.API_HOST = 'http://localhost:8888';
-    ENV.APP.API_NAMESPACE = 'api/v1';
+    ENV.APP.API_HOST = 'http://localhost:8888/api/v1';
+
+    // TODO: Use API_NAMESPACE once ember-django-adapter 0.0.3 is released
+    // ENV.APP.API_HOST = 'http://localhost:8888';
+    // ENV.APP.API_NAMESPACE = 'api/v1';
   }
 
   if (environment === 'test') {
     ENV.APP.API_HOST = 'http://localhost:8000';
-    ENV.APP.API_NAMESPACE = 'api';
+    ENV.APP.API_NAMESPACE = 'api/v1';
   }
 
   if (environment === 'production') {
