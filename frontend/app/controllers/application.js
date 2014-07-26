@@ -18,7 +18,7 @@ var ApplicationController = Ember.ObjectController.extend({
                     window.jQuery.ajax({
                         type: 'POST',
                         data: { assertion: assertion },
-                        url: window.ENV.apiURL + '/' + window.ENV.apiNamespace + '/auth/login/',
+                        url: window.AppKit.API_HOST + '/' + window.AppKit.API_NAMESPACE + '/auth/login/',
                     }).then(
                         function(data) {
                             controller.set('loggedInUser', data.email);

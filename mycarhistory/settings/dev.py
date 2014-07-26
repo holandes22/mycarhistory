@@ -13,6 +13,10 @@ PERSONA_AUDIENCES = (
     'https://localhost:8000',
     'http://127.0.0.1:8000',
     'https://127.0.0.1:8000',
+    'http://localhost:4200',
+    'https://localhost:4200',
+    'http://127.0.0.1:4200',
+    'https://127.0.0.1:4200',
 )
 
 XS_SHARING_ALLOWED_ORIGINS = 'http://localhost:8000'
