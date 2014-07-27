@@ -18,9 +18,7 @@ var ApplicationController = Ember.ObjectController.extend({
                     window.jQuery.ajax({
                         type: 'POST',
                         data: { assertion: assertion },
-                        // TODO: Use API_NAMESPACE once ember-django-adapter 0.0.3 is released
-                        // url: window.AppKit.API_HOST + '/' + window.AppKit.API_NAMESPACE + '/auth/login/',
-                        url: window.AppKit.API_HOST + '/auth/login/',
+                        url: window.AppKit.API_HOST + '/' + window.AppKit.API_NAMESPACE + '/auth/login/',
                     }).then(
                         function(data) {
                             controller.set('loggedInUser', data.email);
