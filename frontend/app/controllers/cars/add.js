@@ -5,7 +5,7 @@ import CarControllerMixin from 'app-kit/controllers/mixins/car';
 var CarsAddController = Ember.ObjectController.extend(HandleCRUDPromiseMixin, CarControllerMixin, {
     transitions: { addUpdate: 'car' },
     actions: {
-        addCar: function(event) {
+        addCar: function() {
             var brand = this.get('brand');
             var model = this.get('model.model');
             var year = this.get('year');

@@ -1,4 +1,6 @@
 import Ember from 'ember';
+import DS from 'ember-data';
+
 
 var HandleCRUDPromiseMixin = Ember.Mixin.create({
     record: null,
@@ -21,10 +23,11 @@ var HandleCRUDPromiseMixin = Ember.Mixin.create({
     },
     addUpdateFailed: function(error) {
         this.record.deleteRecord();
-        if (error.status === 400) {
+        // In this case we don't want to transition to invalid state,
+        // but show the validation errors in the form.
+        if (error instanceof DS.InvalidError) {
             var errors = {};
-            var errorsFromAPI = error.responseJSON;
-            Ember.$.each(errorsFromAPI, function(key, value){
+            Ember.$.each(error.errors, function(key, value){
                 var camelCaseKey = Ember.String.camelize(key);
                 errors[camelCaseKey] = value[0];
             });
@@ -33,7 +36,7 @@ var HandleCRUDPromiseMixin = Ember.Mixin.create({
             this.genericErrorHandler(error);
         }
     },
-    deleteSucceeded: function(record) {
+    deleteSucceeded: function() {
         this.transitionToRoute(this.transitions.delete);
     },
     deleteFailed: function(error) {
