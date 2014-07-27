@@ -19,6 +19,11 @@ var app = new EmberApp();
 
 app.import('vendor/bootstrap/dist/css/bootstrap.css');
 app.import('vendor/bootstrap/dist/css/bootstrap-theme.css');
+app.import('vendor/bootstrap/dist/css/bootstrap-theme.css');
+app.import('vendor/bootstrap/dist/fonts/glyphicons-halflings-regular.svg', { destDir: '/fonts'});
+app.import('vendor/bootstrap/dist/fonts/glyphicons-halflings-regular.eot', { destDir: '/fonts'});
+app.import('vendor/bootstrap/dist/fonts/glyphicons-halflings-regular.ttf', { destDir: '/fonts'});
+app.import('vendor/bootstrap/dist/fonts/glyphicons-halflings-regular.woff', { destDir: '/fonts'});
 app.import('vendor/browserid/persona-buttons.css');
 
 app.import('vendor/bootstrap/dist/js/bootstrap.js');
