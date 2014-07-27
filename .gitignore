@@ -7,18 +7,7 @@ logs/*.log
 */doc
 /static/*
 
-# dependencies
-frontend/node_modules
-frontend/vendor/*
-!frontend/vendor/ember-shim.js
-!frontend/vendor/qunit-shim.js
-!frontend/vendor/shims
-!frontend/vendor/browserid
-
 # misc
-frontend/.sass-cache
-frontend/connect.lock
-frontend/libpeerconnection.log
 .DS_Store
 Thumbs.db
 coverage
